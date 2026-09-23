@@ -1,0 +1,33 @@
+/data
+# Environment & secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+
+# OS
+.DS_Store
+
+# Streamlit
+.streamlit/
+
+# Logs
+logs/
+*.log
+
+# Testing
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Project-specific: never commit these
+data.zip
+Cred.txt
