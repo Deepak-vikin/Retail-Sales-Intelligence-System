@@ -25,7 +25,7 @@ def get_bill(bill_id):
         conn.close()
 
 
-def get_recent_bills(limit=10):
+def get_recent_bills(limit=100):
     conn = connection()
 
     try:
