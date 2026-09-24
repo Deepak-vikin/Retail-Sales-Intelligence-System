@@ -1,3 +1,4 @@
+import test_services
 from app.core.database import connection
 try:
     conn=connection()
@@ -6,4 +7,4 @@ try:
 except Exception as e:
     print("FAILURE")
     print(e)
-    
+
