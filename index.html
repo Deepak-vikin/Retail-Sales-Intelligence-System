@@ -1005,6 +1005,45 @@
       transform: translateY(-1px);
     }
 
+    .chat-empty-state {
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 30px 18px;
+      color: var(--text-2);
+      gap: 10px;
+    }
+
+    .chat-empty-state-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.035);
+      color: #d8d9a0;
+      margin-bottom: 2px;
+    }
+
+    .chat-empty-state h3 {
+      margin: 0;
+      color: #f3f4f6;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .chat-empty-state p {
+      margin: 0;
+      max-width: 430px;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--text-3);
+    }
+
     /* Conversation Stream & Subtle Scrollbar */
     .chat-stream-box {
       display: flex;
@@ -2228,103 +2267,21 @@
             </button>
           </div>
 
-          <!-- Structured Conversation Stream -->
+          <!-- Contextual welcome state; no sample messages are preloaded. -->
           <div class="chat-stream-box" id="liveChatMessages">
-            
-            <!-- Conversation Sample 1: User -->
-            <div class="chat-bubble-user reveal-msg">
-              How did we perform yesterday?
-            </div>
-
-            <!-- Conversation Sample 1: Structured AI Response -->
-            <div class="chat-item-ai reveal-msg">
-              <div class="ai-avatar-emblem">
-                <div class="ai-avatar-emblem-inner">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <polygon points="12,2 15,9 22,12 15,15 12,22 9,15 2,12 9,9"/>
-                  </svg>
-                </div>
+            <div class="chat-empty-state" id="chatEmptyState">
+              <div class="chat-empty-state-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8 14.6 9.4 21.2 12l-6.6 2.6L12 21.2l-2.6-6.6L2.8 12l6.6-2.6L12 2.8Z"/></svg>
               </div>
-              <div class="chat-card-ai">
-                <div class="ai-section-tag">Revenue Analysis</div>
-                <div class="ai-metric-highlight">
-                  <span class="ai-metric-value">₹642,850</span>
-                  <span class="ai-metric-delta">↑ 12.4% compared with yesterday</span>
-                </div>
-                <div style="font-size:0.86rem; color:var(--text-2); margin-top:2px;">Key drivers</div>
-                <ul class="ai-drivers-list">
-                  <li>Beverage sales increased</li>
-                  <li>Average bill value increased</li>
-                  <li>Weekend transactions contributed significantly</li>
-                </ul>
-                <div class="ai-recommendation-box">
-                  <strong>Recommendation:</strong> Consider increasing beverage inventory before the weekend.
-                </div>
-              </div>
+              <h3>What would you like to know?</h3>
+              <p>Ask about sales, revenue, profits, inventory, low-stock products, or trends in your store. I’ll use your retail data to help answer.</p>
             </div>
-
-            <!-- Conversation Sample 2: User -->
-            <div class="chat-bubble-user reveal-msg">
-              Which products are running low in stock?
-            </div>
-
-            <!-- Conversation Sample 2: Structured AI Response -->
-            <div class="chat-item-ai reveal-msg">
-              <div class="ai-avatar-emblem">
-                <div class="ai-avatar-emblem-inner">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <polygon points="12,2 15,9 22,12 15,15 12,22 9,15 2,12 9,9"/>
-                  </svg>
-                </div>
-              </div>
-              <div class="chat-card-ai">
-                <div class="ai-section-tag">Inventory Safety Thresholds</div>
-                <div class="ai-metric-highlight">
-                  <span class="ai-metric-value">11 Products</span>
-                  <span class="ai-metric-delta" style="color:var(--status-warning);">● Below reorder threshold</span>
-                </div>
-                <div style="font-size:0.86rem; color:var(--text-2); margin-top:2px;">Critical items</div>
-                <ul class="ai-drivers-list">
-                  <li><strong>Lay's Classic Salted 52g:</strong> 0 units remaining (Safety level: 40)</li>
-                  <li><strong>Camlin Pencil Box Set:</strong> 5 units remaining (Safety level: 25)</li>
-                </ul>
-                <div class="ai-recommendation-box">
-                  <strong>Recommendation:</strong> Log an incoming shipment in the Purchases module before morning restocking.
-                </div>
-              </div>
-            </div>
-
           </div>
 
           <!-- Refined Floating Composer at Bottom of Workspace -->
           <div class="chat-bottom-composer">
             <div class="chat-composer-inner" style="position: relative;">
-              <button type="button" class="composer-round-btn composer-plus-btn" id="liveChatPlusBtn" title="Quick Queries">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-              </button>
-              <div class="quick-queries-menu" id="liveChatQuickQueriesMenu">
-                <div class="quick-query-title">Instant Intelligence Queries</div>
-                <button type="button" class="quick-query-item" data-query="How did we perform yesterday?">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                  <span>Performance review</span>
-                </button>
-                <button type="button" class="quick-query-item" data-query="Which products are running low in stock?">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                  <span>Low stock critical items</span>
-                </button>
-                <button type="button" class="quick-query-item" data-query="Why did sales drop this month?">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15,9 22,12 15,15 12,22 9,15 2,12 9,9"/></svg>
-                  <span>Root-cause anomaly search</span>
-                </button>
-                <button type="button" class="quick-query-item" data-query="Which category is performing best?">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                  <span>Category breakdown</span>
-                </button>
-              </div>
               <input type="text" class="chat-composer-input" id="liveChatInput" placeholder="Ask anything about your store..." />
-              <button type="button" class="composer-round-btn" id="liveChatMicBtn" title="Voice dictation">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg>
-              </button>
               <button type="button" class="chat-send-accent-btn" id="liveChatSendBtn" title="Send question">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
               </button>
@@ -3285,6 +3242,8 @@
     ------------------------------------------------------------------ */
     function appendUserMessage(text) {
       const container = document.getElementById('liveChatMessages');
+      const emptyState = document.getElementById('chatEmptyState');
+      if (emptyState) emptyState.remove();
       const bubble = document.createElement('div');
       bubble.className = 'chat-bubble-user';
       bubble.textContent = text;
@@ -4354,14 +4313,7 @@
         });
       }
 
-      const liveQuickMenu = document.getElementById('liveChatQuickQueriesMenu');
-      const liveQuickBtn = document.getElementById('liveChatPlusBtn');
-      if (liveQuickBtn && liveQuickMenu) {
-        liveQuickBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          liveQuickMenu.classList.toggle('open');
-        });
-      }
+      const liveQuickMenu = null; // Live-chat quick-query/attachment control removed.
 
       // Quick query selection
       document.querySelectorAll('.quick-query-item').forEach(item => {
@@ -4451,44 +4403,8 @@
       }
 
       initVoiceDictation('heroMicBtn', 'heroComposerInput', 'hero');
-      initVoiceDictation('liveChatMicBtn', 'liveChatInput', 'liveChat');
 
-      // 4. Section 2 Live Chat Submission
-      const liveInput = document.getElementById('liveChatInput');
-      const liveSendBtn = document.getElementById('liveChatSendBtn');
-
-      function sendLiveChatQuery() {
-        const q = liveInput.value.trim();
-        if (q) {
-          liveInput.value = '';
-          submitAIQuestion(q, 'liveChat');
-        }
-      }
-
-      liveSendBtn.addEventListener('click', sendLiveChatQuery);
-      liveInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          sendLiveChatQuery();
-        }
-      });
-
-      document.getElementById('clearChatHistoryBtn').addEventListener('click', () => {
-        document.getElementById('liveChatMessages').innerHTML = `
-          <div class="chat-bubble-user">Store analysis session reset.</div>
-          <div class="chat-item-ai">
-            <div class="ai-avatar-emblem">
-              <div class="ai-avatar-emblem-inner">
-                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15,9 22,12 15,15 12,22 9,15 2,12 9,9"/></svg>
-              </div>
-            </div>
-            <div class="chat-card-ai">
-              <div class="ai-section-tag">Status</div>
-              <div>Conversation stream cleared. Ready to query sales, inventory levels, or receiving logs.</div>
-            </div>
-          </div>
-        `;
-      });
+      // Live chat submission is registered in its own DOMContentLoaded handler below.
 
       // 5. Purchases Stock Receiving Form
       document.getElementById('purchaseForm').addEventListener('submit', handleReceiveStock);
@@ -4569,6 +4485,81 @@
       setTimeout(() => {
         document.documentElement.classList.remove('entrance-s2');
       }, 3200);
+    });
+
+    // Register live-chat controls independently so an unrelated initialization
+    // error elsewhere cannot prevent Enter or the send button from working.
+    document.addEventListener('DOMContentLoaded', () => {
+      const liveInput = document.getElementById('liveChatInput');
+      const liveSendBtn = document.getElementById('liveChatSendBtn');
+      const clearChatBtn = document.getElementById('clearChatHistoryBtn');
+
+      // Keep Clear independent of the page's other initialization routines.
+      if (clearChatBtn) {
+        clearChatBtn.addEventListener('click', (event) => {
+          event.preventDefault();
+          const messages = document.getElementById('liveChatMessages');
+          if (messages) {
+            messages.replaceChildren();
+            const emptyState = document.createElement('div');
+            emptyState.className = 'chat-empty-state';
+            emptyState.id = 'chatEmptyState';
+            emptyState.innerHTML = `
+              <div class="chat-empty-state-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8 14.6 9.4 21.2 12l-6.6 2.6L12 21.2l-2.6-6.6L2.8 12l6.6-2.6L12 2.8Z"/></svg>
+              </div>
+              <h3>What would you like to know?</h3>
+              <p>Ask about sales, revenue, profits, inventory, low-stock products, or trends in your store. I’ll use your retail data to help answer.</p>`;
+            messages.appendChild(emptyState);
+            messages.scrollTop = 0;
+          }
+          if (liveInput) {
+            liveInput.value = '';
+            liveInput.focus();
+          }
+          _chatHistory.length = 0;
+          Object.keys(_chartInstances).forEach((key) => {
+            if (_chartInstances[key]) {
+              _chartInstances[key].destroy();
+              delete _chartInstances[key];
+            }
+          });
+        });
+      }
+
+      if (!liveInput || !liveSendBtn) {
+        console.error('Live chat controls were not found in the page.');
+        return;
+      }
+
+      const sendLiveChatQuery = () => {
+        const question = liveInput.value.trim();
+        if (!question) return;
+        liveInput.value = '';
+        Promise.resolve(submitAIQuestion(question, 'liveChat')).catch((error) => {
+          console.error('Live chat submission failed:', error);
+          appendUserMessage(question);
+          const errorHtml = buildErrorCard(error?.message || 'Unable to submit query');
+          const container = document.getElementById('liveChatMessages');
+          if (container) {
+            const row = document.createElement('div');
+            row.className = 'chat-item-ai';
+            row.innerHTML = `<div class="chat-card-ai">${errorHtml}</div>`;
+            container.appendChild(row);
+          }
+        });
+      };
+
+      liveSendBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        sendLiveChatQuery();
+      });
+      liveInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' && !event.isComposing) {
+          event.preventDefault();
+          sendLiveChatQuery();
+        }
+      });
     });
   </script>
 </body>
