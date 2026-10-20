@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Retail Intelligence — Enterprise AI Store Operating System</title>
+  <title>Retail Intelligence Platform</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="AI-powered intelligence system for sales analytics, real-time inventory management, stock receiving, billing POS, and autonomous retail reasoning.">
+  <meta name="description" content="Retail sales analytics, inventory management, stock receiving, billing, and AI-powered business insights.">
 
   <!-- Typography: Inter font loaded with 400, 500, 600 weights -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2093,14 +2093,15 @@
         </div>
         <div class="brand-title-wrap">
           <span class="brand-title">Retail Intelligence</span>
-          <span class="brand-badge">Store OS v1.0</span>
+          
         </div>
       </a>
 
       <!-- Center: Workspace Switching Navigation -->
       <nav aria-label="Workspace navigation">
         <ul class="nav-links-center">
-          <li><button type="button" class="nav-btn active" data-view="home"><span class="nav-dot"></span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg><span>AI Assistant</span></button></li>
+          <li><button type="button" class="nav-btn active" data-view="home"><span class="nav-dot"></span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg><span>Home</span></button></li>
+          <li><button type="button" class="nav-btn" data-view="chat"><span class="nav-dot"></span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-4-.99L3 21l1.99-5.5A8.4 8.4 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg><span>Chat</span></button></li>
           <li><button type="button" class="nav-btn" data-view="dashboard"><span class="nav-dot"></span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg><span>Dashboard</span></button></li>
           <li><button type="button" class="nav-btn" data-view="sales"><span class="nav-dot"></span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>Sales</span></button></li>
           <li><button type="button" class="nav-btn" data-view="inventory"><span class="nav-dot"></span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><span>Inventory</span></button></li>
@@ -2134,7 +2135,8 @@
       </button>
     </div>
     <ul class="drawer-links">
-      <li><button type="button" class="drawer-link-btn active" data-view="home">AI Assistant <span>→</span></button></li>
+      <li><button type="button" class="drawer-link-btn active" data-view="home">Home <span>→</span></button></li>
+      <li><button type="button" class="drawer-link-btn" data-view="chat">Chat <span>→</span></button></li>
       <li><button type="button" class="drawer-link-btn" data-view="dashboard">Dashboard <span>→</span></button></li>
       <li><button type="button" class="drawer-link-btn" data-view="sales">Sales <span>→</span></button></li>
       <li><button type="button" class="drawer-link-btn" data-view="inventory">Inventory <span>→</span></button></li>
@@ -2172,67 +2174,7 @@
             AI-powered intelligence for sales, inventory and day-to-day retail decisions.
           </p>
 
-          <!-- Floating AI Composer -->
-          <div class="hero-composer-shell">
-            <div class="composer-ambient-glow"></div>
-            <div class="composer-card">
-              <textarea class="composer-textarea" id="heroComposerInput" rows="2" placeholder="Ask anything about your store…"></textarea>
-              
-              <!-- Real-time Structured Response Box -->
-              <div class="hero-answer-box" id="heroAnswerBox"></div>
-
-              <div class="composer-footer">
-                <div class="composer-actions-left" style="position: relative;">
-                  <button type="button" class="composer-round-btn" id="heroQuickActionBtn" title="Quick Queries">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-                  </button>
-                  <div class="quick-queries-menu" id="heroQuickQueriesMenu">
-                    <div class="quick-query-title">Instant Intelligence Queries</div>
-                    <button type="button" class="quick-query-item" data-query="How much revenue did we make yesterday?">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                      <span>Revenue analysis</span>
-                    </button>
-                    <button type="button" class="quick-query-item" data-query="Which products are running low in stock?">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                      <span>Low stock critical items</span>
-                    </button>
-                    <button type="button" class="quick-query-item" data-query="Which product category is performing best?">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15,9 22,12 15,15 12,22 9,15 2,12 9,9"/></svg>
-                      <span>Top performing categories</span>
-                    </button>
-                    <button type="button" class="quick-query-item" data-query="How much stock did we receive this week?">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-                      <span>Supplier inbound inventory</span>
-                    </button>
-                  </div>
-                  <button type="button" class="composer-pill-btn" id="deepThinkChip">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-7 7c0 2.5 1.5 4.5 3 6h8c1.5-1.5 3-3.5 3-6a7 7 0 0 0-7-7z"/></svg>
-                    <span>DeepThink Retail</span>
-                  </button>
-                </div>
-
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <button type="button" class="composer-round-btn" id="heroMicBtn" title="Voice dictation">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg>
-                  </button>
-                  <button type="button" class="composer-send-btn" id="heroSendBtn" title="Send Question">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Suggested Prompt Chips -->
-          <div class="query-pills-row">
-            <button type="button" class="suggestion-chip" data-query="How much revenue did we make yesterday?">Revenue yesterday</button>
-            <button type="button" class="suggestion-chip" data-query="Which products are running low?">Low stock products</button>
-            <button type="button" class="suggestion-chip" data-query="Why did sales drop this month?">Sales root-cause</button>
-            <button type="button" class="suggestion-chip" data-query="Which category is performing best?">Top category</button>
-            <button type="button" class="suggestion-chip" data-query="How much stock did we receive this week?">Stock received</button>
-          </div>
-
-          <!-- Capabilities Strip (NO FAKE LOGOS) -->
+          <!-- Capabilities Strip -->
           <div class="capabilities-strip">
             <div class="capability-item">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -2254,7 +2196,10 @@
         </div>
       </section>
 
-      <!-- SECTION 2: MATURE AI CHAT WORKSPACE -->
+    </div>
+
+    <!-- Dedicated Chat tab: one chat interface only -->
+    <div id="viewChat" class="workspace-pane">
       <section class="ai-workspace-section" id="features">
         <div class="ai-ambient-glow" aria-hidden="true"></div>
 
@@ -2698,22 +2643,11 @@
         <div class="section-header-bar">
           <div class="header-text-block">
             <h2>Point of Sale & Checkout</h2>
-            <p>High-speed barcode scanner compatibility, discount calculation, and bill recording.</p>
+            <p>Add products manually, review discounts, and generate receipts.</p>
           </div>
         </div>
 
-        <!-- Dedicated Enterprise Barcode Scanner Box -->
-        <div class="pos-barcode-scanner-box">
-          <div class="barcode-svg-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M3 5v14M8 5v14M12 5v14M17 5v14M21 5v14M6 5v14M14 5v14"/>
-            </svg>
-          </div>
-          <input type="text" class="pos-barcode-input" id="posBarcodeScanInput" placeholder="Scan barcode or type code and press Enter (e.g. 8901000001)..." />
-          <button type="button" class="btn-tactile btn-ghost-dark" id="posBarcodeAddBtn">Scan / Add</button>
-        </div>
-
-        <div class="grid-two-columns">
+                <div class="grid-two-columns">
           <!-- Active Cart -->
           <div class="enterprise-panel">
             <div class="panel-top-row">
@@ -2760,7 +2694,7 @@
                   </tr>
                 </thead>
                 <tbody id="posCartBody">
-                  <tr><td colspan="7" style="text-align:center; padding:28px; color:var(--text-3);">Cart is empty. Scan a barcode above or select an item manually.</td></tr>
+                  <tr><td colspan="7" style="text-align:center; padding:28px; color:var(--text-3);">Cart is empty. Select a product and add it to the cart.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -2951,20 +2885,6 @@
 
   </main>
 
-  <!-- Enterprise Footer -->
-  <footer class="enterprise-footer">
-    <div class="footer-brand">Retail Intelligence — Store OS v1.0</div>
-    <div>AI-powered retail analytics, inventory tracking, and decision intelligence.</div>
-    <div class="footer-links">
-      <span class="footer-link">Sales Analytics</span>
-      <span class="footer-link">Inventory Engine</span>
-      <span class="footer-link">POS Checkout</span>
-      <span class="footer-link">RAG Reasoning</span>
-    </div>
-    <div style="margin-top: 12px; color: var(--text-3); font-size: 0.7rem;">
-      Built with FastAPI · PostgreSQL · Hybrid RAG Architecture
-    </div>
-  </footer>
 
   <!-- ========================================================================
        MODAL: RECEIPT VIEWER
@@ -3949,7 +3869,7 @@
     function renderCartTable() {
       const tbody = document.getElementById('posCartBody');
       if (!activeCart.length) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:28px; color:var(--text-3);">Cart is empty. Scan a barcode above or select an item manually.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:28px; color:var(--text-3);">Cart is empty. Select a product and add it to the cart.</td></tr>';
         updatePOSStats(0, 0, 0);
         return;
       }
@@ -4037,7 +3957,7 @@
         }
 
         const data = await res.json();
-        showEnterpriseToast(`Bill #${bill_id} completed. Total: ${formatINR(data.total_amount)}`);
+        showEnterpriseToast(`Bill #${bill_id} generated successfully! Total: ${formatINR(data.total_amount)}`);
         activeCart = [];
         renderCartTable();
         loadDashboardMetrics();
@@ -4572,16 +4492,7 @@
 
       // 5. Purchases Stock Receiving Form
       document.getElementById('purchaseForm').addEventListener('submit', handleReceiveStock);
-
-      // 6. POS Barcode Reader & Cart Controls
-      const barcodeInput = document.getElementById('posBarcodeScanInput');
-      barcodeInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          scanBarcodeAdd();
-        }
-      });
-      document.getElementById('posBarcodeAddBtn').addEventListener('click', scanBarcodeAdd);
+      // 6. POS Cart Controls (barcode scanning will be added later)
       document.getElementById('posManualAddBtn').addEventListener('click', addManualItem);
       document.getElementById('posCompleteSaleBtn').addEventListener('click', handleCompleteSale);
       document.getElementById('posClearBtn').addEventListener('click', () => {
