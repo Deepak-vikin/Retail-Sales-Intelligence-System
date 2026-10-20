@@ -1,7 +1,7 @@
 from app.Services.product_service import get_products
 from app.Services.inventory_service import get_inventory, get_low_stock_products
 from app.Services.supplier_service import get_suppliers
-from app.Services.purchase_service import get_purchases
+from app.Services.purchase_service import get_all_purchases
 from app.Services.bill_service import get_recent_bills
 from app.Services.analytics_service import (
     get_total_revenue, get_total_units_sold, get_total_bills, get_average_bill_value,
@@ -20,7 +20,7 @@ def test_database_services():
     suppliers = get_suppliers()
     print(f"3. Number of suppliers: {len(suppliers)} (Expected: 12)")
     
-    purchases = get_purchases()
+    purchases = get_all_purchases()
     print(f"4. Number of purchases: {len(purchases)} (Expected: 1223)")
     
     total_bills = get_total_bills()

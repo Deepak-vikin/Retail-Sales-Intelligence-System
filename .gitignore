@@ -1,19 +1,30 @@
-/data
-# Environment & secrets
-.env
 
-# Python
+# Data and datasets
+/data/
+data.zip
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+Cred.txt
+
+# Python cache and compiled files
 __pycache__/
-*.pyc
-*.pyo
+*.py[cod]
 *.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
 
 # Virtual environments
 .venv/
 venv/
 
-# OS
+# OS and editor
 .DS_Store
+Thumbs.db
+.vscode/
 
 # Streamlit
 .streamlit/
@@ -22,12 +33,19 @@ venv/
 logs/
 *.log
 
-# Testing
-.pytest_cache/
-
 # Jupyter
 .ipynb_checkpoints/
+# IDE
+.idea/
 
-# Project-specific: never commit these
-data.zip
-Cred.txt
+# Python bytecode and test artifacts
+*.py[cod]
+.coverage
+htmlcov/
+
+# Environment files
+.env.*
+!.env.example
+
+# Windows
+Thumbs.db
