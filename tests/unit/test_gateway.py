@@ -1,47 +1,53 @@
-"""
-Unit tests – LLM Gateway.
 
-The LLMGateway.complete() call is mocked so the test suite does not
-depend on a live LLM provider or API keys.
 """
+Unit tests - LLM Gateway.
+
+The OpenAI client is mocked so tests require no API key
+or live LLM provider.
+"""
+
 from unittest.mock import MagicMock, patch
+
+import pytest
 
 from app.gateway.llm_gateway import LLMGateway
 
 
-def test_gateway_complete_returns_string():
-    """
-    LLMGateway.complete() should return the string content from the
-    first successful model call.
+@patch("app.gateway.llm_gateway.OpenAI")
+def test_gateway_complete_returns_string(mock_openai):
+    """Return string content from a successful model call."""
 
-    The underlying OpenAI client is mocked to avoid real network calls.
-    """
+    mock_client = MagicMock()
+    mock_openai.return_value = mock_client
+
     mock_response = MagicMock()
-    mock_response.choices[0].message.content = "Dynamic programming is a technique..."
+    mock_response.choices[0].message.content = (
+        "Dynamic programming is a technique..."
+    )
+
+    mock_client.chat.completions.create.return_value = mock_response
 
     gateway = LLMGateway()
-
-    with patch.object(gateway.client.chat.completions, "create", return_value=mock_response):
-        result = gateway.complete("What is dynamic programming?")
+    result = gateway.complete("What is dynamic programming?")
 
     assert isinstance(result, str)
     assert len(result) > 0
+    mock_client.chat.completions.create.assert_called()
 
 
-def test_gateway_complete_falls_back_on_empty_content():
-    """
-    LLMGateway.complete() should try fallback models when the primary
-    model returns empty content, raising RuntimeError if all fail.
-    """
-    # First call returns empty content; simulate by raising RuntimeError for all
-    mock_empty = MagicMock()
-    mock_empty.choices[0].message.content = None
+@patch("app.gateway.llm_gateway.OpenAI")
+def test_gateway_complete_falls_back_on_empty_content(mock_openai):
+    """Raise RuntimeError when all model attempts return empty content."""
+
+    mock_client = MagicMock()
+    mock_openai.return_value = mock_client
+
+    mock_response = MagicMock()
+    mock_response.choices[0].message.content = None
+
+    mock_client.chat.completions.create.return_value = mock_response
 
     gateway = LLMGateway()
 
-    with patch.object(
-        gateway.client.chat.completions, "create", return_value=mock_empty
-    ):
-        import pytest
-        with pytest.raises(RuntimeError):
-            gateway.complete("test prompt")
+    with pytest.raises(RuntimeError):
+        gateway.complete("test prompt")
