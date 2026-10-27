@@ -190,24 +190,6 @@ These are examples of questions the proposed analytics experience could support;
 
 The available answers depend on the implemented schema, business definitions, and records in the connected database.
 
-## ⚠️ Limitations
-
-- Implementation details are not verified because the source repository was not supplied in the workspace.
-- AI answers depend on the configured language model, database schema, retrieval sources, and data quality.
-- Text-to-SQL requires appropriate validation and access controls before executing generated queries; the safeguards in this project are unknown.
-- RAG requires a defined and maintained knowledge source; its contents, indexing method, and refresh process are unknown.
-- Barcode scanner hardware, supported barcode formats, and the scan-to-cart workflow are planned and unverified.
-- No performance, accuracy, reliability, or test results are reported here.
-
-## 🛣️ Roadmap
-
-- [ ] Confirm the repository structure, supported versions, and installation steps.
-- [ ] Document the implemented database schema and API routes.
-- [ ] Verify Text-to-SQL and RAG routing, retrieval sources, and LLM gateway configuration.
-- [ ] Add and document barcode scanner integration for product lookup during billing.
-- [ ] Add tests and publish measured evaluation results when available.
-- [ ] Add genuine screenshots or a demo link after they exist and are approved for publication.
-
 ## 🤝 Contributing
 
 Contributions are welcome once the project’s contribution process is established. For now, open an issue to discuss a proposed change, keep credentials out of commits, and include relevant tests with code changes where a test suite exists. Add a `CONTRIBUTING.md` with the project's preferred workflow when one is defined.
