@@ -2636,6 +2636,8 @@
               </div>
             </div>
 
+            <div id="posStatusMessage" role="status" aria-live="polite" style="display:none; margin-top:12px; padding:10px 12px; border-radius:8px; font-size:0.85rem;"></div>
+
             <!-- Cart Table -->
             <div class="table-scroll-wrap" style="margin-top:14px;">
               <table class="enterprise-table">
@@ -3716,22 +3718,63 @@
       populatePOSSelect();
     }
 
-    function populatePOSSelect() {
+    function productValue(product, tupleIndex, ...keys) {
+      if (Array.isArray(product)) return product[tupleIndex];
+      for (const key of keys) if (product && product[key] !== undefined && product[key] !== null) return product[key];
+      return undefined;
+    }
+
+    function getProductStock(product) {
+      const id = String(productValue(product, 0, 'product_id', 'id') ?? '');
+      const barcode = String(productValue(product, 1, 'barcode') ?? '');
+      const name = String(productValue(product, 2, 'product_name', 'name') ?? '');
+      const inventory = (allInventory || []).find(row => {
+        const rowId = String(productValue(row, 1, 'product_id') ?? productValue(row, 0, 'product_id', 'id') ?? '');
+        const rowBarcode = String(productValue(row, 3, 'barcode') ?? '');
+        const rowName = String(productValue(row, 2, 'product_name', 'name') ?? '');
+        return (id && rowId === id) || (barcode && rowBarcode === barcode) || (name && rowName === name);
+      });
+      if (!inventory) return null;
+      const stock = productValue(inventory, 5, 'current_stock', 'stock_quantity', 'quantity_in_stock', 'available_quantity');
+      return Number.isFinite(Number(stock)) ? Number(stock) : null;
+    }
+
+    function showPOSMessage(message, type = 'error') {
+      const el = document.getElementById('posStatusMessage');
+      if (!el) { if (type === 'error') alert(message); else showEnterpriseToast(message); return; }
+      el.textContent = message;
+      el.style.display = 'block';
+      el.style.color = type === 'success' ? '#a7f3d0' : '#fecaca';
+      el.style.background = type === 'success' ? 'rgba(16,185,129,.12)' : 'rgba(239,68,68,.12)';
+      el.style.border = `1px solid ${type === 'success' ? 'rgba(16,185,129,.35)' : 'rgba(239,68,68,.35)'}`;
+    }
+
+    function clearPOSMessage() {
+      const el = document.getElementById('posStatusMessage');
+      if (el) { el.textContent = ''; el.style.display = 'none'; }
+    }
+
+    async function populatePOSSelect() {
       const select = document.getElementById('posManualProdSelect');
+      try {
+        if (!allInventory.length) {
+          const invRes = await fetch(`${API_BASE}/inventory/`);
+          if (invRes.ok) allInventory = await invRes.json() || [];
+        }
+      } catch (err) { console.warn('Could not load stock for POS validation:', err); }
       select.innerHTML = '<option value="">Select item...</option>' +
         allProducts.map(p => {
-          const id = p[0] ?? p.product_id;
-          const name = p[2] ?? p.product_name;
-          const barcode = p[1] ?? p.barcode;
-          const price = p[5] ?? p.selling_price;
-          return `<option value="${id}" data-price="${price}" data-barcode="${barcode}">${escapeHtml(name)}</option>`;
+          const id = productValue(p, 0, 'product_id', 'id');
+          const name = productValue(p, 2, 'product_name', 'name') ?? 'Unnamed product';
+          const barcode = productValue(p, 1, 'barcode') ?? '';
+          const price = productValue(p, 5, 'selling_price', 'price') ?? 0;
+          const stock = getProductStock(p);
+          return `<option value="${escapeHtml(String(id ?? ''))}" data-price="${Number(price) || 0}" data-barcode="${escapeHtml(String(barcode))}" data-stock="${stock === null ? '' : stock}">${escapeHtml(String(name))}${stock === null ? '' : ` — ${stock} in stock`}</option>`;
         }).join('');
-
       select.onchange = function () {
         const opt = select.options[select.selectedIndex];
-        if (opt && opt.dataset.price) {
-          document.getElementById('posManualPriceInput').value = opt.dataset.price;
-        }
+        if (opt && opt.dataset.price) document.getElementById('posManualPriceInput').value = opt.dataset.price;
+        clearPOSMessage();
       };
     }
 
@@ -3791,38 +3834,45 @@
     }
 
     function addManualItem() {
+      clearPOSMessage();
       const select = document.getElementById('posManualProdSelect');
-      const prodId = parseInt(select.value);
-      if (!prodId) return;
+      const selectedId = String(select.value || '');
+      if (!selectedId) { showPOSMessage('Select a product before clicking + Add.'); return; }
+      const prod = allProducts.find(p => String(productValue(p, 0, 'product_id', 'id')) === selectedId);
+      if (!prod) { showPOSMessage('The selected product could not be found. Reload the Products list and try again.'); return; }
 
-      const prod = allProducts.find(p => (p[0] ?? p.product_id) === prodId);
-      const name = prod ? (prod[2] ?? prod.product_name) : 'Product';
-      const barcode = prod ? (prod[1] ?? prod.barcode) : '';
-      const qty = parseInt(document.getElementById('posManualQtyInput').value) || 1;
-      const price = parseFloat(document.getElementById('posManualPriceInput').value) || 0;
-      const disc = parseFloat(document.getElementById('posManualDiscInput').value) || 0;
+      const prodId = productValue(prod, 0, 'product_id', 'id');
+      const name = String(productValue(prod, 2, 'product_name', 'name') ?? 'Product');
+      const barcode = String(productValue(prod, 1, 'barcode') ?? '');
+      const qtyInput = document.getElementById('posManualQtyInput');
+      const qty = Number(qtyInput.value);
+      const price = Number(document.getElementById('posManualPriceInput').value);
+      const disc = Number(document.getElementById('posManualDiscInput').value || 0);
+      if (!Number.isInteger(qty) || qty < 1) { showPOSMessage('Quantity must be a whole number of at least 1.'); qtyInput.focus(); return; }
+      if (!Number.isFinite(price) || price < 0) { showPOSMessage('Enter a valid unit price.'); return; }
+      if (!Number.isFinite(disc) || disc < 0 || disc > qty * price) { showPOSMessage('Discount must be zero or greater and cannot exceed the line subtotal.'); return; }
 
-      const item = activeCart.find(i => i.product_id === prodId);
-      if (item) {
-        item.quantity += qty;
-        item.unit_price = price;
-        item.discount += disc;
-      } else {
-        activeCart.push({
-          product_id: prodId,
-          product_name: name,
-          barcode: barcode,
-          quantity: qty,
-          unit_price: price,
-          discount: disc
-        });
+      const stock = getProductStock(prod);
+      const existing = activeCart.find(i => String(i.product_id) === String(prodId));
+      const requestedTotal = qty + (existing ? existing.quantity : 0);
+      if (stock !== null && requestedTotal > stock) {
+        showPOSMessage(`Stock limit exceeded for ${name}. Available: ${stock}; already in cart: ${existing ? existing.quantity : 0}; requested total: ${requestedTotal}. Reduce the quantity to continue.`);
+        return;
       }
 
+      if (existing) {
+        existing.quantity = requestedTotal;
+        existing.unit_price = price;
+        existing.discount += disc;
+      } else {
+        activeCart.push({ product_id: prodId, product_name: name, barcode, quantity: qty, unit_price: price, discount: disc, available_stock: stock });
+      }
       select.value = '';
-      document.getElementById('posManualQtyInput').value = '1';
+      qtyInput.value = '1';
       document.getElementById('posManualPriceInput').value = '';
       document.getElementById('posManualDiscInput').value = '0';
       renderCartTable();
+      showPOSMessage(`${name} added to cart.`, 'success');
     }
 
     function renderCartTable() {
@@ -3859,11 +3909,15 @@
     }
 
     function updateCartItemQty(idx, val) {
-      const q = parseInt(val);
-      if (q > 0 && activeCart[idx]) {
-        activeCart[idx].quantity = q;
-        renderCartTable();
-      }
+      clearPOSMessage();
+      const q = Number(val);
+      const item = activeCart[idx];
+      if (!item) return;
+      if (!Number.isInteger(q) || q < 1) { showPOSMessage('Quantity must be a whole number of at least 1.'); renderCartTable(); return; }
+      const stock = item.available_stock ?? getProductStock(allProducts.find(p => String(productValue(p, 0, 'product_id', 'id')) === String(item.product_id)) || {});
+      if (stock !== null && stock !== undefined && q > stock) { showPOSMessage(`Stock limit exceeded for ${item.product_name}. Only ${stock} unit(s) are available.`); renderCartTable(); return; }
+      item.quantity = q;
+      renderCartTable();
     }
 
     function removeCartItem(idx) {
@@ -3880,9 +3934,23 @@
     }
 
     async function handleCompleteSale() {
+      clearPOSMessage();
       if (!activeCart.length) {
-        alert('Active cart is empty.');
+        showPOSMessage('The cart is empty. Add at least one product before generating a bill.');
         return;
+      }
+      // Re-check stock immediately before checkout to catch inventory changes since items were added.
+      try {
+        const stockRes = await fetch(`${API_BASE}/inventory/`);
+        if (stockRes.ok) allInventory = await stockRes.json() || [];
+      } catch (err) { console.warn('Stock revalidation unavailable:', err); }
+      for (const item of activeCart) {
+        const product = allProducts.find(p => String(productValue(p, 0, 'product_id', 'id')) === String(item.product_id));
+        const stock = product ? getProductStock(product) : item.available_stock;
+        if (stock !== null && stock !== undefined && item.quantity > stock) {
+          showPOSMessage(`Cannot generate bill: ${item.product_name} has only ${stock} unit(s) in stock, but ${item.quantity} requested. Update the cart first.`);
+          return;
+        }
       }
 
       const bill_id = Math.floor(Date.now() / 1000);
@@ -3916,12 +3984,17 @@
         }
 
         const data = await res.json();
-        showEnterpriseToast(`Bill #${bill_id} generated successfully! Total: ${formatINR(data.total_amount)}`);
+        const generatedTotal = data.total_amount ?? data.total ?? activeCart.reduce((sum, item) => sum + item.quantity * item.unit_price - item.discount, 0);
         activeCart = [];
         renderCartTable();
+        document.getElementById('posManualProdSelect').value = '';
+        document.getElementById('posManualQtyInput').value = '1';
+        document.getElementById('posManualPriceInput').value = '';
+        document.getElementById('posManualDiscInput').value = '0';
+        showPOSMessage(`Bill #${bill_id} generated successfully. Total: ${formatINR(generatedTotal)}. Ready for the next bill.`, 'success');
         loadDashboardMetrics();
       } catch (err) {
-        alert('Checkout error: ' + err.message);
+        showPOSMessage('Checkout failed: ' + err.message);
       }
     }
 
@@ -4408,13 +4481,8 @@
 
       // 5. Purchases Stock Receiving Form
       document.getElementById('purchaseForm').addEventListener('submit', handleReceiveStock);
-      // 6. POS Cart Controls (barcode scanning will be added later)
-      document.getElementById('posManualAddBtn').addEventListener('click', addManualItem);
-      document.getElementById('posCompleteSaleBtn').addEventListener('click', handleCompleteSale);
-      document.getElementById('posClearBtn').addEventListener('click', () => {
-        activeCart = [];
-        renderCartTable();
-      });
+      // POS controls are registered in a separate DOMContentLoaded handler below,
+      // so an unrelated initialization error cannot leave Add/Checkout unbound.
 
       // 7. Filters & Searches
       document.getElementById('inventorySearchInput').addEventListener('input', renderInventoryTable);
@@ -4485,6 +4553,72 @@
       setTimeout(() => {
         document.documentElement.classList.remove('entrance-s2');
       }, 3200);
+    });
+
+    // Register POS controls independently so an earlier initialization error elsewhere
+    // cannot prevent Add, Clear, or Checkout from working.
+    document.addEventListener('DOMContentLoaded', () => {
+      const addBtn = document.getElementById('posManualAddBtn');
+      const checkoutBtn = document.getElementById('posCompleteSaleBtn');
+      const clearBtn = document.getElementById('posClearBtn');
+
+      if (addBtn) {
+        addBtn.addEventListener('click', (event) => {
+          event.preventDefault();
+          try {
+            addManualItem();
+          } catch (err) {
+            console.error('POS Add failed:', err);
+            showPOSMessage(`Could not add product: ${err.message || 'Unexpected error'}`);
+          }
+        });
+      }
+      if (checkoutBtn) {
+        let checkoutInProgress = false;
+        const originalCheckoutLabel = checkoutBtn.textContent.trim();
+        checkoutBtn.addEventListener('click', async (event) => {
+          event.preventDefault();
+          // Lock immediately to prevent duplicate bills while the API is processing.
+          if (checkoutInProgress) return;
+          checkoutInProgress = true;
+          checkoutBtn.disabled = true;
+          checkoutBtn.setAttribute('aria-busy', 'true');
+          checkoutBtn.style.opacity = '0.7';
+          checkoutBtn.style.cursor = 'wait';
+          checkoutBtn.textContent = 'Generating bill… Please wait';
+          try {
+            await handleCompleteSale();
+          } catch (err) {
+            console.error('POS checkout failed:', err);
+            showPOSMessage(`Could not generate bill: ${err.message || 'Unexpected error'}`);
+          } finally {
+            // Re-enable only after the request finishes; failures can be retried.
+            checkoutInProgress = false;
+            checkoutBtn.disabled = false;
+            checkoutBtn.removeAttribute('aria-busy');
+            checkoutBtn.style.opacity = '';
+            checkoutBtn.style.cursor = '';
+            checkoutBtn.textContent = originalCheckoutLabel;
+          }
+        });
+      }
+      if (clearBtn) {
+        clearBtn.addEventListener('click', (event) => {
+          event.preventDefault();
+          activeCart = [];
+          renderCartTable();
+          clearPOSMessage();
+          const select = document.getElementById('posManualProdSelect');
+          const qty = document.getElementById('posManualQtyInput');
+          const price = document.getElementById('posManualPriceInput');
+          const discount = document.getElementById('posManualDiscInput');
+          if (select) select.value = '';
+          if (qty) qty.value = '1';
+          if (price) price.value = '';
+          if (discount) discount.value = '0';
+          showPOSMessage('Cart cleared. Ready for the next bill.', 'success');
+        });
+      }
     });
 
     // Register live-chat controls independently so an unrelated initialization
