@@ -1,0 +1,74 @@
+product_id,barcode,product_name,category,supplier_id,cost_price,selling_price,reorder_level
+1,8901000001,Lay's Classic Salted 52g,Snacks,1,10,20,40
+2,8901000002,Lay's Magic Masala 52g,Snacks,1,10,20,40
+3,8901000003,Kurkure Masala Munch 90g,Snacks,1,12,20,40
+4,8901000004,Uncle Chipps Spicy Treat 55g,Snacks,1,9,18,30
+5,8901000005,Haldiram's Aloo Bhujia 200g,Snacks,3,35,48,25
+6,8901000006,Haldiram's Moong Dal 200g,Snacks,3,33,45,25
+7,8901000007,Parle Monaco Biscuit 200g,Snacks,7,15,22,35
+8,8901000008,Parle-G Original 200g,Snacks,7,8,12,60
+9,8901000009,Britannia Good Day Cashew 100g,Snacks,6,20,28,35
+10,8901000010,Britannia Marie Gold 200g,Snacks,6,17,25,40
+11,8901000011,Bingo Mad Angles Tomato 72g,Snacks,1,12,20,30
+12,8901000012,ITC Bingo Yumitos 55g,Snacks,3,10,18,30
+13,8901000013,Coca-Cola 750ml,Beverages,8,28,40,50
+14,8901000014,Sprite 750ml,Beverages,8,28,40,50
+15,8901000015,Thums Up 750ml,Beverages,8,28,40,50
+16,8901000016,Fanta 750ml,Beverages,8,28,40,40
+17,8901000017,Pepsi 750ml,Beverages,1,28,40,50
+18,8901000018,Mountain Dew 750ml,Beverages,1,28,40,40
+19,8901000019,7Up 750ml,Beverages,1,27,38,35
+20,8901000020,Real Fruit Juice Mixed 1L,Beverages,9,85,120,25
+21,8901000021,Dabur Real Mango Juice 1L,Beverages,9,85,118,25
+22,8901000022,Bisleri Mineral Water 1L,Beverages,11,12,20,80
+23,8901000023,Tropicana Orange Juice 1L,Beverages,11,90,125,20
+24,8901000024,Amul Toned Milk 500ml,Dairy,5,22,27,60
+25,8901000025,Amul Full Cream Milk 500ml,Dairy,5,27,33,60
+26,8901000026,Amul Butter 500g,Dairy,5,220,260,20
+27,8901000027,Amul Butter 100g,Dairy,5,48,58,40
+28,8901000028,Amul Cheese Slices 200g,Dairy,5,105,130,25
+29,8901000029,Amul Dahi Curd 400g,Dairy,5,30,38,45
+30,8901000030,Amul Paneer 200g,Dairy,5,75,92,30
+31,8901000031,Amul Ice Cream Vanilla 1L,Dairy,5,140,180,20
+32,8901000032,Amul Gold Milk 1L,Dairy,5,58,68,40
+33,8901000033,Aashirvaad Atta 5kg,Grocery,3,210,250,30
+34,8901000034,India Gate Basmati Rice 5kg,Grocery,11,380,450,25
+35,8901000035,Fortune Sunflower Oil 1L,Grocery,11,135,160,40
+36,8901000036,Tata Salt 1kg,Grocery,3,20,26,60
+37,8901000037,Tata Sampann Toor Dal 1kg,Grocery,3,130,155,35
+38,8901000038,Patanjali Honey 250g,Grocery,12,95,120,25
+39,8901000039,Patanjali Atta Noodles 240g,Grocery,12,20,30,30
+40,8901000040,Sugar Free Bru Coffee 100g,Grocery,2,130,160,25
+41,8901000041,Red Label Tea 500g,Grocery,2,210,250,30
+42,8901000042,Maggi 2-Minute Noodles 70g,Grocery,4,12,14,80
+43,8901000043,Maggi Masala-ae-Magic 27g,Grocery,4,8,10,40
+44,8901000044,Nescafe Classic Coffee 50g,Grocery,4,145,175,25
+45,8901000045,Lifebuoy Soap 125g,Personal Care,2,22,30,50
+46,8901000046,Dove Soap 100g,Personal Care,2,45,58,40
+47,8901000047,Colgate Strong Teeth 200g,Personal Care,2,78,95,45
+48,8901000048,Closeup Red Hot Gel 150g,Personal Care,2,65,82,35
+49,8901000049,Clinic Plus Shampoo 340ml,Personal Care,2,145,175,30
+50,8901000050,Dabur Red Toothpaste 200g,Personal Care,9,72,90,30
+51,8901000051,Patanjali Aloe Vera Gel 150g,Personal Care,12,60,78,25
+52,8901000052,Vaseline Petroleum Jelly 100ml,Personal Care,2,85,105,25
+53,8901000053,Nivea Body Lotion 200ml,Personal Care,2,150,185,20
+54,8901000054,Surf Excel Detergent 1kg,Household,2,105,130,35
+55,8901000055,Vim Dishwash Bar 200g,Household,2,15,20,50
+56,8901000056,Vim Dishwash Gel 500ml,Household,2,90,112,30
+57,8901000057,Harpic Toilet Cleaner 500ml,Household,2,78,98,30
+58,8901000058,Lizol Floor Cleaner 975ml,Household,2,165,200,25
+59,8901000059,Good Knight Mosquito Refill,Household,2,55,70,40
+60,8901000060,All Out Mosquito Refill,Household,11,55,70,35
+61,8901000061,White Bread 400g,Bakery,10,28,38,40
+62,8901000062,Brown Bread 400g,Bakery,10,32,42,35
+63,8901000063,Britannia Cake Slice 100g,Bakery,6,22,30,30
+64,8901000064,Bun Pack of 6,Bakery,10,25,35,30
+65,8901000065,Rusk Toast 200g,Bakery,6,30,40,25
+66,8901000066,McCain French Fries 425g,Frozen Foods,11,130,165,20
+67,8901000067,ITC Chicken Nuggets 425g,Frozen Foods,3,180,220,15
+68,8901000068,Green Peas Frozen 500g,Frozen Foods,11,45,60,25
+69,8901000069,Veg Spring Roll 400g,Frozen Foods,11,110,145,15
+70,8901000070,Classmate Notebook 200pg,Stationery,11,35,48,40
+71,8901000071,Reynolds Ball Pen Pack 5,Stationery,11,20,30,50
+72,8901000072,Camlin Pencil Box Set,Stationery,11,40,55,25
+73,8901000073,Fevicol Glue Stick,Stationery,11,15,22,30

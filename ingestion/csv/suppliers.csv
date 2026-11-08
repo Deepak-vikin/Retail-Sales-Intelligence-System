@@ -1,0 +1,13 @@
+supplier_id,supplier_name,contact_number,payment_terms
+1,PepsiCo India,9840011122,Net 30
+2,Hindustan Unilever,9840022233,Net 45
+3,ITC Limited,9840033344,Net 30
+4,Nestle India,9840044455,Net 30
+5,Amul GCMMF,9840055566,Net 15
+6,Britannia Industries,9840066677,Net 30
+7,Parle Products,9840077788,Net 30
+8,Coca-Cola India,9840088899,Net 30
+9,Dabur India,9840099900,Net 45
+10,Local Bakery Supplies Co,9840011234,Net 7
+11,Reliance Retail Distribution,9840022345,Net 30
+12,Patanjali Ayurved,9840033456,Net 30
