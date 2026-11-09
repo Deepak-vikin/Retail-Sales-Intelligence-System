@@ -11,6 +11,8 @@ from app.api.analytics import router as analytics_router
 from app.api.purchase import router as purchase_router
 from app.api.supliers import router as suppliers_router
 from app.api.query import router as query_router
+from app.api.employees import router as employees_router
+from app.api.system import router as system_router
 
 app = FastAPI(
     title="Retail Sales Intelligence Platform",
@@ -33,6 +35,8 @@ app.include_router(analytics_router)
 app.include_router(purchase_router)
 app.include_router(suppliers_router)
 app.include_router(query_router)
+app.include_router(employees_router)
+app.include_router(system_router)
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_INDEX = BACKEND_DIR.parent / "frontend" / "index.html"

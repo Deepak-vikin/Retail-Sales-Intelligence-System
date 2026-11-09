@@ -1,9 +1,7 @@
 from datetime import date
 from decimal import Decimal
-
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, Field
-
 from app.Services.purchase_service import (
     create_purchase,
     get_all_purchases,
@@ -13,10 +11,10 @@ from app.Services.purchase_service import (
     get_total_purchase_cost,
     get_total_purchased_quantity,
 )
-
+from app.core.auth import require_permission
+from app.core.permissions import Permission, UserContext
 
 router = APIRouter(prefix="/purchases", tags=["Purchases"])
-
 
 class PurchaseCreate(BaseModel):
     purchase_id: int
@@ -26,9 +24,8 @@ class PurchaseCreate(BaseModel):
     cost_price: Decimal = Field(gt=0)
     purchase_date: date
 
-
 @router.post("/")
-def add_purchase(purchase: PurchaseCreate):
+def add_purchase(purchase: PurchaseCreate, user: UserContext = Depends(require_permission(Permission.PURCHASES_MANAGE))):
     try:
         return create_purchase(
             purchase_id=purchase.purchase_id,
@@ -46,32 +43,26 @@ def add_purchase(purchase: PurchaseCreate):
             detail="Failed to record purchase."
         )
 
-
 @router.get("/")
-def all_purchases():
+def purchases(user: UserContext = Depends(require_permission(Permission.PURCHASES_READ))):
     return get_all_purchases()
 
-
 @router.get("/recent")
-def recent_purchases(limit: int = 10):
+def recent_purchases(limit: int = 10, user: UserContext = Depends(require_permission(Permission.PURCHASES_READ))):
     return get_recent_purchases(limit)
 
+@router.get("/total-cost")
+def total_cost(user: UserContext = Depends(require_permission(Permission.PURCHASES_MANAGE))):
+    return get_total_purchase_cost()
 
-@router.get("/{purchase_id}")
-def purchase(purchase_id: int):
-    return get_purchase(purchase_id)
-
+@router.get("/total-quantity")
+def total_quantity(user: UserContext = Depends(require_permission(Permission.PURCHASES_READ))):
+    return get_total_purchased_quantity()
 
 @router.get("/product/{product_id}")
-def product_purchases(product_id: int):
+def product_purchases(product_id: int, user: UserContext = Depends(require_permission(Permission.PURCHASES_READ))):
     return get_product_purchases(product_id)
 
-
-@router.get("/product/{product_id}/quantity")
-def purchased_quantity(product_id: int):
-    return get_total_purchased_quantity(product_id)
-
-
-@router.get("/product/{product_id}/cost")
-def purchase_cost(product_id: int):
-    return get_total_purchase_cost(product_id)
+@router.get("/{purchase_id}")
+def purchase(purchase_id: int, user: UserContext = Depends(require_permission(Permission.PURCHASES_READ))):
+    return get_purchase(purchase_id)

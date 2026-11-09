@@ -1,25 +1,22 @@
 from datetime import datetime
 from decimal import Decimal
-
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, Field
-
 from app.Services.bill_service import (
     create_bill,
     get_bill,
     get_recent_bills,
 )
-
+from app.core.auth import require_permission
+from app.core.permissions import Permission, UserContext
 
 router = APIRouter(prefix="/bills", tags=["Bills"])
-
 
 class BillItemCreate(BaseModel):
     product_id: int
     quantity: int = Field(gt=0)
     unit_price: Decimal = Field(gt=0)
     discount: Decimal = Field(default=Decimal("0"), ge=0)
-
 
 class BillCreate(BaseModel):
     bill_id: int
@@ -28,9 +25,8 @@ class BillCreate(BaseModel):
     payment_mode: str
     items: list[BillItemCreate] = Field(min_length=1)
 
-
 @router.post("/")
-def add_bill(bill: BillCreate):
+def add_bill(bill: BillCreate, user: UserContext = Depends(require_permission(Permission.BILLING_CREATE))):
     try:
         return create_bill(
             bill_id=bill.bill_id,
@@ -42,25 +38,21 @@ def add_bill(bill: BillCreate):
                 for item in bill.items
             ],
         )
-
     except ValueError as error:
         raise HTTPException(
             status_code=400,
             detail=str(error)
         )
-
     except Exception as error:
         raise HTTPException(
             status_code=500,
             detail=str(error)
         )
 
-
 @router.get("/")
-def recent_bills(limit: int = 100):
+def recent_bills(limit: int = 100, user: UserContext = Depends(require_permission(Permission.BILLING_READ))):
     return get_recent_bills(limit)
 
-
 @router.get("/{bill_id}")
-def bill(bill_id: int):
+def bill(bill_id: int, user: UserContext = Depends(require_permission(Permission.BILLING_READ))):
     return get_bill(bill_id)

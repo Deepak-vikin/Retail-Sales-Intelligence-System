@@ -3,7 +3,7 @@ from decimal import Decimal
 
 from psycopg2.extras import execute_values
 
-from app.core.database import connection
+from backend.app.core.database import connection
 
 
 def sync_purchase_csv(file_path):

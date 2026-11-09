@@ -1,6 +1,6 @@
 import csv
 from datetime import datetime
-from app.core.database import connection
+from backend.app.core.database import connection
 
 REQUIRED_COLUMNS = {
     "bill_id",

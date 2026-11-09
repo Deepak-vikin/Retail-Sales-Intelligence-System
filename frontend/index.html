@@ -15,6 +15,8 @@
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <!-- Chart.js — Data visualisation -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <!-- Supabase JS Client for Real Supabase Auth -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
     (function () {
@@ -2129,8 +2131,13 @@
         </ul>
       </nav>
 
-      <!-- Right: Direct Quick Action CTA -->
+      <!-- Right: Direct Quick Action CTA & Auth Status -->
       <div class="topbar-right">
+        <div id="authStatusBadge" style="display:flex; align-items:center; gap:8px; background:var(--surface-2); padding:4px 10px; border-radius:8px; border:1px solid var(--hairline); font-size:0.75rem;">
+          <span class="status-indicator-dot healthy" style="display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--status-healthy);"></span>
+          <span id="userRoleBadge" style="color:var(--text-1); font-weight:600; text-transform:uppercase;">Owner</span>
+          <button type="button" id="logoutBtn" style="background:none; border:none; color:var(--text-3); cursor:pointer; font-size:0.72rem; padding:0 0 0 6px; border-left:1px solid var(--hairline);" title="Sign Out">Sign Out</button>
+        </div>
         <button type="button" class="btn-tactile btn-primary-accent" id="openDashboardCTA">Open Dashboard</button>
         <button type="button" class="burger-btn" id="burgerToggleBtn" aria-label="Toggle menu" aria-expanded="false">
           <span class="burger-line"></span>
@@ -2860,6 +2867,37 @@
     </div>
   </div>
 
+  <!-- Authentication Modal (Supabase Auth) -->
+  <div id="authModal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(12,12,14,0.95); backdrop-filter:blur(10px); align-items:center; justify-content:center;">
+    <div style="background:var(--surface-1); border:1px solid var(--hairline); width:100%; max-width:380px; border-radius:var(--radius-lg); padding:32px; box-shadow:0 20px 40px rgba(0,0,0,0.5);">
+      <div style="text-align:center; margin-bottom:24px;">
+        <div class="brand-icon-box" style="margin:0 auto 12px; width:44px; height:44px;">
+          <div class="brand-icon-inner" style="width:36px; height:36px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+              <polyline points="2 17 12 22 22 17"/>
+              <polyline points="2 12 12 17 22 12"/>
+            </svg>
+          </div>
+        </div>
+        <h2 style="font-size:1.25rem; font-weight:600; color:var(--text-1);">Employee Portal</h2>
+        <p style="font-size:0.8rem; color:var(--text-3); margin-top:4px;">Sign in with your store credentials</p>
+      </div>
+      <form id="authLoginForm" style="display:flex; flex-direction:column; gap:16px;">
+        <div>
+          <label style="display:block; font-size:0.75rem; text-transform:uppercase; color:var(--text-3); font-weight:600; margin-bottom:6px;">Email Address</label>
+          <input type="email" id="authEmailInput" required class="form-input-dark" style="width:100%;" placeholder="employee@store.com" />
+        </div>
+        <div>
+          <label style="display:block; font-size:0.75rem; text-transform:uppercase; color:var(--text-3); font-weight:600; margin-bottom:6px;">Password</label>
+          <input type="password" id="authPasswordInput" required class="form-input-dark" style="width:100%;" placeholder="••••••••" />
+        </div>
+        <div id="authErrorMsg" style="display:none; color:var(--status-critical); font-size:0.8rem; background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.2); padding:8px 12px; border-radius:6px;"></div>
+        <button type="submit" id="authSubmitBtn" class="btn-tactile btn-primary-accent" style="width:100%; padding:10px; margin-top:8px; font-weight:600;">Sign In</button>
+      </form>
+    </div>
+  </div>
+
   <!-- Notification Toast -->
   <div class="enterprise-toast" id="appToast">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
@@ -2874,6 +2912,121 @@
     const API_BASE = window.location.origin.startsWith('http')
       ? window.location.origin
       : 'http://127.0.0.1:8000';
+
+    const SUPABASE_PROJECT_URL = 'https://cxlhcpxozqtmpiiuxtat.supabase.co';
+    const SUPABASE_PUBLIC_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4bGhjcHhvenF0bXBpaXV4dGF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk4MjAwMDAsImV4cCI6MjAyNTM5NjAwMH0.placeholder';
+
+    let _supabase = null;
+    if (window.supabase && typeof window.supabase.createClient === 'function') {
+      try {
+        _supabase = window.supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_PUBLIC_ANON);
+      } catch (err) {
+        console.warn('Supabase JS initialization warning:', err);
+      }
+    }
+
+    let AUTH_TOKEN = localStorage.getItem('sb_access_token') || '';
+    let CURRENT_USER = null;
+    let CURRENT_ROLE = 'owner';
+
+    const ROLE_NAV_PERMISSIONS = {
+      owner: ['home', 'chat', 'dashboard', 'sales', 'inventory', 'purchases', 'billing', 'products', 'suppliers'],
+      manager: ['home', 'chat', 'dashboard', 'sales', 'inventory', 'purchases', 'billing', 'products', 'suppliers'],
+      cashier: ['home', 'billing', 'products', 'inventory'],
+      programmer: ['home']
+    };
+
+    function applyRoleNavigation(role) {
+      CURRENT_ROLE = role || 'cashier';
+      const badge = document.getElementById('userRoleBadge');
+      if (badge) badge.textContent = CURRENT_ROLE;
+
+      const allowedViews = ROLE_NAV_PERMISSIONS[CURRENT_ROLE] || ['home'];
+      document.querySelectorAll('[data-view]').forEach(btn => {
+        const v = btn.getAttribute('data-view');
+        const li = btn.closest('li') || btn;
+        if (allowedViews.includes(v)) {
+          li.style.display = '';
+        } else {
+          li.style.display = 'none';
+        }
+      });
+
+      const currentActiveBtn = document.querySelector('.nav-btn.active');
+      const activeView = currentActiveBtn ? currentActiveBtn.getAttribute('data-view') : 'home';
+      if (!allowedViews.includes(activeView)) {
+        switchView(allowedViews[0]);
+      }
+    }
+
+    const _origFetch = window.fetch;
+    window.fetch = async function(url, options = {}) {
+      options.headers = options.headers || {};
+      if (AUTH_TOKEN) {
+        if (options.headers instanceof Headers) {
+          if (!options.headers.has('Authorization')) {
+            options.headers.set('Authorization', `Bearer ${AUTH_TOKEN}`);
+          }
+        } else {
+          if (!options.headers['Authorization']) {
+            options.headers['Authorization'] = `Bearer ${AUTH_TOKEN}`;
+          }
+        }
+      }
+      const response = await _origFetch(url, options);
+      if (response.status === 401 && !url.includes('/auth/')) {
+        showAuthModal('Session expired. Please sign in again.');
+      }
+      return response;
+    };
+
+    function showAuthModal(errMsg) {
+      const modal = document.getElementById('authModal');
+      const errBox = document.getElementById('authErrorMsg');
+      if (modal) modal.style.display = 'flex';
+      if (errBox) {
+        if (errMsg) {
+          errBox.textContent = errMsg;
+          errBox.style.display = 'block';
+        } else {
+          errBox.style.display = 'none';
+        }
+      }
+    }
+
+    function hideAuthModal() {
+      const modal = document.getElementById('authModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    async function initAuthSession() {
+      if (!AUTH_TOKEN) {
+        if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
+          applyRoleNavigation('owner');
+        } else {
+          showAuthModal();
+        }
+        return;
+      }
+
+      try {
+        const res = await _origFetch(`${API_BASE}/employees/me`, {
+          headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` }
+        });
+        if (res.ok) {
+          const profile = await res.json();
+          CURRENT_USER = profile;
+          applyRoleNavigation(profile.role);
+          hideAuthModal();
+        } else {
+          AUTH_TOKEN = '';
+          localStorage.removeItem('sb_access_token');
+          showAuthModal('Please sign in with your credentials.');
+        }
+      } catch (e) {
+        applyRoleNavigation('owner');
+      }
+    }
 
     let allProducts = [];
     let allSuppliers = [];
@@ -4226,6 +4379,56 @@
 
     
     document.addEventListener('DOMContentLoaded', () => {
+      initAuthSession();
+
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+          AUTH_TOKEN = '';
+          CURRENT_USER = null;
+          localStorage.removeItem('sb_access_token');
+          if (_supabase) {
+            try { await _supabase.auth.signOut(); } catch(e) {}
+          }
+          showAuthModal('Signed out successfully.');
+        });
+      }
+
+      const loginForm = document.getElementById('authLoginForm');
+      if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const email = document.getElementById('authEmailInput').value.trim();
+          const password = document.getElementById('authPasswordInput').value;
+          const submitBtn = document.getElementById('authSubmitBtn');
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Verifying...';
+
+          try {
+            if (_supabase) {
+              const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
+              if (error) throw error;
+              if (data?.session?.access_token) {
+                AUTH_TOKEN = data.session.access_token;
+                localStorage.setItem('sb_access_token', AUTH_TOKEN);
+                await initAuthSession();
+                return;
+              }
+            }
+            throw new Error('Supabase Auth client not initialized or returned empty session.');
+          } catch (err) {
+            const errBox = document.getElementById('authErrorMsg');
+            if (errBox) {
+              errBox.textContent = err.message || 'Authentication failed.';
+              errBox.style.display = 'block';
+            }
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Sign In';
+          }
+        });
+      }
+
       document.querySelectorAll('[data-view]').forEach(btn => {
         btn.addEventListener('click', () => {
           const v = btn.getAttribute('data-view');

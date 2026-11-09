@@ -4,8 +4,8 @@ from decimal import Decimal
 
 from psycopg2.extras import execute_values
 
-from app.core.database import connection
-from app.ingestion.csv_validator import validate_csv
+from backend.app.core.database import connection
+from backend.app.ingestion.csv_validator import validate_csv
 
 
 def sync_daily_csv(file_path):
