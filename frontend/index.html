@@ -355,6 +355,29 @@
       color: #fff;
     }
 
+    .btn-danger-accent {
+      background: rgba(239, 68, 68, 0.12);
+      border-color: rgba(239, 68, 68, 0.35);
+      color: #ef4444;
+    }
+    .btn-danger-accent:hover {
+      background: rgba(239, 68, 68, 0.22);
+      border-color: rgba(239, 68, 68, 0.6);
+      color: #f87171;
+    }
+    .btn-danger-solid {
+      background: #ef4444;
+      border-color: #dc2626;
+      color: #ffffff;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(239, 68, 68, 0.35);
+    }
+    .btn-danger-solid:hover:not(:disabled) {
+      background: #dc2626;
+      border-color: #b91c1c;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.5);
+    }
+
     
     .burger-btn {
       display: none;
@@ -2040,6 +2063,19 @@
       50% { opacity: 0.65; }
     }
 
+    .skeleton-bar {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.04) 75%);
+      background-size: 200% 100%;
+      animation: skeletonShimmer 1.5s infinite ease-in-out;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    @keyframes skeletonShimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
     
     .hero-answer-box.active {
       display: block;
@@ -2066,6 +2102,10 @@
     @keyframes modalIn {
       from { opacity: 0; transform: translateY(16px) scale(0.97); }
       to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
     
@@ -2128,6 +2168,8 @@
           <li><button type="button" class="nav-btn" data-view="billing"><span class="nav-dot"></span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5v14M8 5v14M12 5v14M17 5v14M21 5v14M6 5v14M14 5v14"/></svg><span>Billing POS</span></button></li>
           <li><button type="button" class="nav-btn" data-view="products"><span class="nav-dot"></span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12.586 2.586-7 7a2 2 0 0 0 0 2.828l7 7a2 2 0 0 0 2.828 0l7-7a2 2 0 0 0 0-2.828l-7-7a2 2 0 0 0-2.828 0z"/><circle cx="12" cy="12" r="1.5"/></svg><span>Products</span></button></li>
           <li><button type="button" class="nav-btn" data-view="suppliers"><span class="nav-dot"></span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Suppliers</span></button></li>
+          <li><button type="button" class="nav-btn" data-view="employees"><span class="nav-dot"></span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Employees</span></button></li>
+          <li><button type="button" class="nav-btn" data-view="system"><span class="nav-dot"></span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg><span>System</span></button></li>
         </ul>
       </nav>
 
@@ -2168,6 +2210,8 @@
       <li><button type="button" class="drawer-link-btn" data-view="billing">Billing POS <span>→</span></button></li>
       <li><button type="button" class="drawer-link-btn" data-view="products">Products <span>→</span></button></li>
       <li><button type="button" class="drawer-link-btn" data-view="suppliers">Suppliers <span>→</span></button></li>
+      <li><button type="button" class="drawer-link-btn" data-view="employees">Employees <span>→</span></button></li>
+      <li><button type="button" class="drawer-link-btn" data-view="system">System <span>→</span></button></li>
     </ul>
   </div>
 
@@ -2543,9 +2587,17 @@
                 <input type="date" id="purchaseDateInput" class="form-input-dark" style="padding-left:14px;" required />
               </div>
 
-              <button type="submit" class="btn-tactile btn-primary-accent" style="margin-top:8px; padding:12px;">
-                Receive Stock & Update Inventory
+              <button type="submit" id="receiveStockSubmitBtn" class="btn-tactile btn-primary-accent" style="margin-top:8px; padding:12px; width:100%; justify-content:center;">
+                <span>Receive Stock &amp; Update Inventory</span>
               </button>
+
+              <!-- Stock Receiving Notification (Status / Feedback) -->
+              <div id="stockReceivingNotification" role="status" aria-live="polite" style="display:none; margin-top:4px; padding:11px 14px; border-radius:var(--radius-md); font-size:0.82rem; line-height:1.45; animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
+                <div style="display:flex; align-items:center; gap:9px;">
+                  <span id="stockNotificationIcon" style="display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;"></span>
+                  <span id="stockNotificationText" style="font-weight:500;"></span>
+                </div>
+              </div>
             </form>
           </div>
 
@@ -2698,22 +2750,28 @@
     </div>
 
     <!-- ======================================================================
-         VIEW 6: SALES TRANSACTIONS & RECEIPTS
+         VIEW 6: RECENT BILLS & RECEIPTS
          ====================================================================== -->
     <div id="viewSales" class="workspace-pane">
       <div class="workspace-shell">
         <div class="section-header-bar">
           <div class="header-text-block">
-            <h2>Sales Records & Invoices</h2>
+            <h2>Recent Bills</h2>
             <p>Audit historical store bills, line items, and settlement methods.</p>
           </div>
-          <button type="button" class="btn-tactile btn-primary-accent" data-view="billing">+ New Bill</button>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <button type="button" class="btn-tactile btn-ghost-dark" id="refreshBillsBtn" onclick="loadSalesView(true)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
+              <span>Refresh</span>
+            </button>
+            <button type="button" class="btn-tactile btn-primary-accent" data-view="billing">+ New Bill</button>
+          </div>
         </div>
 
         <div class="filter-controls-row">
-          <div class="input-search-box">
+          <div class="input-search-box" style="max-width:380px;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <input type="text" class="form-input-dark" id="salesSearchInput" placeholder="Filter by Bill ID, Cashier ID, or Payment Mode..." />
+            <input type="text" class="form-input-dark" id="salesSearchInput" placeholder="Search by Bill ID..." autocomplete="off" />
           </div>
         </div>
 
@@ -2722,12 +2780,12 @@
             <table class="enterprise-table">
               <thead>
                 <tr>
-                  <th>Bill Reference</th>
-                  <th>Cashier ID</th>
-                  <th>Date & Time</th>
-                  <th>Payment Mode</th>
-                  <th style="text-align:right;">Amount</th>
-                  <th style="text-align:right;">Action</th>
+                  <th>Bill ID</th>
+                  <th>Transaction Date &amp; Time</th>
+                  <th style="text-align:center;">Items</th>
+                  <th style="text-align:right;">Total Amount</th>
+                  <th>Payment Method</th>
+                  <th style="text-align:right;">Actions</th>
                 </tr>
               </thead>
               <tbody id="salesTableBody">
@@ -2827,6 +2885,261 @@
       </div>
     </div>
 
+    <!-- ======================================================================
+         VIEW 10: EMPLOYEES MANAGEMENT (OWNER ONLY)
+         ====================================================================== -->
+    <div id="viewEmployees" class="workspace-pane">
+      <div class="workspace-shell">
+        <div class="section-header-bar">
+          <div class="header-text-block">
+            <h2>Staff &amp; Employee Management</h2>
+            <p>Manage store staff, assign roles, provision credentials, and control access permissions.</p>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <button type="button" class="btn-tactile btn-secondary" id="refreshEmployeesBtn" title="Refresh directory">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              <span>Refresh</span>
+            </button>
+            <button type="button" class="btn-tactile btn-primary-accent" id="openAddEmployeeModalBtn">
+              <span>+ Add Employee</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-controls-row" style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px;">
+          <div class="input-search-box" style="flex:1; min-width:240px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" class="form-input-dark" id="employeesSearchInput" placeholder="Filter by name, email, or role…" />
+          </div>
+          <select class="form-select-dark" id="employeesRoleFilter" style="min-width:140px; padding:6px 12px; height:38px;">
+            <option value="">All Roles</option>
+            <option value="owner">Owner</option>
+            <option value="manager">Manager</option>
+            <option value="cashier">Cashier</option>
+            <option value="programmer">Programmer</option>
+          </select>
+          <select class="form-select-dark" id="employeesStatusFilter" style="min-width:140px; padding:6px 12px; height:38px;">
+            <option value="">All Statuses</option>
+            <option value="active">Active Only</option>
+            <option value="inactive">Inactive Only</option>
+          </select>
+        </div>
+
+        <div class="enterprise-panel">
+          <div class="table-scroll-wrap">
+            <table class="enterprise-table">
+              <thead>
+                <tr>
+                  <th>Employee Name</th>
+                  <th>Email Address</th>
+                  <th>System Role</th>
+                  <th>Status</th>
+                  <th>Created</th>
+                  <th style="text-align:right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="employeesTableBody">
+                <tr><td colspan="6" style="text-align:center; padding:32px; color:var(--text-3);">Loading employee records…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         VIEW 11: SYSTEM MAINTENANCE & HEALTH (OWNER & PROGRAMMER)
+         ====================================================================== -->
+    <div id="viewSystem" class="workspace-pane">
+      <div class="workspace-shell">
+        <!-- Header Bar -->
+        <div class="section-header-bar">
+          <div class="header-text-block">
+            <h2>System Maintenance &amp; Health</h2>
+            <p>Infrastructure telemetry, AI model failover monitoring, CSV ingestion queues, and technical audit logs.</p>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <button type="button" class="btn-tactile btn-secondary" id="refreshSystemBtn" title="Refresh all telemetry">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              <span>Refresh Telemetry</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Row 1: KPI Telemetry Cards Grid -->
+        <div class="kpi-cards-grid" style="margin-bottom: 24px;">
+          <!-- 1. Overall System Health -->
+          <div class="kpi-card" id="sysCardHealth">
+            <span class="kpi-label">System Health</span>
+            <span class="kpi-value" id="sysMetricOverall" style="display:flex; align-items:center; gap:8px;">
+              <span class="status-indicator-dot" id="sysDotOverall" style="width:10px; height:10px; border-radius:50%; background:var(--status-healthy); box-shadow:0 0 6px rgba(52,211,153,0.6);"></span>
+              <span id="sysTextOverall">Healthy</span>
+            </span>
+            <span class="kpi-trend neutral" id="sysTrendOverall">FastAPI Engine Online</span>
+          </div>
+
+          <!-- 2. PostgreSQL Database -->
+          <div class="kpi-card" id="sysCardDb">
+            <span class="kpi-label">PostgreSQL Database</span>
+            <span class="kpi-value" id="sysMetricDb" style="display:flex; align-items:center; gap:8px;">
+              <span class="status-indicator-dot" id="sysDotDb" style="width:10px; height:10px; border-radius:50%; background:var(--status-healthy); box-shadow:0 0 6px rgba(52,211,153,0.6);"></span>
+              <span id="sysTextDb">Connected</span>
+            </span>
+            <span class="kpi-trend neutral" id="sysTrendDb">Asia/Kolkata timezone</span>
+          </div>
+
+          <!-- 3. Supabase Auth -->
+          <div class="kpi-card" id="sysCardAuth">
+            <span class="kpi-label">Supabase Auth &amp; JWKS</span>
+            <span class="kpi-value" id="sysMetricAuth" style="display:flex; align-items:center; gap:8px;">
+              <span class="status-indicator-dot" id="sysDotAuth" style="width:10px; height:10px; border-radius:50%; background:var(--status-healthy); box-shadow:0 0 6px rgba(52,211,153,0.6);"></span>
+              <span id="sysTextAuth">Operational</span>
+            </span>
+            <span class="kpi-trend neutral" id="sysTrendAuth">JWKS ES256 &amp; Auth Configured</span>
+          </div>
+
+          <!-- 4. AI Gateway Connectivity -->
+          <div class="kpi-card" id="sysCardAI">
+            <span class="kpi-label">AI Gateway (OpenRouter)</span>
+            <span class="kpi-value" id="sysMetricAI" style="display:flex; align-items:center; gap:8px;">
+              <span class="status-indicator-dot" id="sysDotAI" style="width:10px; height:10px; border-radius:50%; background:var(--status-healthy); box-shadow:0 0 6px rgba(52,211,153,0.6);"></span>
+              <span id="sysTextAI">Configured</span>
+            </span>
+            <span class="kpi-trend neutral" id="sysTrendAI">Multi-model failover active</span>
+          </div>
+        </div>
+
+        <!-- Row 2: Two Columns: AI Gateway Details & CSV Ingestion Sync -->
+        <div class="grid-two-columns" style="margin-bottom: 24px;">
+          <!-- Panel 1: AI Gateway & Model Failover Hierarchy -->
+          <div class="enterprise-panel">
+            <div class="panel-top-row">
+              <div>
+                <span class="panel-heading">AI Model Failover Hierarchy</span>
+                <p style="font-size:0.75rem; color:var(--text-3); margin-top:2px;">Automated multi-tier fallback progression on API outage or rate limit</p>
+              </div>
+              <button type="button" class="btn-tactile btn-secondary" id="checkAiConnectivityBtn" style="padding:4px 10px; font-size:0.75rem;">
+                <span>Check Live Ping</span>
+              </button>
+            </div>
+            
+            <div id="aiModelsHierarchyWrap" style="display:flex; flex-direction:column; gap:10px; margin-top:14px;">
+              <div style="color:var(--text-3); font-size:0.85rem;">Loading model hierarchy…</div>
+            </div>
+
+            <div style="margin-top:16px; padding-top:12px; border-top:1px solid var(--hairline); display:flex; justify-content:space-between; align-items:center; font-size:0.78rem;">
+              <span style="color:var(--text-3);">Provider Connectivity:</span>
+              <span id="aiConnectivityBadge" style="display:inline-flex; align-items:center; gap:6px; font-weight:600; color:var(--text-2);">
+                <span style="width:6px; height:6px; border-radius:50%; background:var(--text-3);"></span>Not Checked
+              </span>
+            </div>
+          </div>
+
+          <!-- Panel 2: CSV Data Synchronization & Queue Telemetry -->
+          <div class="enterprise-panel">
+            <div class="panel-top-row">
+              <div>
+                <span class="panel-heading">CSV Ingestion &amp; Daily Sync</span>
+                <p style="font-size:0.75rem; color:var(--text-3); margin-top:2px;">Queue metrics for automated sales and purchase ingestion</p>
+              </div>
+              <button type="button" class="btn-tactile btn-primary-accent" id="triggerSyncBtn" style="padding:6px 14px; font-size:0.78rem; font-weight:600;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+                <span>Trigger Sync Now</span>
+              </button>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin-top:16px;">
+              <!-- Pending Queue Card -->
+              <div style="background:var(--surface-2); border:1px solid var(--hairline); border-radius:var(--radius-md); padding:12px 14px;">
+                <div style="font-size:0.72rem; text-transform:uppercase; color:var(--text-3); font-weight:600;">Pending Ingestion</div>
+                <div style="font-size:1.4rem; font-weight:700; color:#fff; margin-top:4px;" id="syncMetricPending">0</div>
+                <div style="font-size:0.72rem; color:var(--text-3); margin-top:2px;">
+                  Sales: <span id="syncSalesPending" style="color:#fff;">0</span> | Purchases: <span id="syncPurchPending" style="color:#fff;">0</span>
+                </div>
+              </div>
+
+              <!-- Processed Queue Card -->
+              <div style="background:var(--surface-2); border:1px solid var(--hairline); border-radius:var(--radius-md); padding:12px 14px;">
+                <div style="font-size:0.72rem; text-transform:uppercase; color:var(--text-3); font-weight:600;">Processed Files</div>
+                <div style="font-size:1.4rem; font-weight:700; color:var(--status-healthy); margin-top:4px;" id="syncMetricProcessed">0</div>
+                <div style="font-size:0.72rem; color:var(--text-3); margin-top:2px;">
+                  Sales: <span id="syncSalesProcessed" style="color:#fff;">0</span> | Purchases: <span id="syncPurchProcessed" style="color:#fff;">0</span>
+                </div>
+              </div>
+
+              <!-- Rejected Queue Card -->
+              <div style="background:var(--surface-2); border:1px solid var(--hairline); border-radius:var(--radius-md); padding:12px 14px;">
+                <div style="font-size:0.72rem; text-transform:uppercase; color:var(--text-3); font-weight:600;">Rejected Files</div>
+                <div style="font-size:1.4rem; font-weight:700; color:var(--status-critical); margin-top:4px;" id="syncMetricRejected">0</div>
+                <div style="font-size:0.72rem; color:var(--text-3); margin-top:2px;">
+                  Sales: <span id="syncSalesRejected" style="color:#fff;">0</span> | Purchases: <span id="syncPurchRejected" style="color:#fff;">0</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sync Execution Status Box -->
+            <div id="syncStatusMessageBox" style="display:none; margin-top:14px; padding:10px 14px; border-radius:var(--radius-sm); font-size:0.8rem;"></div>
+
+            <div style="margin-top:14px; padding-top:10px; border-top:1px solid var(--hairline); display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:var(--text-3);">
+              <span>Automated Scheduler: <strong style="color:var(--text-2);">Active (Daily at 23:59 IST)</strong></span>
+              <span>Last Execution: <strong id="syncLastExecText" style="color:var(--text-2);">—</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Technical Audit Logs -->
+        <div class="enterprise-panel">
+          <div class="panel-top-row" style="margin-bottom:14px;">
+            <div>
+              <span class="panel-heading">Technical Audit Logs</span>
+              <p style="font-size:0.75rem; color:var(--text-3); margin-top:2px;">Immutable record of authentication, employee lifecycle, sync, and security operations</p>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <button type="button" class="btn-tactile btn-secondary" id="refreshAuditLogsBtn" style="padding:4px 10px; font-size:0.75rem;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                <span>Refresh Logs</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Audit Log Filters Row -->
+          <div class="filter-controls-row" style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px;">
+            <div class="input-search-box" style="flex:1; min-width:240px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" class="form-input-dark" id="auditSearchInput" placeholder="Filter by action, actor, resource, or details…" />
+            </div>
+            <select class="form-select-dark" id="auditActionFilter" style="min-width:180px; padding:6px 12px; height:38px;">
+              <option value="">All Action Types</option>
+              <option value="BOOTSTRAP_OWNER_SUCCESS">Bootstrap Owner</option>
+              <option value="EMPLOYEE_CREATED">Employee Created</option>
+              <option value="EMPLOYEE_UPDATED">Employee Updated</option>
+              <option value="DATA_SYNC_TRIGGERED">Data Sync Triggered</option>
+            </select>
+          </div>
+
+          <!-- Audit Log Table -->
+          <div class="table-scroll-wrap">
+            <table class="enterprise-table">
+              <thead>
+                <tr>
+                  <th style="width:70px;">Log ID</th>
+                  <th style="width:160px;">Action Type</th>
+                  <th style="width:150px;">Actor (UUID)</th>
+                  <th style="width:180px;">Target Resource</th>
+                  <th>Event Details</th>
+                  <th style="width:140px; text-align:right;">Timestamp</th>
+                </tr>
+              </thead>
+              <tbody id="auditLogsTableBody">
+                <tr><td colspan="6" style="text-align:center; padding:32px; color:var(--text-3);">Loading technical audit feed…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </main>
 
 
@@ -2834,35 +3147,96 @@
        MODAL: RECEIPT VIEWER
        ======================================================================== -->
   <div class="modal-backdrop" id="receiptModal" aria-modal="true" role="dialog">
-    <div class="modal-surface">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; padding-bottom:12px; border-bottom:1px solid var(--hairline);">
+    <div class="modal-surface" style="max-width:560px; width:100%;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--hairline);">
         <div>
           <h3 style="font-size:1.15rem; font-weight:600; color:#fff;" id="modalBillHeading">Receipt</h3>
           <p style="font-size:0.78rem; color:var(--text-3);" id="modalBillSub">—</p>
         </div>
-        <button type="button" class="composer-round-btn" id="closeReceiptModalBtn" aria-label="Close">
+        <button type="button" class="composer-round-btn" id="closeReceiptModalBtn" onclick="closeReceiptModal()" aria-label="Close">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
 
-      <div class="table-scroll-wrap">
+      <!-- Store Information Banner -->
+      <div style="background:var(--surface-2); border:1px solid var(--hairline); border-radius:var(--radius-md); padding:10px 14px; margin-bottom:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px;">
+          <div>
+            <div style="font-size:0.88rem; font-weight:600; color:#fff;" id="modalStoreName">Retail Sales Intelligence Platform</div>
+            <div style="font-size:0.75rem; color:var(--text-3); margin-top:2px; display:none;" id="modalStoreAddress"></div>
+          </div>
+          <div style="text-align:right; font-size:0.74rem; color:var(--text-3); display:none;" id="modalStoreTaxContact">
+            <div id="modalStoreGstinWrap" style="display:none;">GSTIN: <span style="font-family:var(--font-mono); color:var(--text-2);" id="modalStoreGstin"></span></div>
+            <div id="modalStorePhoneWrap" style="display:none;">Ph: <span style="color:var(--text-2);" id="modalStorePhone"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Receipt Metadata Grid -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(110px, 1fr)); gap:10px; margin-bottom:14px; padding:10px 12px; background:rgba(255,255,255,0.02); border:1px solid var(--hairline); border-radius:var(--radius-md); font-size:0.78rem;">
+        <div>
+          <div style="color:var(--text-3);">Bill Number</div>
+          <div style="font-family:var(--font-mono); font-weight:600; color:#fff;" id="modalBillId">—</div>
+        </div>
+        <div>
+          <div style="color:var(--text-3);">Date &amp; Time</div>
+          <div style="font-weight:500; color:var(--text-1);" id="modalBillDate">—</div>
+        </div>
+        <div>
+          <div style="color:var(--text-3);">Payment Mode</div>
+          <div style="font-weight:500; color:var(--text-1); text-transform:uppercase;" id="modalBillPayment">—</div>
+        </div>
+        <div>
+          <div style="color:var(--text-3);">Cashier ID</div>
+          <div style="font-weight:500; color:var(--text-1);" id="modalBillCashier">—</div>
+        </div>
+      </div>
+
+      <!-- Itemized Table -->
+      <div class="table-scroll-wrap" style="max-height:260px; overflow-y:auto; margin-bottom:14px;">
         <table class="enterprise-table">
           <thead>
             <tr>
               <th>Item</th>
               <th style="text-align:right;">Qty</th>
-              <th style="text-align:right;">Price</th>
+              <th style="text-align:right;">Unit Price</th>
               <th style="text-align:right;">Disc</th>
-              <th style="text-align:right;">Total</th>
+              <th style="text-align:right;">Subtotal</th>
             </tr>
           </thead>
           <tbody id="modalBillItemsBody"></tbody>
         </table>
       </div>
 
-      <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:20px; padding-top:14px; border-top:1px solid var(--hairline);">
-        <span style="color:var(--text-3); font-size:0.86rem;">Total Settled</span>
-        <span style="font-size:1.45rem; font-weight:600; color:#fff;" id="modalBillTotal">₹0.00</span>
+      <!-- Settlement Summary -->
+      <div style="background:var(--surface-2); border:1px solid var(--hairline); border-radius:var(--radius-md); padding:10px 14px; margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; font-size:0.82rem;">
+          <span style="color:var(--text-3);">Subtotal</span>
+          <span style="color:var(--text-1); font-family:var(--font-mono);" id="modalBillSubtotal">₹0.00</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:0.82rem;">
+          <span style="color:var(--text-3);">Total Discounts</span>
+          <span style="color:var(--accent-red, #ff6b6b); font-family:var(--font-mono);" id="modalBillDiscount">₹0.00</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:baseline; padding-top:6px; border-top:1px solid var(--hairline);">
+          <span style="color:#fff; font-size:0.88rem; font-weight:600;">Grand Total</span>
+          <span style="font-size:1.45rem; font-weight:600; color:#fff;" id="modalBillTotal">₹0.00</span>
+        </div>
+      </div>
+
+      <!-- Modal Actions: Print, Download PDF, Close -->
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+        <button type="button" class="btn-tactile btn-ghost-dark" onclick="closeReceiptModal()">Close</button>
+        <div style="display:flex; gap:8px;">
+          <button type="button" class="btn-tactile btn-ghost-dark" id="printReceiptBtn" onclick="printReceiptFromModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            <span>Print Receipt</span>
+          </button>
+          <button type="button" class="btn-tactile btn-primary-accent" id="downloadReceiptPdfBtn" onclick="downloadCurrentReceiptPdf()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Download PDF</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -2898,6 +3272,111 @@
     </div>
   </div>
 
+  <!-- Modal: Provision New Employee -->
+  <div class="modal-backdrop" id="addEmployeeModal" aria-modal="true" role="dialog" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(12,12,14,0.85); backdrop-filter:blur(8px); align-items:center; justify-content:center;">
+    <div class="modal-surface" style="background:var(--surface-1); border:1px solid var(--hairline); width:100%; max-width:440px; border-radius:var(--radius-lg); padding:28px; box-shadow:0 24px 48px rgba(0,0,0,0.6);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding-bottom:12px; border-bottom:1px solid var(--hairline);">
+        <div>
+          <h3 style="font-size:1.15rem; font-weight:600; color:#fff;">Provision Employee Account</h3>
+          <p style="font-size:0.78rem; color:var(--text-3); margin-top:2px;">Create credentials &amp; assign access role</p>
+        </div>
+        <button type="button" class="composer-round-btn" id="closeAddEmployeeModalBtn" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="createEmployeeForm" style="display:flex; flex-direction:column; gap:14px;">
+        <div>
+          <label style="display:block; font-size:0.75rem; text-transform:uppercase; color:var(--text-3); font-weight:600; margin-bottom:6px;">Full Name</label>
+          <input type="text" id="newEmpFullName" required maxlength="100" class="form-input-dark" style="width:100%;" placeholder="e.g. Ramesh Kumar" />
+        </div>
+        <div>
+          <label style="display:block; font-size:0.75rem; text-transform:uppercase; color:var(--text-3); font-weight:600; margin-bottom:6px;">Email Address</label>
+          <input type="email" id="newEmpEmail" required maxlength="255" class="form-input-dark" style="width:100%;" placeholder="ramesh@store.com" autocomplete="off" />
+        </div>
+        <div>
+          <label style="display:block; font-size:0.75rem; text-transform:uppercase; color:var(--text-3); font-weight:600; margin-bottom:6px;">Password (Min. 8 characters)</label>
+          <div style="position:relative;">
+            <input type="password" id="newEmpPassword" required minlength="8" maxlength="100" class="form-input-dark" style="width:100%; padding-right:48px;" placeholder="••••••••" autocomplete="new-password" />
+            <button type="button" id="toggleEmpPasswordBtn" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-3); cursor:pointer; font-size:0.72rem; font-weight:600; padding:4px;" title="Show/Hide Password">Show</button>
+          </div>
+        </div>
+        <div>
+          <label style="display:block; font-size:0.75rem; text-transform:uppercase; color:var(--text-3); font-weight:600; margin-bottom:6px;">System Role</label>
+          <select id="newEmpRole" required class="form-select-dark" style="width:100%; height:38px; padding:6px 10px;">
+            <option value="cashier" selected>Cashier (POS Checkout &amp; Stock Inquiry)</option>
+            <option value="manager">Manager (Sales, Inventory, Purchases &amp; Analytics)</option>
+            <option value="programmer">Programmer (System Maintenance &amp; Health)</option>
+            <option value="owner">Owner (Full Business &amp; Staff Administration)</option>
+          </select>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; margin-top:2px;">
+          <input type="checkbox" id="newEmpActive" checked style="accent-color:var(--accent-primary); width:16px; height:16px; cursor:pointer;" />
+          <label for="newEmpActive" style="font-size:0.82rem; color:var(--text-2); cursor:pointer;">Account Active Immediately</label>
+        </div>
+
+        <div id="createEmployeeErrorMsg" style="display:none; color:var(--status-critical); font-size:0.8rem; background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.2); padding:8px 12px; border-radius:6px; margin-top:4px;"></div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
+          <button type="button" class="btn-tactile btn-secondary" id="cancelAddEmployeeBtn" style="padding:8px 16px;">Cancel</button>
+          <button type="submit" id="createEmployeeSubmitBtn" class="btn-tactile btn-primary-accent" style="padding:8px 20px; font-weight:600;">Create Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Permanently Delete Employee Account -->
+  <div class="modal-backdrop" id="deleteEmployeeModal" aria-modal="true" role="dialog" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(12,12,14,0.85); backdrop-filter:blur(8px); align-items:center; justify-content:center;">
+    <div class="modal-surface" style="background:var(--surface-1); border:1px solid rgba(239,68,68,0.3); width:100%; max-width:440px; border-radius:var(--radius-lg); padding:26px; box-shadow:0 24px 48px rgba(0,0,0,0.7);">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--hairline);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:36px; height:36px; border-radius:50%; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); display:flex; align-items:center; justify-content:center; color:#ef4444; flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+          </div>
+          <div>
+            <h3 style="font-size:1.1rem; font-weight:600; color:#fff; margin:0;">Delete Employee Account</h3>
+            <p style="font-size:0.76rem; color:var(--text-3); margin:2px 0 0 0;">Permanent account and profile removal</p>
+          </div>
+        </div>
+        <button type="button" class="composer-round-btn" id="closeDeleteEmployeeModalBtn" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div style="background:var(--surface-2); border:1px solid var(--hairline); border-radius:var(--radius-md); padding:12px 14px; margin-bottom:14px;">
+        <div style="display:flex; flex-direction:column; gap:3px;">
+          <span style="font-size:0.72rem; text-transform:uppercase; color:var(--text-3); font-weight:600; letter-spacing:0.04em;">Employee Details</span>
+          <span id="deleteModalEmpName" style="font-size:0.95rem; font-weight:600; color:#fff;">—</span>
+          <span id="deleteModalEmpEmail" style="font-size:0.8rem; color:var(--text-2); font-family:var(--font-mono, monospace);">—</span>
+        </div>
+      </div>
+
+      <div id="deleteModalActiveNotice" style="display:none; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); border-radius:var(--radius-md); padding:10px 12px; margin-bottom:14px; color:#f59e0b; font-size:0.8rem; line-height:1.4;">
+        <strong>Notice:</strong> This employee is currently active. The account must be deactivated before permanent deletion.
+      </div>
+
+      <div style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.25); border-radius:var(--radius-md); padding:12px; margin-bottom:16px;">
+        <p style="font-size:0.8rem; color:#fca5a5; margin:0; line-height:1.45;">
+          <strong>Warning:</strong> This permanently removes their login account and employee profile. <strong>This action cannot be undone.</strong> Historical billing, sales, and transaction records will remain intact.
+        </p>
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <label for="deleteConfirmInput" style="display:block; font-size:0.76rem; text-transform:uppercase; color:var(--text-3); font-weight:600; margin-bottom:6px;">
+          Type <span style="color:#ef4444; font-family:var(--font-mono, monospace); font-weight:700;">DELETE</span> to confirm:
+        </label>
+        <input type="text" id="deleteConfirmInput" class="form-input-dark" style="width:100%; border-color:var(--hairline); font-family:var(--font-mono, monospace);" placeholder="DELETE" autocomplete="off" />
+      </div>
+
+      <div id="deleteEmployeeErrorMsg" style="display:none; color:var(--status-critical); font-size:0.8rem; background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.2); padding:8px 12px; border-radius:6px; margin-bottom:14px;"></div>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px;">
+        <button type="button" class="btn-tactile btn-secondary" id="cancelDeleteEmployeeBtn" style="padding:8px 16px;">Cancel</button>
+        <button type="button" class="btn-tactile btn-danger-solid" id="confirmDeleteEmployeeBtn" disabled style="padding:8px 18px; font-weight:600; opacity:0.4; cursor:not-allowed;">Permanently Delete</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Notification Toast -->
   <div class="enterprise-toast" id="appToast">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
@@ -2914,12 +3393,26 @@
       : 'http://127.0.0.1:8000';
 
     const SUPABASE_PROJECT_URL = 'https://cxlhcpxozqtmpiiuxtat.supabase.co';
-    const SUPABASE_PUBLIC_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4bGhjcHhvenF0bXBpaXV4dGF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk4MjAwMDAsImV4cCI6MjAyNTM5NjAwMH0.placeholder';
+    const SUPABASE_PUBLIC_ANON = 'sb_publishable_0V2OYBf6qd8wT6IlJdXnEg_1j6zO8sg';
 
     let _supabase = null;
     if (window.supabase && typeof window.supabase.createClient === 'function') {
       try {
         _supabase = window.supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_PUBLIC_ANON);
+        if (_supabase && _supabase.auth && typeof _supabase.auth.onAuthStateChange === 'function') {
+          _supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_OUT' || !session) {
+              AUTH_TOKEN = '';
+              CURRENT_USER = null;
+              localStorage.removeItem('sb_access_token');
+              applyRoleNavigation(null);
+              showAuthModal('Signed out successfully.');
+            } else if (event === 'TOKEN_REFRESHED' && session?.access_token) {
+              AUTH_TOKEN = session.access_token;
+              localStorage.setItem('sb_access_token', AUTH_TOKEN);
+            }
+          });
+        }
       } catch (err) {
         console.warn('Supabase JS initialization warning:', err);
       }
@@ -2927,19 +3420,30 @@
 
     let AUTH_TOKEN = localStorage.getItem('sb_access_token') || '';
     let CURRENT_USER = null;
-    let CURRENT_ROLE = 'owner';
+    let CURRENT_ROLE = null;
 
     const ROLE_NAV_PERMISSIONS = {
-      owner: ['home', 'chat', 'dashboard', 'sales', 'inventory', 'purchases', 'billing', 'products', 'suppliers'],
+      owner: ['home', 'chat', 'dashboard', 'sales', 'inventory', 'purchases', 'billing', 'products', 'suppliers', 'employees', 'system'],
       manager: ['home', 'chat', 'dashboard', 'sales', 'inventory', 'purchases', 'billing', 'products', 'suppliers'],
-      cashier: ['home', 'billing', 'products', 'inventory'],
-      programmer: ['home']
+      cashier: ['home', 'billing', 'products', 'inventory', 'sales'],
+      programmer: ['home', 'system']
     };
 
     function applyRoleNavigation(role) {
-      CURRENT_ROLE = role || 'cashier';
+      CURRENT_ROLE = role || null;
       const badge = document.getElementById('userRoleBadge');
-      if (badge) badge.textContent = CURRENT_ROLE;
+      if (badge) badge.textContent = CURRENT_ROLE || 'Guest';
+
+      const ctaBtn = document.getElementById('openDashboardCTA');
+
+      if (!CURRENT_ROLE) {
+        document.querySelectorAll('[data-view]').forEach(btn => {
+          const li = btn.closest('li') || btn;
+          li.style.display = 'none';
+        });
+        if (ctaBtn) ctaBtn.style.display = 'none';
+        return;
+      }
 
       const allowedViews = ROLE_NAV_PERMISSIONS[CURRENT_ROLE] || ['home'];
       document.querySelectorAll('[data-view]').forEach(btn => {
@@ -2952,10 +3456,56 @@
         }
       });
 
+      // Update CTA button based on authorized role (cashier/programmer cannot open dashboard)
+      if (ctaBtn) {
+        if (allowedViews.includes('dashboard')) {
+          ctaBtn.style.display = '';
+          ctaBtn.textContent = 'Open Dashboard';
+          ctaBtn.setAttribute('data-target-view', 'dashboard');
+        } else if (allowedViews.includes('billing')) {
+          ctaBtn.style.display = '';
+          ctaBtn.textContent = 'Open POS';
+          ctaBtn.setAttribute('data-target-view', 'billing');
+        } else if (allowedViews.includes('system')) {
+          ctaBtn.style.display = '';
+          ctaBtn.textContent = 'System Status';
+          ctaBtn.setAttribute('data-target-view', 'system');
+        } else {
+          ctaBtn.style.display = 'none';
+        }
+      }
+
       const currentActiveBtn = document.querySelector('.nav-btn.active');
       const activeView = currentActiveBtn ? currentActiveBtn.getAttribute('data-view') : 'home';
       if (!allowedViews.includes(activeView)) {
         switchView(allowedViews[0]);
+      }
+
+      // Role-guarded data preloading: only fetch authorized resources
+      if (allowedViews.includes('products')) {
+        ensureProductsCached();
+      }
+      if (allowedViews.includes('suppliers')) {
+        ensureSuppliersCached();
+      }
+      if (allowedViews.includes('dashboard') && (activeView === 'dashboard' || activeView === 'home')) {
+        loadDashboardMetrics();
+      }
+      if (allowedViews.includes('employees') && activeView === 'employees') {
+        loadEmployeesView();
+      }
+      if (allowedViews.includes('system') && activeView === 'system') {
+        loadSystemView();
+      }
+      // Invalidate bills cache if role or user identity changed, then prefetch for eligible roles
+      const currentUserId = CURRENT_USER ? (CURRENT_USER.id || CURRENT_USER.email || null) : null;
+      if ((_recentBillsCache.role !== null && _recentBillsCache.role !== role) ||
+          (_recentBillsCache.userId !== null && _recentBillsCache.userId !== currentUserId)) {
+        _recentBillsCache = { userId: currentUserId, role: role, data: null, timestamp: 0, isFetching: false };
+        allRecentBills = [];
+      }
+      if (allowedViews.includes('sales')) {
+        prefetchRecentBills();
       }
     }
 
@@ -2975,10 +3525,95 @@
       }
       const response = await _origFetch(url, options);
       if (response.status === 401 && !url.includes('/auth/')) {
-        showAuthModal('Session expired. Please sign in again.');
+        performLogout('Session expired. Please sign in again.');
       }
       return response;
     };
+
+    const receiptCache = window.receiptCache || new Map();
+    window.receiptCache = receiptCache;
+
+    async function performLogout(reasonMsg = 'Signed out successfully.') {
+      AUTH_TOKEN = '';
+      CURRENT_USER = null;
+      CURRENT_ROLE = null;
+
+      // Purge auth storage tokens
+      try {
+        localStorage.removeItem('sb_access_token');
+        localStorage.removeItem('sb_refresh_token');
+        const keysToRemove = [];
+        if (typeof localStorage.length === 'number' && typeof localStorage.key === 'function') {
+          for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (k && (k.startsWith('sb-') || k.includes('supabase'))) {
+              keysToRemove.push(k);
+            }
+          }
+        }
+        Object.keys(localStorage).forEach(key => {
+          if (key.startsWith('sb-') || key.includes('supabase')) {
+            keysToRemove.push(key);
+          }
+        });
+        keysToRemove.forEach(k => {
+          try { localStorage.removeItem(k); } catch (_) {}
+        });
+      } catch (e) {
+        console.warn('LocalStorage clearance warning:', e);
+      }
+
+      // Purge in-memory state so no user data ever leaks across sessions
+      allProducts = [];
+      allSuppliers = [];
+      allInventory = [];
+      activeCart = [];
+      allEmployees = [];
+      allAuditLogs = [];
+      allRecentBills = [];
+      activeReceiptBillId = null;
+      activeReceiptBillData = null;
+      receiptCache.clear();
+      _recentBillsCache = { userId: null, role: null, data: null, timestamp: 0, isFetching: false };
+
+      // Clear pending search debounces
+      if (typeof _salesSearchDebounce !== 'undefined' && _salesSearchDebounce) {
+        clearTimeout(_salesSearchDebounce);
+      }
+
+      // Clear sensitive DOM tables
+      const salesBody = document.getElementById('salesTableBody');
+      if (salesBody) salesBody.innerHTML = '';
+
+      const empBody = document.getElementById('employeeTableBody');
+      if (empBody) empBody.innerHTML = '';
+
+      const auditBody = document.getElementById('systemAuditLogsTableBody');
+      if (auditBody) auditBody.innerHTML = '';
+
+      const cartTbody = document.getElementById('posCartTableBody');
+      if (cartTbody) cartTbody.innerHTML = '';
+
+      // Close open modals
+      if (typeof closeReceiptModal === 'function') closeReceiptModal();
+      const delEmpModal = document.getElementById('deleteEmpConfirmModal');
+      if (delEmpModal) delEmpModal.style.display = 'none';
+      const addEmpModal = document.getElementById('addEmpModal');
+      if (addEmpModal) addEmpModal.style.display = 'none';
+
+      // Reset navigation and transition to home view
+      applyRoleNavigation(null);
+      switchView('home');
+
+      // Trigger Supabase signOut
+      if (_supabase && _supabase.auth && typeof _supabase.auth.signOut === 'function') {
+        try { await _supabase.auth.signOut(); } catch (e) {
+          console.warn('Supabase signOut warning:', e);
+        }
+      }
+
+      showAuthModal(reasonMsg);
+    }
 
     function showAuthModal(errMsg) {
       const modal = document.getElementById('authModal');
@@ -3000,15 +3635,28 @@
     }
 
     async function initAuthSession() {
-      if (!AUTH_TOKEN) {
-        if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
-          applyRoleNavigation('owner');
-        } else {
-          showAuthModal();
+      // 1. Check if Supabase JS client has an active session to synchronize
+      if (_supabase && _supabase.auth && typeof _supabase.auth.getSession === 'function') {
+        try {
+          const { data, error } = await _supabase.auth.getSession();
+          if (!error && data?.session?.access_token) {
+            AUTH_TOKEN = data.session.access_token;
+            localStorage.setItem('sb_access_token', AUTH_TOKEN);
+          }
+        } catch (err) {
+          console.warn('Supabase getSession error:', err);
         }
+      }
+
+      // 2. If no token exists, the user is unauthenticated
+      if (!AUTH_TOKEN) {
+        CURRENT_USER = null;
+        applyRoleNavigation(null);
+        showAuthModal();
         return;
       }
 
+      // 3. Validate token against backend to retrieve authorized database profile and role
       try {
         const res = await _origFetch(`${API_BASE}/employees/me`, {
           headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` }
@@ -3019,12 +3667,11 @@
           applyRoleNavigation(profile.role);
           hideAuthModal();
         } else {
-          AUTH_TOKEN = '';
-          localStorage.removeItem('sb_access_token');
-          showAuthModal('Please sign in with your credentials.');
+          // Token is invalid, expired, or user account is deactivated
+          await performLogout('Session expired. Please sign in with your credentials.');
         }
       } catch (e) {
-        applyRoleNavigation('owner');
+        showAuthModal('Unable to connect to backend server. Please check your connection.');
       }
     }
 
@@ -3032,9 +3679,30 @@
     let allSuppliers = [];
     let allInventory = [];
     let activeCart = [];
+    let allEmployees = [];
+    let allAuditLogs = [];
+    let isSyncTriggerInProgress = false;
 
     
     function switchView(viewName) {
+      if (!viewName) return false;
+      const allowedViews = (CURRENT_ROLE && ROLE_NAV_PERMISSIONS[CURRENT_ROLE]) ? ROLE_NAV_PERMISSIONS[CURRENT_ROLE] : ['home'];
+      if (!allowedViews.includes(viewName)) {
+        console.warn(`Access denied: view '${viewName}' is not permitted for role '${CURRENT_ROLE || 'unauthenticated'}'.`);
+        if (typeof showEnterpriseToast === 'function') {
+          showEnterpriseToast(`Access to ${viewName.toUpperCase()} is restricted for your role.`, 'warning');
+        }
+        const currentActivePane = document.querySelector('.workspace-pane.active');
+        const activeName = currentActivePane ? currentActivePane.id.replace(/^view/, '').toLowerCase() : null;
+        if (!activeName || !allowedViews.includes(activeName)) {
+          const fallback = allowedViews[0] || 'home';
+          if (fallback !== viewName && allowedViews.includes(fallback)) {
+            switchView(fallback);
+          }
+        }
+        return false;
+      }
+
       document.querySelectorAll('.workspace-pane').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-btn, .drawer-link-btn').forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-view') === viewName);
@@ -3048,13 +3716,16 @@
 
       closeDrawer();
 
-      if (viewName === 'dashboard') loadDashboardMetrics();
-      if (viewName === 'inventory') loadInventoryView();
-      if (viewName === 'purchases') loadPurchasesView();
-      if (viewName === 'billing') loadBillingView();
-      if (viewName === 'sales') loadSalesView();
-      if (viewName === 'products') loadProductsView();
-      if (viewName === 'suppliers') loadSuppliersView();
+      if (viewName === 'dashboard' && allowedViews.includes('dashboard')) loadDashboardMetrics();
+      if (viewName === 'inventory' && allowedViews.includes('inventory')) loadInventoryView();
+      if (viewName === 'purchases' && allowedViews.includes('purchases')) loadPurchasesView();
+      if (viewName === 'billing' && allowedViews.includes('billing')) loadBillingView();
+      if (viewName === 'sales' && allowedViews.includes('sales')) loadSalesView();
+      if (viewName === 'products' && allowedViews.includes('products')) loadProductsView();
+      if (viewName === 'suppliers' && allowedViews.includes('suppliers')) loadSuppliersView();
+      if (viewName === 'employees' && allowedViews.includes('employees')) loadEmployeesView();
+      if (viewName === 'system' && allowedViews.includes('system')) loadSystemView();
+      return true;
     }
 
     function capitalize(s) {
@@ -3084,6 +3755,13 @@
 
     async function submitAIQuestion(question, targetArea) {
       if (!question || !question.trim()) return;
+      const allowedViews = (CURRENT_ROLE && ROLE_NAV_PERMISSIONS[CURRENT_ROLE]) ? ROLE_NAV_PERMISSIONS[CURRENT_ROLE] : [];
+      if (!allowedViews.includes('chat')) {
+        if (typeof showEnterpriseToast === 'function') {
+          showEnterpriseToast('AI Assistant access is restricted for your role.', 'warning');
+        }
+        return;
+      }
       const q = question.trim();
 
       _chatHistory.push({ role: 'user', content: q });
@@ -3386,6 +4064,8 @@
 
     
     async function loadDashboardMetrics() {
+      const allowedViews = (CURRENT_ROLE && ROLE_NAV_PERMISSIONS[CURRENT_ROLE]) ? ROLE_NAV_PERMISSIONS[CURRENT_ROLE] : [];
+      if (!allowedViews.includes('dashboard')) return;
       try {
         const [revRes, billsRes, unitsRes, avgRes, compRes, lowRes, stockValRes, topProdsRes, catsRes, recentBillsRes] =
           await Promise.allSettled([
@@ -3689,7 +4369,7 @@
       const dateInput = document.getElementById('purchaseDateInput');
 
       refInput.value = Math.floor(Date.now() / 1000);
-      dateInput.value = new Date().toISOString().split('T')[0];
+      dateInput.value = getTodayISTDateString();
 
       prodSelect.innerHTML = '<option value="">Select product...</option>' +
         allProducts.map(p => {
@@ -3754,14 +4434,95 @@
       }).join('');
     }
 
+    let isStockReceivingSubmitting = false;
+    let stockNotificationTimer = null;
+
+    function showStockNotification(type, message) {
+      const notifEl = document.getElementById('stockReceivingNotification');
+      const iconEl = document.getElementById('stockNotificationIcon');
+      const textEl = document.getElementById('stockNotificationText');
+      if (!notifEl || !iconEl || !textEl) return;
+
+      if (stockNotificationTimer) {
+        clearTimeout(stockNotificationTimer);
+        stockNotificationTimer = null;
+      }
+
+      textEl.textContent = message;
+
+      if (type === 'success') {
+        notifEl.style.background = 'rgba(52, 211, 153, 0.12)';
+        notifEl.style.border = '1px solid rgba(52, 211, 153, 0.35)';
+        notifEl.style.color = '#34d399';
+        iconEl.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+      } else {
+        notifEl.style.background = 'rgba(248, 113, 113, 0.12)';
+        notifEl.style.border = '1px solid rgba(248, 113, 113, 0.35)';
+        notifEl.style.color = '#f87171';
+        iconEl.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+      }
+
+      notifEl.style.display = 'block';
+
+      // Keep success notification visible for 8 seconds
+      if (type === 'success') {
+        stockNotificationTimer = setTimeout(() => {
+          hideStockNotification();
+        }, 8000);
+      }
+    }
+
+    function hideStockNotification() {
+      const notifEl = document.getElementById('stockReceivingNotification');
+      if (notifEl) notifEl.style.display = 'none';
+      if (stockNotificationTimer) {
+        clearTimeout(stockNotificationTimer);
+        stockNotificationTimer = null;
+      }
+    }
+
     async function handleReceiveStock(e) {
-      e.preventDefault();
-      const purchase_id = parseInt(document.getElementById('purchaseRefId').value);
-      const product_id = parseInt(document.getElementById('purchaseProductDropdown').value);
-      const supplier_id = parseInt(document.getElementById('purchaseSupplierDropdown').value);
-      const quantity_received = parseInt(document.getElementById('purchaseQtyInput').value);
-      const cost_price = parseFloat(document.getElementById('purchaseCostInput').value);
-      const purchase_date = document.getElementById('purchaseDateInput').value;
+      if (e) e.preventDefault();
+      if (isStockReceivingSubmitting) return;
+
+      const refIdInput = document.getElementById('purchaseRefId');
+      const prodSelect = document.getElementById('purchaseProductDropdown');
+      const suppSelect = document.getElementById('purchaseSupplierDropdown');
+      const qtyInput = document.getElementById('purchaseQtyInput');
+      const costInput = document.getElementById('purchaseCostInput');
+      const dateInput = document.getElementById('purchaseDateInput');
+      const submitBtn = document.getElementById('receiveStockSubmitBtn') || (document.getElementById('purchaseForm') ? document.getElementById('purchaseForm').querySelector('button[type="submit"]') : null);
+
+      const purchase_id = parseInt(refIdInput ? refIdInput.value : '');
+      const product_id = parseInt(prodSelect ? prodSelect.value : '');
+      const supplier_id = parseInt(suppSelect ? suppSelect.value : '');
+      const quantity_received = parseInt(qtyInput ? qtyInput.value : '');
+      const cost_price = parseFloat(costInput ? costInput.value : '');
+      const purchase_date = dateInput ? dateInput.value : '';
+
+      if (!purchase_id || !product_id || !supplier_id || !quantity_received || quantity_received <= 0 || isNaN(cost_price) || cost_price <= 0 || !purchase_date) {
+        showStockNotification('error', 'Please fill in all shipment details with valid quantities and costs.');
+        return;
+      }
+
+      isStockReceivingSubmitting = true;
+      hideStockNotification();
+
+      const formInputs = [refIdInput, prodSelect, suppSelect, qtyInput, costInput, dateInput];
+      formInputs.forEach(input => {
+        if (input) input.disabled = true;
+      });
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('aria-busy', 'true');
+        submitBtn.style.opacity = '0.7';
+        submitBtn.style.cursor = 'wait';
+        submitBtn.innerHTML = `
+          <span class="loading-spinner" style="display:inline-block; width:14px; height:14px; border:2px solid rgba(255,255,255,0.3); border-top-color:#ffffff; border-radius:50%; animation:spin 0.8s linear infinite; margin-right:6px;"></span>
+          <span>Receiving Stock...</span>
+        `;
+      }
 
       try {
         const res = await fetch(`${API_BASE}/purchases/`, {
@@ -3778,16 +4539,54 @@
         });
 
         if (!res.ok) {
-          const err = await res.json().catch(() => ({}));
-          throw new Error(err.detail || `Server error ${res.status}`);
+          let errDetail = `Server error ${res.status}`;
+          try {
+            const err = await res.json();
+            if (typeof err.detail === 'string') {
+              errDetail = err.detail;
+            } else if (Array.isArray(err.detail)) {
+              errDetail = err.detail.map(d => d.msg || d.message || JSON.stringify(d)).join(', ');
+            } else if (err.message) {
+              errDetail = err.message;
+            }
+          } catch (_) {}
+          if (errDetail.includes('Traceback') || errDetail.includes('File ') || errDetail.includes('Exception')) {
+            errDetail = 'Failed to record purchase. Please verify shipment details and retry.';
+          }
+          throw new Error(errDetail);
         }
 
-        showEnterpriseToast('Stock received and inventory counts updated.');
-        document.getElementById('purchaseQtyInput').value = '';
-        document.getElementById('purchaseRefId').value = Math.floor(Date.now() / 1000);
-        loadPurchasesView();
+        showStockNotification('success', '✓ Stock received successfully! Inventory has been updated.');
+        showEnterpriseToast('Stock received and inventory counts updated.', 'success');
+
+        // Reset form fields
+        if (qtyInput) qtyInput.value = '';
+        if (costInput) costInput.value = '';
+        if (prodSelect) prodSelect.value = '';
+        if (suppSelect) suppSelect.value = '';
+        if (refIdInput) refIdInput.value = Math.floor(Date.now() / 1000);
+        if (dateInput) dateInput.value = getTodayISTDateString();
+
+        // Refresh recent shipments log and inventory data
+        await Promise.allSettled([
+          loadPurchasesView(),
+          loadInventoryView()
+        ]);
       } catch (err) {
-        alert('Stock receiving failed: ' + err.message);
+        console.error('Stock receiving failed:', err);
+        showStockNotification('error', err.message || 'Stock receiving failed. Please try again.');
+      } finally {
+        isStockReceivingSubmitting = false;
+        formInputs.forEach(input => {
+          if (input) input.disabled = false;
+        });
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.removeAttribute('aria-busy');
+          submitBtn.style.opacity = '';
+          submitBtn.style.cursor = '';
+          submitBtn.innerHTML = '<span>Receive Stock &amp; Update Inventory</span>';
+        }
       }
     }
 
@@ -4017,10 +4816,8 @@
         showPOSMessage('The cart is empty. Add at least one product before generating a bill.');
         return;
       }
-      try {
-        const stockRes = await fetch(`${API_BASE}/inventory/`);
-        if (stockRes.ok) allInventory = await stockRes.json() || [];
-      } catch (err) { console.warn('Stock revalidation unavailable:', err); }
+
+      // Fast in-memory stock check before dispatching transaction
       for (const item of activeCart) {
         const product = allProducts.find(p => String(productValue(p, 0, 'product_id', 'id')) === String(item.product_id));
         const stock = product ? getProductStock(product) : item.available_stock;
@@ -4042,10 +4839,23 @@
         discount: i.discount
       }));
 
+      // Disable manual item inputs during checkout to avoid concurrent edits
+      const manualSelect = document.getElementById('posManualProdSelect');
+      const manualQty = document.getElementById('posManualQtyInput');
+      const manualPrice = document.getElementById('posManualPriceInput');
+      const manualDisc = document.getElementById('posManualDiscInput');
+      if (manualSelect) manualSelect.disabled = true;
+      if (manualQty) manualQty.disabled = true;
+      if (manualPrice) manualPrice.disabled = true;
+      if (manualDisc) manualDisc.disabled = true;
+
       try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (AUTH_TOKEN) headers['Authorization'] = `Bearer ${AUTH_TOKEN}`;
+
         const res = await fetch(`${API_BASE}/bills/`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers,
           body: JSON.stringify({
             bill_id,
             cashier_id,
@@ -4062,80 +4872,324 @@
 
         const data = await res.json();
         const generatedTotal = data.total_amount ?? data.total ?? activeCart.reduce((sum, item) => sum + item.quantity * item.unit_price - item.discount, 0);
+
+        // Pre-cache receipt data for instant viewing without an extra network roundtrip
+        receiptCache.set(bill_id, {
+          bill: [bill_id, cashier_id, transaction_datetime, payment_mode, generatedTotal],
+          items: items.map((it, idx) => [
+            idx + 1,
+            it.product_id,
+            activeCart[idx]?.product_name || 'Item',
+            activeCart[idx]?.barcode || '',
+            it.quantity,
+            it.unit_price,
+            it.discount,
+            (it.unit_price * it.quantity) - it.discount
+          ]),
+          store: {}
+        });
+
         activeCart = [];
         renderCartTable();
-        document.getElementById('posManualProdSelect').value = '';
-        document.getElementById('posManualQtyInput').value = '1';
-        document.getElementById('posManualPriceInput').value = '';
-        document.getElementById('posManualDiscInput').value = '0';
+        if (manualSelect) manualSelect.value = '';
+        if (manualQty) manualQty.value = '1';
+        if (manualPrice) manualPrice.value = '';
+        if (manualDisc) manualDisc.value = '0';
         showPOSMessage(`Bill #${bill_id} generated successfully. Total: ${formatINR(generatedTotal)}. Ready for the next bill.`, 'success');
-        loadDashboardMetrics();
+        const allowedViews = (CURRENT_ROLE && ROLE_NAV_PERMISSIONS[CURRENT_ROLE]) ? ROLE_NAV_PERMISSIONS[CURRENT_ROLE] : [];
+        if (allowedViews.includes('dashboard')) {
+          loadDashboardMetrics();
+        }
+        if (allowedViews.includes('sales')) {
+          // Invalidate the cache so the next loadSalesView() fetches fresh data
+          _recentBillsCache.timestamp = 0;
+          loadSalesView(true);
+        }
       } catch (err) {
         showPOSMessage('Checkout failed: ' + err.message);
+      } finally {
+        if (manualSelect) manualSelect.disabled = false;
+        if (manualQty) manualQty.disabled = false;
+        if (manualPrice) manualPrice.disabled = false;
+        if (manualDisc) manualDisc.disabled = false;
       }
     }
 
-    
-    async function loadSalesView() {
+    /* ==========================================================================
+       VIEW 6: RECENT BILLS & RECEIPTS LOGIC
+       ========================================================================== */
+    let allRecentBills = [];
+    let activeReceiptBillId = null;
+    let activeReceiptBillData = null;
+    let _salesSearchDebounce = null;
+
+    /* --- Stale-While-Revalidate (SWR) cache for Recent Bills --- */
+    const RECENT_BILLS_CACHE_TTL_MS = 60000; // 60 seconds
+    let _recentBillsCache = { userId: null, role: null, data: null, timestamp: 0, isFetching: false };
+
+    /** Returns true when the search input has a non-empty query */
+    function isSalesSearchActive() {
+      const el = document.getElementById('salesSearchInput');
+      return el && el.value.trim().length > 0;
+    }
+
+    /** Render 6 skeleton shimmer rows into the sales table */
+    function renderSalesSkeleton() {
+      const tbody = document.getElementById('salesTableBody');
+      if (!tbody) return;
+      let rows = '';
+      for (let i = 0; i < 6; i++) {
+        rows += `<tr>
+          <td><span class="skeleton-bar" style="width:48px; height:14px;">&nbsp;</span></td>
+          <td><span class="skeleton-bar" style="width:120px; height:14px;">&nbsp;</span></td>
+          <td style="text-align:center;"><span class="skeleton-bar" style="width:50px; height:14px;">&nbsp;</span></td>
+          <td style="text-align:right;"><span class="skeleton-bar" style="width:70px; height:14px;">&nbsp;</span></td>
+          <td><span class="skeleton-bar" style="width:56px; height:14px;">&nbsp;</span></td>
+          <td style="text-align:right;"><span class="skeleton-bar" style="width:100px; height:14px;">&nbsp;</span></td>
+        </tr>`;
+      }
+      tbody.innerHTML = rows;
+    }
+
+    /**
+     * Prefetch recent bills into the SWR cache without rendering.
+     * Called on auth init, tab hover, and role changes.
+     * Safe: does NOT touch DOM; the actual render happens when loadSalesView() runs.
+     */
+    async function prefetchRecentBills() {
+      if (!AUTH_TOKEN) return;
+      const currentUserId = CURRENT_USER ? (CURRENT_USER.id || CURRENT_USER.email || null) : null;
+      // Don't re-fetch if cache is fresh or already fetching
+      if (_recentBillsCache.isFetching) return;
+      if (_recentBillsCache.data !== null &&
+          _recentBillsCache.userId === currentUserId &&
+          _recentBillsCache.role === CURRENT_ROLE &&
+          (Date.now() - _recentBillsCache.timestamp) < RECENT_BILLS_CACHE_TTL_MS) return;
+
+      _recentBillsCache.isFetching = true;
       try {
-        const res = await fetch(`${API_BASE}/bills/?limit=100`);
-        if (!res.ok) throw new Error('Fetch failed');
+        const headers = { 'Authorization': `Bearer ${AUTH_TOKEN}` };
+        const res = await _origFetch(`${API_BASE}/bills/recent?limit=50`, { headers });
+        if (res.ok) {
+          const bills = await res.json();
+          _recentBillsCache = {
+            userId: currentUserId,
+            role: CURRENT_ROLE,
+            data: Array.isArray(bills) ? bills : [],
+            timestamp: Date.now(),
+            isFetching: false
+          };
+        } else {
+          _recentBillsCache.isFetching = false;
+        }
+      } catch (e) {
+        _recentBillsCache.isFetching = false;
+        console.warn('Prefetch recent bills failed (non-blocking):', e.message);
+      }
+    }
+
+    /**
+     * Load the Recent Bills / Sales view.
+     * @param {boolean} forceRefresh - bypass cache, always hit the API
+     * @param {boolean} isPrefetch   - if true, update cache only, don't render
+     */
+    async function loadSalesView(forceRefresh = false, isPrefetch = false) {
+      const tbody = document.getElementById('salesTableBody');
+      const searchInput = document.getElementById('salesSearchInput');
+      if (searchInput && !isPrefetch) searchInput.value = '';
+
+      const currentUserId = CURRENT_USER ? (CURRENT_USER.id || CURRENT_USER.email || null) : null;
+
+      // --- SWR: Render from cache immediately if available, fresh, and belongs to this user & role ---
+      const cacheValid = !forceRefresh &&
+        _recentBillsCache.data !== null &&
+        _recentBillsCache.userId === currentUserId &&
+        _recentBillsCache.role === CURRENT_ROLE &&
+        (Date.now() - _recentBillsCache.timestamp) < RECENT_BILLS_CACHE_TTL_MS;
+
+      if (cacheValid && !isPrefetch) {
+        allRecentBills = _recentBillsCache.data;
+        renderSalesTable(allRecentBills);
+        // Background revalidation (non-blocking, silent)
+        _fetchRecentBillsBackground();
+        return;
+      }
+
+      // --- Cold load: show skeleton ---
+      if (!isPrefetch) {
+        renderSalesSkeleton();
+      }
+
+      try {
+        const headers = AUTH_TOKEN ? { 'Authorization': `Bearer ${AUTH_TOKEN}` } : {};
+        const res = await fetch(`${API_BASE}/bills/recent?limit=50`, { headers });
+        if (res.status === 403) {
+          allRecentBills = [];
+          _recentBillsCache = { userId: currentUserId, role: CURRENT_ROLE, data: null, timestamp: 0, isFetching: false };
+          if (!isPrefetch && tbody) {
+            tbody.innerHTML = `
+              <tr><td colspan="6" class="empty-state-cell">
+                <div class="empty-state-wrap">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                  <span style="font-weight:500; color:#fff;">Access Restricted</span>
+                  <span>Your role does not have permission to view store bills.</span>
+                </div>
+              </td></tr>`;
+          }
+          return;
+        }
+        if (!res.ok) throw new Error('Fetch failed with status ' + res.status);
         const bills = await res.json();
-        renderSalesTable(bills);
+        const billsArr = Array.isArray(bills) ? bills : [];
+        // Update cache scoped strictly to current user and role
+        _recentBillsCache = { userId: currentUserId, role: CURRENT_ROLE, data: billsArr, timestamp: Date.now(), isFetching: false };
+
+        if (!isPrefetch) {
+          allRecentBills = billsArr;
+          // Only render if search is not active (prevent clobbering search results)
+          if (!isSalesSearchActive()) {
+            renderSalesTable(allRecentBills);
+          }
+        }
       } catch (err) {
         console.error('Sales bills loading error:', err);
+        if (!isPrefetch && tbody) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:32px; color:var(--text-3);"><div class="empty-state-wrap"><span style="font-weight:500; color:#ff6b6b;">Failed to load transaction records</span><span>${escapeHtml(err.message)}</span><br><button type="button" class="btn-tactile btn-ghost-dark" style="margin-top:12px; font-size:0.8rem;" onclick="loadSalesView(true)">Retry</button></div></td></tr>`;
+        }
       }
     }
 
-    function renderSalesTable(bills) {
+    /** Silent background revalidation for SWR - never clobbers search results */
+    async function _fetchRecentBillsBackground() {
+      if (_recentBillsCache.isFetching) return;
+      _recentBillsCache.isFetching = true;
+      try {
+        const headers = AUTH_TOKEN ? { 'Authorization': `Bearer ${AUTH_TOKEN}` } : {};
+        const res = await _origFetch(`${API_BASE}/bills/recent?limit=50`, { headers });
+        if (res.ok) {
+          const bills = await res.json();
+          const billsArr = Array.isArray(bills) ? bills : [];
+          const currentUserId = CURRENT_USER ? (CURRENT_USER.id || CURRENT_USER.email || null) : null;
+          _recentBillsCache = { userId: currentUserId, role: CURRENT_ROLE, data: billsArr, timestamp: Date.now(), isFetching: false };
+          allRecentBills = billsArr;
+          // Only update DOM if search is NOT active — never clobber search results
+          if (!isSalesSearchActive()) {
+            const pane = document.getElementById('viewSales');
+            if (pane && pane.classList.contains('active')) {
+              renderSalesTable(allRecentBills);
+            }
+          }
+        } else {
+          _recentBillsCache.isFetching = false;
+        }
+      } catch (e) {
+        _recentBillsCache.isFetching = false;
+      }
+    }
+
+    function handleSalesSearchInput() {
+      clearTimeout(_salesSearchDebounce);
+      _salesSearchDebounce = setTimeout(async () => {
+        const searchInput = document.getElementById('salesSearchInput');
+        const rawVal = searchInput ? searchInput.value : '';
+        const query = rawVal.trim();
+
+        if (!query) {
+          // Restore cached recent bills without refetching
+          renderSalesTable(allRecentBills);
+          return;
+        }
+
+        const tbody = document.getElementById('salesTableBody');
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:32px; color:var(--text-3);"><div class="empty-state-wrap"><span style="font-weight:500; color:#fff;">Searching historical bills...</span></div></td></tr>`;
+        }
+
+        try {
+          const headers = AUTH_TOKEN ? { 'Authorization': `Bearer ${AUTH_TOKEN}` } : {};
+          const res = await fetch(`${API_BASE}/bills/search?query=${encodeURIComponent(query)}&limit=50`, { headers });
+          if (!res.ok) throw new Error('Search failed with status ' + res.status);
+          const results = await res.json();
+          // Guard: only render if the search input still matches this query
+          const currentVal = (searchInput ? searchInput.value : '').trim();
+          if (currentVal === query) {
+            renderSalesTable(results, query);
+          }
+        } catch (err) {
+          console.error('Bill search error:', err);
+          const currentVal = (searchInput ? searchInput.value : '').trim();
+          if (currentVal === query && tbody) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:32px; color:var(--text-3);"><div class="empty-state-wrap"><span style="font-weight:500; color:#ff6b6b;">Search Error</span><span>${escapeHtml(err.message)}</span></div></td></tr>`;
+          }
+        }
+      }, 250);
+    }
+
+    function renderSalesTable(bills, searchQuery = '') {
       const tbody = document.getElementById('salesTableBody');
-      const query = (document.getElementById('salesSearchInput').value || '').toLowerCase().trim();
+      if (!tbody) return;
 
-      let filtered = (bills || []).filter(item => {
-        const id = String(item[0] ?? item.bill_id);
-        const cashier = String(item[1] ?? item.cashier_id);
-        const mode = String(item[3] ?? item.payment_mode).toLowerCase();
-        if (query && !id.includes(query) && !cashier.includes(query) && !mode.includes(query)) return false;
-        return true;
-      });
-
-      if (!filtered.length) {
+      const list = Array.isArray(bills) ? bills : [];
+      if (!list.length) {
         tbody.innerHTML = `
           <tr><td colspan="6" class="empty-state-cell">
             <div class="empty-state-wrap">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h10M7 12h10M7 17h6"/></svg>
-              <span style="font-weight:500; color:#fff;">No transaction records found</span>
-              <span>No bills matched the specified query or filter.</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span style="font-weight:500; color:#fff;">${searchQuery ? 'No bill found' : 'No bills recorded'}</span>
+              <span>${searchQuery ? `No transaction records matched &ldquo;${escapeHtml(searchQuery)}&rdquo;.` : 'Sales data will appear here once transactions are completed.'}</span>
             </div>
           </td></tr>`;
         return;
       }
 
-      tbody.innerHTML = filtered.map(item => {
+      tbody.innerHTML = list.map(item => {
         const id = item[0] ?? item.bill_id;
         const cashier = item[1] ?? item.cashier_id;
         const dt = item[2] ?? item.transaction_datetime;
         const mode = item[3] ?? item.payment_mode;
         const total = item[4] ?? item.total_amount;
+        const itemCount = item[5] ?? item.item_count ?? 1;
 
         return `
           <tr>
-            <td style="font-weight:600; color:#fff;">#${id}</td>
-            <td style="color:var(--text-3);">Cashier #${cashier}</td>
-            <td style="color:var(--text-3); font-size:0.82rem;">${formatDate(dt)}</td>
-            <td><span style="font-size:0.76rem; background:rgba(255,255,255,0.04); padding:3px 8px; border-radius:4px; color:var(--text-2);">${escapeHtml(mode)}</span></td>
+            <td style="font-weight:600; color:#fff; font-family:var(--font-mono);">#${id}</td>
+            <td style="color:var(--text-2); font-size:0.82rem;">${formatDateTime(dt)}</td>
+            <td style="text-align:center;"><span style="display:inline-block; font-size:0.75rem; background:rgba(255,255,255,0.06); padding:2px 8px; border-radius:10px; color:var(--text-2);">${itemCount} item${itemCount === 1 ? '' : 's'}</span></td>
             <td style="text-align:right; font-weight:600; color:#fff;">${formatINR(total)}</td>
-            <td style="text-align:right;"><button type="button" class="btn-tactile btn-ghost-dark" style="padding:2px 10px; font-size:0.74rem;" onclick="viewBillDetails(${id})">Inspect</button></td>
+            <td><span style="font-size:0.76rem; background:rgba(255,255,255,0.04); padding:3px 8px; border-radius:4px; color:var(--text-2); text-transform:uppercase;">${escapeHtml(mode)}</span></td>
+            <td style="text-align:right;">
+              <div style="display:inline-flex; gap:6px; justify-content:flex-end;">
+                <button type="button" class="btn-tactile btn-ghost-dark" style="padding:3px 8px; font-size:0.74rem;" onclick="viewBillDetails(${id})" title="View Receipt">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span>View Receipt</span>
+                </button>
+                <button type="button" class="btn-tactile btn-ghost-dark" style="padding:3px 8px; font-size:0.74rem;" onclick="downloadReceiptPdf(${id})" title="Download Receipt">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Download Receipt</span>
+                </button>
+              </div>
+            </td>
           </tr>`;
       }).join('');
     }
 
     async function viewBillDetails(billId) {
       try {
-        const res = await fetch(`${API_BASE}/bills/${billId}`);
-        if (!res.ok) throw new Error('Failed to retrieve receipt');
-        const data = await res.json();
-        if (!data || !data.bill) return;
+        let data = receiptCache.get(billId);
+        if (!data) {
+          const headers = AUTH_TOKEN ? { 'Authorization': `Bearer ${AUTH_TOKEN}` } : {};
+          const res = await fetch(`${API_BASE}/bills/${billId}`, { headers });
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.detail || 'Failed to retrieve receipt');
+          }
+          data = await res.json();
+          if (!data || !data.bill) throw new Error('Receipt record not found');
+          receiptCache.set(billId, data);
+        }
+
+        activeReceiptBillId = billId;
+        activeReceiptBillData = data;
 
         const bill = data.bill;
         const items = data.items || [];
@@ -4146,31 +5200,239 @@
         const mode = bill[3] ?? bill.payment_mode;
         const total = bill[4] ?? bill.total_amount;
 
-        document.getElementById('modalBillHeading').textContent = `Transaction Receipt #${id}`;
-        document.getElementById('modalBillSub').textContent = `Cashier #${cashier} • Settled via ${mode} • ${formatDate(dt)}`;
+        const store = data.store || {};
+        const storeNameEl = document.getElementById('modalStoreName');
+        if (storeNameEl) storeNameEl.textContent = store.name || 'Retail Sales Intelligence Platform';
+
+        const storeAddrEl = document.getElementById('modalStoreAddress');
+        if (storeAddrEl) {
+          if (store.address) {
+            storeAddrEl.textContent = store.address;
+            storeAddrEl.style.display = 'block';
+          } else {
+            storeAddrEl.style.display = 'none';
+          }
+        }
+
+        const taxContactEl = document.getElementById('modalStoreTaxContact');
+        const gstinWrap = document.getElementById('modalStoreGstinWrap');
+        const gstinEl = document.getElementById('modalStoreGstin');
+        const phoneWrap = document.getElementById('modalStorePhoneWrap');
+        const phoneEl = document.getElementById('modalStorePhone');
+
+        let hasTaxOrPhone = false;
+        if (gstinWrap && gstinEl) {
+          if (store.gstin) {
+            gstinEl.textContent = store.gstin;
+            gstinWrap.style.display = 'block';
+            hasTaxOrPhone = true;
+          } else {
+            gstinWrap.style.display = 'none';
+          }
+        }
+        if (phoneWrap && phoneEl) {
+          if (store.phone) {
+            phoneEl.textContent = store.phone;
+            phoneWrap.style.display = 'block';
+            hasTaxOrPhone = true;
+          } else {
+            phoneWrap.style.display = 'none';
+          }
+        }
+        if (taxContactEl) {
+          taxContactEl.style.display = hasTaxOrPhone ? 'block' : 'none';
+        }
+
+        document.getElementById('modalBillHeading').textContent = `Receipt #BILL-${id}`;
+        document.getElementById('modalBillSub').textContent = `Settled via ${String(mode).toUpperCase()} • ${formatDateTime(dt)}`;
+        document.getElementById('modalBillId').textContent = `BILL-${id}`;
+        document.getElementById('modalBillDate').textContent = formatDateTime(dt);
+        document.getElementById('modalBillPayment').textContent = String(mode).toUpperCase();
+        document.getElementById('modalBillCashier').textContent = `#${cashier}`;
         document.getElementById('modalBillTotal').textContent = formatINR(total);
+
+        let subtotalCalc = 0;
+        let discountCalc = 0;
 
         const tbody = document.getElementById('modalBillItemsBody');
         tbody.innerHTML = items.map(it => {
           const name = it[2] ?? it.product_name;
-          const qty = it[4] ?? it.quantity;
-          const unit = it[5] ?? it.unit_price;
-          const disc = it[6] ?? it.discount;
-          const line = it[7] ?? it.line_total;
+          const qty = Number(it[4] ?? it.quantity);
+          const unit = Number(it[5] ?? it.unit_price);
+          const disc = Number(it[6] ?? it.discount ?? 0);
+          const line = Number(it[7] ?? it.line_total);
+
+          subtotalCalc += (qty * unit);
+          discountCalc += disc;
 
           return `
             <tr>
-              <td style="font-weight:500;">${escapeHtml(name)}</td>
+              <td style="font-weight:500; color:#fff;">${escapeHtml(name)}</td>
               <td style="text-align:right;">${qty}</td>
               <td style="text-align:right;">${formatINR(unit)}</td>
-              <td style="text-align:right;">${formatINR(disc)}</td>
+              <td style="text-align:right; color:${disc > 0 ? 'var(--accent-red, #ff6b6b)' : 'var(--text-3)'};">${disc > 0 ? '-' + formatINR(disc) : '₹0.00'}</td>
               <td style="text-align:right; font-weight:600; color:#fff;">${formatINR(line)}</td>
             </tr>`;
         }).join('');
 
+        const subtotalEl = document.getElementById('modalBillSubtotal');
+        if (subtotalEl) subtotalEl.textContent = formatINR(subtotalCalc);
+        const discountEl = document.getElementById('modalBillDiscount');
+        if (discountEl) discountEl.textContent = discountCalc > 0 ? ('-' + formatINR(discountCalc)) : '₹0.00';
+
         document.getElementById('receiptModal').classList.add('open');
       } catch (err) {
+        console.error('View receipt error:', err);
         alert('Could not open bill: ' + err.message);
+      }
+    }
+
+    async function downloadReceiptPdf(billId) {
+      try {
+        const headers = AUTH_TOKEN ? { 'Authorization': `Bearer ${AUTH_TOKEN}` } : {};
+        const res = await fetch(`${API_BASE}/bills/${billId}/pdf`, { headers });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'Failed to download receipt PDF');
+        }
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `receipt_BILL-${billId}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      } catch (err) {
+        console.error('Download receipt PDF error:', err);
+        alert('Could not download receipt: ' + err.message);
+      }
+    }
+
+    function downloadCurrentReceiptPdf() {
+      if (activeReceiptBillId) {
+        downloadReceiptPdf(activeReceiptBillId);
+      }
+    }
+
+    function printReceiptFromModal() {
+      if (!activeReceiptBillData || !activeReceiptBillData.bill) {
+        window.print();
+        return;
+      }
+      const bill = activeReceiptBillData.bill;
+      const items = activeReceiptBillData.items || [];
+      const store = activeReceiptBillData.store || {};
+      const id = bill[0] ?? bill.bill_id;
+      const cashier = bill[1] ?? bill.cashier_id;
+      const dt = bill[2] ?? bill.transaction_datetime;
+      const mode = bill[3] ?? bill.payment_mode;
+      const total = bill[4] ?? bill.total_amount;
+
+      const storeName = store.name || 'Retail Sales Intelligence Platform';
+      const storeAddrHtml = store.address ? `<div>${escapeHtml(store.address)}</div>` : '';
+      const contactItems = [];
+      if (store.gstin) contactItems.push(`GSTIN: ${escapeHtml(store.gstin)}`);
+      if (store.phone) contactItems.push(`Phone: ${escapeHtml(store.phone)}`);
+      const storeContactHtml = contactItems.length ? `<div>${contactItems.join(' | ')}</div>` : '';
+
+      const printWindow = window.open('', '_blank', 'width=650,height=800');
+      if (!printWindow) {
+        window.print();
+        return;
+      }
+
+      const itemsHtml = items.map(it => {
+        const name = it[2] ?? it.product_name;
+        const qty = it[4] ?? it.quantity;
+        const unit = Number(it[5] ?? it.unit_price).toFixed(2);
+        const disc = Number(it[6] ?? it.discount ?? 0).toFixed(2);
+        const line = Number(it[7] ?? it.line_total).toFixed(2);
+        return `<tr>
+          <td style="padding:6px 0; border-bottom:1px dashed #ccc;">${escapeHtml(name)}</td>
+          <td style="padding:6px 0; text-align:right; border-bottom:1px dashed #ccc;">${qty}</td>
+          <td style="padding:6px 0; text-align:right; border-bottom:1px dashed #ccc;">₹${unit}</td>
+          <td style="padding:6px 0; text-align:right; border-bottom:1px dashed #ccc;">₹${disc}</td>
+          <td style="padding:6px 0; text-align:right; border-bottom:1px dashed #ccc;">₹${line}</td>
+        </tr>`;
+      }).join('');
+
+      printWindow.document.write(`<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Receipt #BILL-${id}</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; color: #111; margin: 24px; font-size: 13px; line-height: 1.4; }
+    .store-header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 12px; margin-bottom: 12px; }
+    .store-title { font-size: 18px; font-weight: bold; }
+    .meta-table { width: 100%; margin-bottom: 12px; font-size: 12px; }
+    .meta-table td { padding: 2px 0; }
+    .items-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+    .items-table th { border-bottom: 1px solid #333; text-align: left; padding: 6px 0; font-size: 12px; }
+    .total-box { border-top: 2px solid #333; padding-top: 8px; margin-top: 8px; }
+    .total-row { display: flex; justify-content: space-between; font-size: 15px; font-weight: bold; }
+    .footer-note { text-align: center; margin-top: 24px; font-size: 11px; color: #666; }
+    @media print {
+      body { margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="store-header">
+    <div class="store-title">${escapeHtml(storeName)}</div>
+    ${storeAddrHtml}
+    ${storeContactHtml}
+  </div>
+  <table class="meta-table">
+    <tr>
+      <td><strong>Bill ID:</strong> BILL-${id}</td>
+      <td style="text-align:right;"><strong>Date:</strong> ${formatDateTime(dt)}</td>
+    </tr>
+    <tr>
+      <td><strong>Cashier ID:</strong> #${cashier}</td>
+      <td style="text-align:right;"><strong>Payment:</strong> ${String(mode).toUpperCase()}</td>
+    </tr>
+  </table>
+  <table class="items-table">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th style="text-align:right;">Qty</th>
+        <th style="text-align:right;">Price</th>
+        <th style="text-align:right;">Disc</th>
+        <th style="text-align:right;">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${itemsHtml}
+    </tbody>
+  </table>
+  <div class="total-box">
+    <div class="total-row">
+      <span>Grand Total:</span>
+      <span>₹${Number(total).toFixed(2)}</span>
+    </div>
+  </div>
+  <div class="footer-note">
+    Thank you for shopping with us!<br/>
+    Computer-generated tax invoice. No signature required.
+  </div>
+  <script>
+    window.onload = function() {
+      window.print();
+    };
+  <\/script>
+</body>
+</html>`);
+      printWindow.document.close();
+    }
+
+    function closeReceiptModal() {
+      const modal = document.getElementById('receiptModal');
+      if (modal) {
+        modal.classList.remove('open');
       }
     }
 
@@ -4313,8 +5575,951 @@
       }
     }
 
+    // ========================================================================
+    // EMPLOYEES MANAGEMENT (OWNER ONLY)
+    // ========================================================================
+    async function loadEmployeesView() {
+      if (CURRENT_ROLE !== 'owner') {
+        console.warn('Unauthorized attempt to load employees workspace.');
+        return;
+      }
+      const tbody = document.getElementById('employeesTableBody');
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align:center; padding:36px; color:var(--text-3);">
+              <div style="display:inline-flex; align-items:center; gap:10px;">
+                <span class="loading-spinner" style="display:inline-block; width:16px; height:16px; border:2px solid var(--hairline); border-top-color:var(--accent-primary); border-radius:50%; animation:spin 0.8s linear infinite;"></span>
+                <span>Fetching staff directory…</span>
+              </div>
+            </td>
+          </tr>`;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/employees/`);
+        if (!res.ok) {
+          let errDetail = 'Failed to load employees';
+          try {
+            const err = await res.json();
+            errDetail = err.detail || err.message || errDetail;
+          } catch (_) {}
+          throw new Error(errDetail);
+        }
+        allEmployees = await res.json();
+        renderEmployeesTable();
+      } catch (err) {
+        console.error('Error loading employees:', err);
+        if (tbody) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" style="text-align:center; padding:36px; color:var(--status-critical);">
+                <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+                  <span style="font-weight:600;">Unable to load employee directory</span>
+                  <span style="font-size:0.8rem; color:var(--text-3);">${escapeHtml(err.message)}</span>
+                  <button type="button" class="btn-tactile btn-secondary" onclick="loadEmployeesView()" style="margin-top:8px; padding:6px 14px; font-size:0.78rem;">Retry</button>
+                </div>
+              </td>
+            </tr>`;
+        }
+        showEnterpriseToast(err.message || 'Could not load employees.', 'error');
+      }
+    }
+
+    function renderEmployeesTable() {
+      const tbody = document.getElementById('employeesTableBody');
+      if (!tbody) return;
+
+      const searchInput = document.getElementById('employeesSearchInput');
+      const roleFilter = document.getElementById('employeesRoleFilter');
+      const statusFilter = document.getElementById('employeesStatusFilter');
+
+      const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+      const roleVal = roleFilter ? roleFilter.value : '';
+      const statusVal = statusFilter ? statusFilter.value : '';
+
+      const filtered = (allEmployees || []).filter(emp => {
+        if (!emp) return false;
+        const name = (emp.full_name || '').toLowerCase();
+        const email = (emp.email || '').toLowerCase();
+        const role = (emp.role || '').toLowerCase();
+
+        if (query && !name.includes(query) && !email.includes(query) && !role.includes(query)) {
+          return false;
+        }
+        if (roleVal && emp.role !== roleVal) {
+          return false;
+        }
+        if (statusVal === 'active' && !emp.is_active) {
+          return false;
+        }
+        if (statusVal === 'inactive' && emp.is_active) {
+          return false;
+        }
+        return true;
+      });
+
+      if (!filtered.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="empty-state-cell">
+              <div class="empty-state-wrap" style="text-align:center; padding:32px 16px; color:var(--text-3);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:8px; opacity:0.6;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <div style="font-weight:500; color:#fff;">No employee records match your filter</div>
+                <div style="font-size:0.8rem; margin-top:4px;">Try refining your search keyword or clearing the filters.</div>
+              </div>
+            </td>
+          </tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(emp => {
+        const empId = escapeHtml(emp.id);
+        const fullName = escapeHtml(emp.full_name || '—');
+        const email = escapeHtml(emp.email || '—');
+        const role = emp.role || 'cashier';
+        const isActive = Boolean(emp.is_active);
+        const createdDate = formatDate(emp.created_at);
+
+        const statusBadge = isActive
+          ? `<span style="display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600; color:var(--status-healthy);"><span style="width:6px; height:6px; border-radius:50%; background:var(--status-healthy); box-shadow:0 0 6px rgba(52,211,153,0.6);"></span>Active</span>`
+          : `<span style="display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600; color:var(--status-critical);"><span style="width:6px; height:6px; border-radius:50%; background:var(--status-critical);"></span>Inactive</span>`;
+
+        const actionBtn = isActive
+          ? `<button type="button" class="btn-tactile" data-emp-id="${empId}" data-action="toggle-status" data-target-status="false" style="padding:4px 10px; font-size:0.75rem; border:1px solid rgba(248,113,113,0.3); color:var(--status-critical); background:rgba(248,113,113,0.06); cursor:pointer;">Deactivate</button>`
+          : `<button type="button" class="btn-tactile" data-emp-id="${empId}" data-action="toggle-status" data-target-status="true" style="padding:4px 10px; font-size:0.75rem; border:1px solid rgba(52,211,153,0.3); color:var(--status-healthy); background:rgba(52,211,153,0.06); cursor:pointer;">Activate</button>`;
+
+        const deleteBtn = `<button type="button" class="btn-tactile btn-danger-accent" data-emp-id="${empId}" data-emp-name="${fullName}" data-emp-email="${email}" data-emp-active="${isActive}" data-action="open-delete-modal" title="Permanently delete employee" style="padding:4px 9px; font-size:0.75rem; cursor:pointer;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+          <span>Delete</span>
+        </button>`;
+
+        return `
+          <tr data-emp-id="${empId}">
+            <td style="font-weight:600; color:#fff;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div style="width:28px; height:28px; border-radius:50%; background:var(--surface-2); border:1px solid var(--hairline); display:flex; align-items:center; justify-content:center; font-size:0.72rem; font-weight:700; color:var(--accent-primary);">
+                  ${fullName.charAt(0).toUpperCase()}
+                </div>
+                <span>${fullName}</span>
+              </div>
+            </td>
+            <td style="color:var(--text-2); font-family:var(--font-mono, monospace); font-size:0.82rem;">${email}</td>
+            <td>
+              <select class="form-select-dark employee-role-select" data-emp-id="${empId}" data-previous-role="${role}" style="padding:4px 8px; font-size:0.78rem; height:30px; border-radius:6px; width:130px;">
+                <option value="owner" ${role === 'owner' ? 'selected' : ''}>Owner</option>
+                <option value="manager" ${role === 'manager' ? 'selected' : ''}>Manager</option>
+                <option value="cashier" ${role === 'cashier' ? 'selected' : ''}>Cashier</option>
+                <option value="programmer" ${role === 'programmer' ? 'selected' : ''}>Programmer</option>
+              </select>
+            </td>
+            <td>${statusBadge}</td>
+            <td style="color:var(--text-3); font-size:0.8rem;">${createdDate}</td>
+            <td style="text-align:right;">
+              <div style="display:inline-flex; align-items:center; gap:6px; justify-content:flex-end;">
+                ${actionBtn}
+                ${deleteBtn}
+              </div>
+            </td>
+          </tr>`;
+      }).join('');
+
+      // Wire up role change event listeners
+      tbody.querySelectorAll('.employee-role-select').forEach(select => {
+        select.addEventListener('change', async (e) => {
+          const empId = select.getAttribute('data-emp-id');
+          const previousRole = select.getAttribute('data-previous-role');
+          const newRole = select.value;
+          if (newRole === previousRole) return;
+          await handleEmployeeRoleChange(empId, newRole, previousRole, select);
+        });
+      });
+
+      // Wire up status toggle event listeners
+      tbody.querySelectorAll('[data-action="toggle-status"]').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const empId = btn.getAttribute('data-emp-id');
+          const targetStatus = btn.getAttribute('data-target-status') === 'true';
+          await handleEmployeeToggleStatus(empId, targetStatus, btn);
+        });
+      });
+
+      // Wire up delete modal event listeners
+      tbody.querySelectorAll('[data-action="open-delete-modal"]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const empId = btn.getAttribute('data-emp-id');
+          const empName = btn.getAttribute('data-emp-name');
+          const empEmail = btn.getAttribute('data-emp-email');
+          const isActive = btn.getAttribute('data-emp-active') === 'true';
+          openDeleteEmployeeModal(empId, empName, empEmail, isActive);
+        });
+      });
+    }
+
+    async function handleEmployeeRoleChange(empId, newRole, previousRole, selectEl) {
+      if (selectEl) {
+        selectEl.disabled = true;
+        selectEl.style.opacity = '0.6';
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/employees/${empId}/role`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ role: newRole })
+        });
+
+        if (!res.ok) {
+          let errDetail = 'Failed to update role';
+          try {
+            const err = await res.json();
+            errDetail = err.detail || err.message || errDetail;
+          } catch (_) {}
+          throw new Error(errDetail);
+        }
+
+        showEnterpriseToast(`Role updated to ${newRole.toUpperCase()} successfully.`, 'success');
+
+        // If the modified user is the currently logged in owner and demoted themselves
+        if (CURRENT_USER && CURRENT_USER.id === empId && newRole !== 'owner') {
+          await initAuthSession();
+          return;
+        }
+
+        await loadEmployeesView();
+      } catch (err) {
+        console.error('Role update error:', err);
+        showEnterpriseToast(err.message || 'Failed to update role.', 'error');
+        if (selectEl) {
+          selectEl.value = previousRole;
+          selectEl.disabled = false;
+          selectEl.style.opacity = '';
+        }
+      }
+    }
+
+    async function handleEmployeeToggleStatus(empId, nextActive, btnEl) {
+      const originalText = btnEl ? btnEl.textContent : '';
+      if (btnEl) {
+        btnEl.disabled = true;
+        btnEl.textContent = 'Updating…';
+        btnEl.style.opacity = '0.6';
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/employees/${empId}/role`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ is_active: nextActive })
+        });
+
+        if (!res.ok) {
+          let errDetail = 'Failed to update status';
+          try {
+            const err = await res.json();
+            errDetail = err.detail || err.message || errDetail;
+          } catch (_) {}
+          throw new Error(errDetail);
+        }
+
+        showEnterpriseToast(nextActive ? 'Employee activated successfully.' : 'Employee deactivated successfully.', 'success');
+
+        // If the deactivated user was the currently logged in user
+        if (CURRENT_USER && CURRENT_USER.id === empId && !nextActive) {
+          await initAuthSession();
+          return;
+        }
+
+        await loadEmployeesView();
+      } catch (err) {
+        console.error('Status update error:', err);
+        showEnterpriseToast(err.message || 'Failed to update status.', 'error');
+        if (btnEl) {
+          btnEl.disabled = false;
+          btnEl.textContent = originalText;
+          btnEl.style.opacity = '';
+        }
+      }
+    }
+
+    function openAddEmployeeModal() {
+      const modal = document.getElementById('addEmployeeModal');
+      const form = document.getElementById('createEmployeeForm');
+      const errBox = document.getElementById('createEmployeeErrorMsg');
+      const pwdInput = document.getElementById('newEmpPassword');
+      const toggleBtn = document.getElementById('toggleEmpPasswordBtn');
+
+      if (form) form.reset();
+      if (pwdInput) {
+        pwdInput.value = '';
+        pwdInput.type = 'password';
+      }
+      if (toggleBtn) toggleBtn.textContent = 'Show';
+      if (errBox) {
+        errBox.textContent = '';
+        errBox.style.display = 'none';
+      }
+      if (modal) {
+        modal.style.display = 'flex';
+        const nameInput = document.getElementById('newEmpFullName');
+        if (nameInput) setTimeout(() => nameInput.focus(), 50);
+      }
+    }
+
+    function closeAddEmployeeModal() {
+      const modal = document.getElementById('addEmployeeModal');
+      const pwdInput = document.getElementById('newEmpPassword');
+      const errBox = document.getElementById('createEmployeeErrorMsg');
+
+      if (pwdInput) pwdInput.value = '';
+      if (errBox) {
+        errBox.textContent = '';
+        errBox.style.display = 'none';
+      }
+      if (modal) modal.style.display = 'none';
+    }
+
+    async function handleCreateEmployeeSubmit(e) {
+      if (e) e.preventDefault();
+
+      const fullNameInput = document.getElementById('newEmpFullName');
+      const emailInput = document.getElementById('newEmpEmail');
+      const passwordInput = document.getElementById('newEmpPassword');
+      const roleSelect = document.getElementById('newEmpRole');
+      const activeCheckbox = document.getElementById('newEmpActive');
+      const submitBtn = document.getElementById('createEmployeeSubmitBtn');
+      const errBox = document.getElementById('createEmployeeErrorMsg');
+
+      const fullName = (fullNameInput ? fullNameInput.value : '').trim();
+      const email = (emailInput ? emailInput.value : '').trim().toLowerCase();
+      const password = passwordInput ? passwordInput.value : '';
+      const role = roleSelect ? roleSelect.value : 'cashier';
+      const isActive = activeCheckbox ? activeCheckbox.checked : true;
+
+      if (!fullName) {
+        if (errBox) {
+          errBox.textContent = 'Full name is required.';
+          errBox.style.display = 'block';
+        }
+        return;
+      }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        if (errBox) {
+          errBox.textContent = 'Please enter a valid email address.';
+          errBox.style.display = 'block';
+        }
+        return;
+      }
+      if (!password || password.length < 8) {
+        if (errBox) {
+          errBox.textContent = 'Password must be at least 8 characters long.';
+          errBox.style.display = 'block';
+        }
+        return;
+      }
+
+      if (errBox) errBox.style.display = 'none';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('aria-busy', 'true');
+        submitBtn.textContent = 'Provisioning…';
+      }
+
+      try {
+        const payload = {
+          full_name: fullName,
+          email: email,
+          password: password,
+          role: role,
+          is_active: isActive
+        };
+
+        const res = await fetch(`${API_BASE}/employees/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          let errDetail = 'Failed to provision employee account';
+          try {
+            const err = await res.json();
+            if (typeof err.detail === 'string') {
+              errDetail = err.detail;
+            } else if (Array.isArray(err.detail)) {
+              errDetail = err.detail.map(d => d.msg || d.message || JSON.stringify(d)).join(', ');
+            } else if (err.message) {
+              errDetail = err.message;
+            }
+          } catch (_) {}
+          throw new Error(errDetail);
+        }
+
+        closeAddEmployeeModal();
+        showEnterpriseToast(`Account created for ${fullName} (${role.toUpperCase()}).`, 'success');
+        await loadEmployeesView();
+      } catch (err) {
+        console.error('Create employee error:', err);
+        if (errBox) {
+          errBox.textContent = err.message || 'Failed to create employee account.';
+          errBox.style.display = 'block';
+        }
+      } finally {
+        // ALWAYS wipe password field immediately
+        if (passwordInput) passwordInput.value = '';
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.removeAttribute('aria-busy');
+          submitBtn.textContent = 'Create Account';
+        }
+      }
+    }
+
+    // ========================================================================
+    // SECURE EMPLOYEE ACCOUNT DELETION (OWNER ONLY)
+    // ========================================================================
+    let targetDeleteEmployee = null;
+
+    function openDeleteEmployeeModal(empId, empName, empEmail, isActive) {
+      targetDeleteEmployee = {
+        id: empId,
+        name: empName,
+        email: empEmail,
+        isActive: Boolean(isActive)
+      };
+
+      const modal = document.getElementById('deleteEmployeeModal');
+      const nameEl = document.getElementById('deleteModalEmpName');
+      const emailEl = document.getElementById('deleteModalEmpEmail');
+      const activeNotice = document.getElementById('deleteModalActiveNotice');
+      const inputEl = document.getElementById('deleteConfirmInput');
+      const confirmBtn = document.getElementById('confirmDeleteEmployeeBtn');
+      const errBox = document.getElementById('deleteEmployeeErrorMsg');
+
+      if (nameEl) nameEl.textContent = empName || '—';
+      if (emailEl) emailEl.textContent = empEmail || '—';
+      if (activeNotice) activeNotice.style.display = isActive ? 'block' : 'none';
+      if (inputEl) inputEl.value = '';
+      if (errBox) {
+        errBox.textContent = '';
+        errBox.style.display = 'none';
+      }
+      if (confirmBtn) {
+        confirmBtn.disabled = true;
+        confirmBtn.style.opacity = '0.4';
+        confirmBtn.style.cursor = 'not-allowed';
+        confirmBtn.removeAttribute('aria-busy');
+        confirmBtn.textContent = 'Permanently Delete';
+      }
+      if (modal) {
+        modal.style.display = 'flex';
+        if (inputEl) setTimeout(() => inputEl.focus(), 50);
+      }
+    }
+
+    function closeDeleteEmployeeModal() {
+      const modal = document.getElementById('deleteEmployeeModal');
+      const inputEl = document.getElementById('deleteConfirmInput');
+      const errBox = document.getElementById('deleteEmployeeErrorMsg');
+      if (inputEl) inputEl.value = '';
+      if (errBox) {
+        errBox.textContent = '';
+        errBox.style.display = 'none';
+      }
+      if (modal) modal.style.display = 'none';
+      targetDeleteEmployee = null;
+    }
+
+    function updateDeleteConfirmButtonState() {
+      const inputEl = document.getElementById('deleteConfirmInput');
+      const confirmBtn = document.getElementById('confirmDeleteEmployeeBtn');
+      if (!confirmBtn) return;
+      const isExactMatch = inputEl && inputEl.value.trim() === 'DELETE';
+      if (isExactMatch) {
+        confirmBtn.disabled = false;
+        confirmBtn.style.opacity = '1.0';
+        confirmBtn.style.cursor = 'pointer';
+      } else {
+        confirmBtn.disabled = true;
+        confirmBtn.style.opacity = '0.4';
+        confirmBtn.style.cursor = 'not-allowed';
+      }
+    }
+
+    async function handleConfirmDeleteEmployee() {
+      if (!targetDeleteEmployee || !targetDeleteEmployee.id) return;
+      const inputEl = document.getElementById('deleteConfirmInput');
+      if (!inputEl || inputEl.value.trim() !== 'DELETE') return;
+
+      const confirmBtn = document.getElementById('confirmDeleteEmployeeBtn');
+      const cancelBtn = document.getElementById('cancelDeleteEmployeeBtn');
+      const errBox = document.getElementById('deleteEmployeeErrorMsg');
+
+      if (errBox) {
+        errBox.textContent = '';
+        errBox.style.display = 'none';
+      }
+      if (confirmBtn) {
+        confirmBtn.disabled = true;
+        confirmBtn.setAttribute('aria-busy', 'true');
+        confirmBtn.textContent = 'Deleting…';
+        confirmBtn.style.opacity = '0.7';
+        confirmBtn.style.cursor = 'wait';
+      }
+      if (cancelBtn) cancelBtn.disabled = true;
+
+      try {
+        const res = await fetch(`${API_BASE}/employees/${targetDeleteEmployee.id}`, {
+          method: 'DELETE'
+        });
+
+        if (!res.ok) {
+          let errDetail = 'Failed to delete employee account';
+          try {
+            const err = await res.json();
+            if (typeof err.detail === 'string') {
+              errDetail = err.detail;
+            } else if (Array.isArray(err.detail)) {
+              errDetail = err.detail.map(d => d.msg || d.message || JSON.stringify(d)).join(', ');
+            } else if (err.message) {
+              errDetail = err.message;
+            }
+          } catch (_) {}
+          throw new Error(errDetail);
+        }
+
+        const deletedName = targetDeleteEmployee.name;
+        closeDeleteEmployeeModal();
+        showEnterpriseToast(`Employee account "${deletedName}" permanently deleted.`, 'success');
+        await loadEmployeesView();
+      } catch (err) {
+        console.error('Delete employee error:', err);
+        if (errBox) {
+          errBox.textContent = err.message || 'Failed to delete employee account.';
+          errBox.style.display = 'block';
+        }
+      } finally {
+        if (confirmBtn) {
+          confirmBtn.removeAttribute('aria-busy');
+          confirmBtn.textContent = 'Permanently Delete';
+          updateDeleteConfirmButtonState();
+        }
+        if (cancelBtn) cancelBtn.disabled = false;
+      }
+    }
+
+    // ========================================================================
+    // SYSTEM MAINTENANCE & HEALTH (OWNER & PROGRAMMER)
+    // ========================================================================
+    async function loadSystemView() {
+      if (CURRENT_ROLE !== 'owner' && CURRENT_ROLE !== 'programmer') {
+        console.warn('Unauthorized attempt to load system maintenance workspace.');
+        return;
+      }
+
+      try {
+        const [healthRes, aiRes, syncRes, auditRes] = await Promise.allSettled([
+          fetch(`${API_BASE}/system/health`),
+          fetch(`${API_BASE}/system/ai-status`),
+          fetch(`${API_BASE}/system/sync/status`),
+          fetch(`${API_BASE}/system/audit-logs?limit=50`)
+        ]);
+
+        if (healthRes.status === 'fulfilled' && healthRes.value.ok) {
+          renderSystemHealth(await healthRes.value.json());
+        } else {
+          renderSystemHealthError();
+        }
+
+        if (aiRes.status === 'fulfilled' && aiRes.value.ok) {
+          renderSystemAIStatus(await aiRes.value.json());
+        } else {
+          renderSystemAIError();
+        }
+
+        if (syncRes.status === 'fulfilled' && syncRes.value.ok) {
+          renderSystemSyncStatus(await syncRes.value.json());
+        } else {
+          renderSystemSyncError();
+        }
+
+        if (auditRes.status === 'fulfilled' && auditRes.value.ok) {
+          allAuditLogs = await auditRes.value.json();
+          renderAuditLogsTable();
+        } else {
+          renderAuditLogsError();
+        }
+      } catch (err) {
+        console.error('Error loading system telemetry:', err);
+        showEnterpriseToast('Could not load some system telemetry.', 'warning');
+      }
+    }
+
+    function renderSystemHealth(data) {
+      const isHealthy = data.status === 'healthy';
+      const dbConnected = Boolean(data.database_connected);
+      const authConfigured = Boolean(data.supabase_auth_configured);
+
+      const dotOverall = document.getElementById('sysDotOverall');
+      const textOverall = document.getElementById('sysTextOverall');
+      const trendOverall = document.getElementById('sysTrendOverall');
+      if (dotOverall) dotOverall.style.background = isHealthy ? 'var(--status-healthy)' : 'var(--status-warning)';
+      if (textOverall) textOverall.textContent = isHealthy ? 'Healthy' : 'Degraded';
+      if (trendOverall) trendOverall.textContent = isHealthy ? 'All services operational' : 'Some services need attention';
+
+      const dotDb = document.getElementById('sysDotDb');
+      const textDb = document.getElementById('sysTextDb');
+      const trendDb = document.getElementById('sysTrendDb');
+      if (dotDb) dotDb.style.background = dbConnected ? 'var(--status-healthy)' : 'var(--status-critical)';
+      if (textDb) textDb.textContent = dbConnected ? 'Connected' : 'Disconnected';
+      if (trendDb) trendDb.textContent = dbConnected ? 'PostgreSQL Active (Asia/Kolkata)' : 'Database unreachable';
+
+      const dotAuth = document.getElementById('sysDotAuth');
+      const textAuth = document.getElementById('sysTextAuth');
+      const trendAuth = document.getElementById('sysTrendAuth');
+      if (dotAuth) dotAuth.style.background = authConfigured ? 'var(--status-healthy)' : 'var(--status-critical)';
+      if (textAuth) textAuth.textContent = authConfigured ? 'Operational' : 'Missing Config';
+      if (trendAuth) trendAuth.textContent = authConfigured ? 'JWKS ES256 & Auth Configured' : 'Supabase URL/JWKS missing';
+    }
+
+    function renderSystemHealthError() {
+      const dotOverall = document.getElementById('sysDotOverall');
+      const textOverall = document.getElementById('sysTextOverall');
+      const trendOverall = document.getElementById('sysTrendOverall');
+      if (dotOverall) dotOverall.style.background = 'var(--status-critical)';
+      if (textOverall) textOverall.textContent = 'Degraded';
+      if (trendOverall) trendOverall.textContent = 'Failed to fetch engine health';
+    }
+
+    function renderSystemAIStatus(data) {
+      const isConfigured = Boolean(data.is_configured);
+      const reachable = data.provider_reachable;
+      const primaryModel = data.primary_model || 'None';
+      const allModels = data.all_models || [primaryModel];
+
+      const dotAI = document.getElementById('sysDotAI');
+      const textAI = document.getElementById('sysTextAI');
+      const trendAI = document.getElementById('sysTrendAI');
+      if (dotAI) {
+        if (!isConfigured) dotAI.style.background = 'var(--status-critical)';
+        else if (reachable === false) dotAI.style.background = 'var(--status-critical)';
+        else if (reachable === true) dotAI.style.background = 'var(--status-healthy)';
+        else dotAI.style.background = 'var(--status-healthy)';
+      }
+      if (textAI) {
+        if (!isConfigured) textAI.textContent = 'Unconfigured';
+        else if (reachable === false) textAI.textContent = 'Unreachable';
+        else if (reachable === true) textAI.textContent = 'Operational';
+        else textAI.textContent = 'Configured';
+      }
+      if (trendAI) {
+        trendAI.textContent = `${data.fallback_count || 0} fallback tier(s) configured`;
+      }
+
+      const wrap = document.getElementById('aiModelsHierarchyWrap');
+      if (wrap) {
+        wrap.innerHTML = allModels.map((m, idx) => {
+          const isPrimary = idx === 0;
+          const label = isPrimary ? 'Primary Model' : `Fallback ${idx}`;
+          const badgeClass = isPrimary
+            ? 'color:var(--accent-primary); border-color:rgba(129,140,248,0.3); background:rgba(129,140,248,0.08);'
+            : 'color:var(--text-3); border-color:var(--hairline); background:var(--surface-2);';
+          return `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--surface-2); border:1px solid var(--hairline); border-radius:var(--radius-sm);">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="display:inline-block; font-size:0.7rem; font-weight:700; padding:2px 6px; border-radius:4px; border:1px solid; ${badgeClass}">
+                  ${label}
+                </span>
+                <span style="font-family:var(--font-mono, monospace); font-size:0.82rem; color:#fff;">${escapeHtml(m)}</span>
+              </div>
+              <span style="font-size:0.75rem; color:var(--text-3);">Tier ${idx + 1}</span>
+            </div>`;
+        }).join('');
+      }
+
+      const connBadge = document.getElementById('aiConnectivityBadge');
+      if (connBadge) {
+        if (reachable === true) {
+          connBadge.innerHTML = `<span style="width:6px; height:6px; border-radius:50%; background:var(--status-healthy); box-shadow:0 0 6px rgba(52,211,153,0.6);"></span><span style="color:var(--status-healthy);">Operational (Reachable)</span>`;
+        } else if (reachable === false) {
+          connBadge.innerHTML = `<span style="width:6px; height:6px; border-radius:50%; background:var(--status-critical);"></span><span style="color:var(--status-critical);">Unreachable</span>`;
+        } else {
+          connBadge.innerHTML = `<span style="width:6px; height:6px; border-radius:50%; background:var(--status-warning);"></span><span style="color:var(--text-2);">Configured (Ping Pending)</span>`;
+        }
+      }
+    }
+
+    function renderSystemAIError() {
+      const wrap = document.getElementById('aiModelsHierarchyWrap');
+      if (wrap) wrap.innerHTML = `<div style="color:var(--status-critical); font-size:0.85rem;">Failed to fetch AI gateway configuration.</div>`;
+    }
+
+    async function checkAiConnectivityLive() {
+      const btn = document.getElementById('checkAiConnectivityBtn');
+      const badge = document.getElementById('aiConnectivityBadge');
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Pinging…';
+      }
+      if (badge) {
+        badge.innerHTML = `<span class="loading-spinner" style="display:inline-block; width:10px; height:10px; border:1.5px solid var(--hairline); border-top-color:var(--accent-primary); border-radius:50%; animation:spin 0.8s linear infinite;"></span><span>Checking…</span>`;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/system/ai-status?check_connectivity=true`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        renderSystemAIStatus(data);
+        if (data.provider_reachable === true) {
+          showEnterpriseToast('OpenRouter provider responded successfully.', 'success');
+        } else {
+          showEnterpriseToast('OpenRouter provider ping failed or unreachable.', 'warning');
+        }
+      } catch (err) {
+        console.error('AI connectivity check failed:', err);
+        showEnterpriseToast('Failed to check AI provider reachability.', 'error');
+        if (badge) {
+          badge.innerHTML = `<span style="width:6px; height:6px; border-radius:50%; background:var(--status-critical);"></span><span style="color:var(--status-critical);">Check Failed</span>`;
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Check Live Ping';
+        }
+      }
+    }
+
+    function renderSystemSyncStatus(data) {
+      const q = data.queue || {};
+      const metricPending = document.getElementById('syncMetricPending');
+      const metricProcessed = document.getElementById('syncMetricProcessed');
+      const metricRejected = document.getElementById('syncMetricRejected');
+
+      if (metricPending) metricPending.textContent = q.total_pending ?? 0;
+      if (metricProcessed) metricProcessed.textContent = q.total_processed ?? 0;
+      if (metricRejected) metricRejected.textContent = q.total_rejected ?? 0;
+
+      const sp = document.getElementById('syncSalesPending');
+      const pp = document.getElementById('syncPurchPending');
+      const spr = document.getElementById('syncSalesProcessed');
+      const ppr = document.getElementById('syncPurchProcessed');
+      const srj = document.getElementById('syncSalesRejected');
+      const prj = document.getElementById('syncPurchRejected');
+
+      if (sp) sp.textContent = q.pending_sales ?? 0;
+      if (pp) pp.textContent = q.pending_purchases ?? 0;
+      if (spr) spr.textContent = q.processed_sales ?? 0;
+      if (ppr) ppr.textContent = q.processed_purchases ?? 0;
+      if (srj) srj.textContent = q.rejected_sales ?? 0;
+      if (prj) prj.textContent = q.rejected_purchases ?? 0;
+
+      const lastExec = document.getElementById('syncLastExecText');
+      if (lastExec) {
+        if (data.last_sync && data.last_sync.started_at) {
+          lastExec.textContent = `${formatDate(data.last_sync.started_at)} (${data.last_sync.status || 'unknown'})`;
+        } else {
+          lastExec.textContent = 'Scheduled for 23:59 IST';
+        }
+      }
+    }
+
+    function renderSystemSyncError() {
+      const box = document.getElementById('syncStatusMessageBox');
+      if (box) {
+        box.style.display = 'block';
+        box.style.background = 'rgba(248,113,113,0.1)';
+        box.style.color = 'var(--status-critical)';
+        box.style.border = '1px solid rgba(248,113,113,0.2)';
+        box.textContent = 'Unable to retrieve ingestion queue telemetry.';
+      }
+    }
+
+    async function triggerManualSync() {
+      if (isSyncTriggerInProgress) return;
+      isSyncTriggerInProgress = true;
+
+      const btn = document.getElementById('triggerSyncBtn');
+      const box = document.getElementById('syncStatusMessageBox');
+
+      if (btn) {
+        btn.disabled = true;
+        btn.setAttribute('aria-busy', 'true');
+        btn.innerHTML = `<span class="loading-spinner" style="display:inline-block; width:12px; height:12px; border:1.5px solid var(--hairline); border-top-color:#fff; border-radius:50%; animation:spin 0.8s linear infinite; margin-right:6px;"></span><span>Dispatching…</span>`;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/system/sync/trigger`, { method: 'POST' });
+
+        if (res.status === 202) {
+          showEnterpriseToast('Data synchronization job dispatched in the background.', 'success');
+          if (box) {
+            box.style.display = 'block';
+            box.style.background = 'rgba(52,211,153,0.1)';
+            box.style.color = 'var(--status-healthy)';
+            box.style.border = '1px solid rgba(52,211,153,0.2)';
+            box.textContent = '✓ Synchronization job accepted (HTTP 202). Processing queues in background.';
+          }
+          setTimeout(async () => {
+            try {
+              const syncRes = await fetch(`${API_BASE}/system/sync/status`);
+              if (syncRes.ok) renderSystemSyncStatus(await syncRes.json());
+              const auditRes = await fetch(`${API_BASE}/system/audit-logs?limit=50`);
+              if (auditRes.ok) {
+                allAuditLogs = await auditRes.json();
+                renderAuditLogsTable();
+              }
+            } catch (_) {}
+          }, 2500);
+          return;
+        }
+
+        if (res.status === 409) {
+          let errDetail = 'A data synchronization job is already in progress.';
+          try {
+            const err = await res.json();
+            errDetail = err.detail || errDetail;
+          } catch (_) {}
+          showEnterpriseToast(errDetail, 'warning');
+          if (box) {
+            box.style.display = 'block';
+            box.style.background = 'rgba(251,191,36,0.1)';
+            box.style.color = 'var(--status-warning)';
+            box.style.border = '1px solid rgba(251,191,36,0.2)';
+            box.textContent = `⚠ ${escapeHtml(errDetail)}`;
+          }
+          return;
+        }
+
+        let errDetail = `Trigger failed (HTTP ${res.status})`;
+        try {
+          const err = await res.json();
+          errDetail = err.detail || errDetail;
+        } catch (_) {}
+        throw new Error(errDetail);
+      } catch (err) {
+        console.error('Trigger sync error:', err);
+        showEnterpriseToast(err.message || 'Failed to dispatch sync job.', 'error');
+        if (box) {
+          box.style.display = 'block';
+          box.style.background = 'rgba(248,113,113,0.1)';
+          box.style.color = 'var(--status-critical)';
+          box.style.border = '1px solid rgba(248,113,113,0.2)';
+          box.textContent = `✕ ${escapeHtml(err.message)}`;
+        }
+      } finally {
+        isSyncTriggerInProgress = false;
+        if (btn) {
+          btn.disabled = false;
+          btn.removeAttribute('aria-busy');
+          btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg><span>Trigger Sync Now</span>`;
+        }
+      }
+    }
+
+    function renderAuditLogsTable() {
+      const tbody = document.getElementById('auditLogsTableBody');
+      if (!tbody) return;
+
+      const searchInput = document.getElementById('auditSearchInput');
+      const actionFilter = document.getElementById('auditActionFilter');
+
+      const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+      const actionVal = actionFilter ? actionFilter.value : '';
+
+      const filtered = (allAuditLogs || []).filter(log => {
+        if (!log) return false;
+        const action = (log.action_type || '').toLowerCase();
+        const actor = (log.performed_by || '').toLowerCase();
+        const resource = (log.target_resource || '').toLowerCase();
+        const details = (log.details || '').toLowerCase();
+
+        if (query && !action.includes(query) && !actor.includes(query) && !resource.includes(query) && !details.includes(query)) {
+          return false;
+        }
+        if (actionVal && log.action_type !== actionVal) {
+          return false;
+        }
+        return true;
+      });
+
+      if (!filtered.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="empty-state-cell">
+              <div class="empty-state-wrap" style="text-align:center; padding:32px 16px; color:var(--text-3);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:8px; opacity:0.6;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <div style="font-weight:500; color:#fff;">No audit records match your filter</div>
+                <div style="font-size:0.8rem; margin-top:4px;">Try refining your search keyword or clearing the action filter.</div>
+              </div>
+            </td>
+          </tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(log => {
+        const logId = log.log_id != null ? `#${log.log_id}` : '—';
+        const actionType = log.action_type || 'UNKNOWN';
+        const actor = log.performed_by ? escapeHtml(log.performed_by) : '<span style="color:var(--text-3); font-style:italic;">System</span>';
+        const resource = log.target_resource ? escapeHtml(log.target_resource) : '<span style="color:var(--text-3);">—</span>';
+        const dt = formatDate(log.performed_at);
+
+        let detailsHtml = escapeHtml(log.details || '—');
+        detailsHtml = detailsHtml
+          .replace(/\[REDACTED_EMAIL\]/g, '<span style="background:rgba(251,191,36,0.1); color:var(--status-warning); padding:1px 5px; border-radius:3px; font-size:0.75rem; border:1px solid rgba(251,191,36,0.2);">[REDACTED_EMAIL]</span>')
+          .replace(/\[REDACTED_JWT\]/g, '<span style="background:rgba(248,113,113,0.1); color:var(--status-critical); padding:1px 5px; border-radius:3px; font-size:0.75rem; border:1px solid rgba(248,113,113,0.2);">[REDACTED_JWT]</span>')
+          .replace(/\[REDACTED_TOKEN\]/g, '<span style="background:rgba(248,113,113,0.1); color:var(--status-critical); padding:1px 5px; border-radius:3px; font-size:0.75rem; border:1px solid rgba(248,113,113,0.2);">[REDACTED_TOKEN]</span>');
+
+        let actionStyle = 'background:var(--surface-2); color:var(--text-2); border:1px solid var(--hairline);';
+        if (actionType.includes('BOOTSTRAP')) {
+          actionStyle = 'background:rgba(129,140,248,0.1); color:var(--accent-primary); border:1px solid rgba(129,140,248,0.25);';
+        } else if (actionType.includes('CREATED')) {
+          actionStyle = 'background:rgba(52,211,153,0.1); color:var(--status-healthy); border:1px solid rgba(52,211,153,0.25);';
+        } else if (actionType.includes('UPDATED')) {
+          actionStyle = 'background:rgba(251,191,36,0.1); color:var(--status-warning); border:1px solid rgba(251,191,36,0.25);';
+        } else if (actionType.includes('SYNC')) {
+          actionStyle = 'background:rgba(56,189,248,0.1); color:#38bdf8; border:1px solid rgba(56,189,248,0.25);';
+        }
+
+        return `
+          <tr>
+            <td style="font-weight:600; color:#fff;">${logId}</td>
+            <td>
+              <span style="display:inline-block; font-size:0.72rem; font-weight:700; padding:2px 8px; border-radius:4px; ${actionStyle}">
+                ${escapeHtml(actionType)}
+              </span>
+            </td>
+            <td style="font-family:var(--font-mono, monospace); font-size:0.78rem; color:var(--text-2); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHtml(log.performed_by || 'System')}">
+              ${actor}
+            </td>
+            <td style="font-family:var(--font-mono, monospace); font-size:0.78rem; color:var(--text-2); max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHtml(log.target_resource || '')}">
+              ${resource}
+            </td>
+            <td style="font-size:0.8rem; color:var(--text-2);">${detailsHtml}</td>
+            <td style="text-align:right; color:var(--text-3); font-size:0.78rem; white-space:nowrap;">${dt}</td>
+          </tr>`;
+      }).join('');
+    }
+
+    function renderAuditLogsError() {
+      const tbody = document.getElementById('auditLogsTableBody');
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align:center; padding:32px; color:var(--status-critical);">
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+                <span style="font-weight:600;">Unable to load technical audit feed</span>
+                <button type="button" class="btn-tactile btn-secondary" onclick="loadSystemView()" style="margin-top:8px; padding:6px 14px; font-size:0.78rem;">Retry</button>
+              </div>
+            </td>
+          </tr>`;
+      }
+    }
+
     
     async function ensureProductsCached() {
+      const allowedViews = (CURRENT_ROLE && ROLE_NAV_PERMISSIONS[CURRENT_ROLE]) ? ROLE_NAV_PERMISSIONS[CURRENT_ROLE] : [];
+      if (!allowedViews.includes('products')) return;
       if (!allProducts.length) {
         const res = await fetch(`${API_BASE}/products/`);
         if (res.ok) allProducts = await res.json();
@@ -4322,6 +6527,8 @@
     }
 
     async function ensureSuppliersCached() {
+      const allowedViews = (CURRENT_ROLE && ROLE_NAV_PERMISSIONS[CURRENT_ROLE]) ? ROLE_NAV_PERMISSIONS[CURRENT_ROLE] : [];
+      if (!allowedViews.includes('suppliers')) return;
       if (!allSuppliers.length) {
         const res = await fetch(`${API_BASE}/suppliers/`);
         if (res.ok) allSuppliers = await res.json();
@@ -4329,6 +6536,8 @@
     }
 
     function refreshDashboardData() {
+      const allowedViews = (CURRENT_ROLE && ROLE_NAV_PERMISSIONS[CURRENT_ROLE]) ? ROLE_NAV_PERMISSIONS[CURRENT_ROLE] : [];
+      if (!allowedViews.includes('dashboard')) return;
       loadDashboardMetrics();
       showEnterpriseToast('Store metrics refreshed.');
     }
@@ -4340,11 +6549,30 @@
       submitAIQuestion(input.value, 'hero');
     }
 
-    function showEnterpriseToast(text) {
+    let _toastTimer = null;
+    function showEnterpriseToast(text, type = 'success') {
       const toast = document.getElementById('appToast');
-      document.getElementById('appToastText').textContent = text;
+      if (!toast) return;
+      const textEl = document.getElementById('appToastText');
+      if (textEl) textEl.textContent = text;
+
+      const svg = toast.querySelector('svg');
+      if (svg) {
+        if (type === 'error') {
+          svg.setAttribute('stroke', '#f87171');
+          svg.innerHTML = '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>';
+        } else if (type === 'warning') {
+          svg.setAttribute('stroke', '#fbbf24');
+          svg.innerHTML = '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>';
+        } else {
+          svg.setAttribute('stroke', '#34d399');
+          svg.innerHTML = '<path d="M20 6 9 17l-5-5"/>';
+        }
+      }
+
       toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 3400);
+      if (_toastTimer) clearTimeout(_toastTimer);
+      _toastTimer = setTimeout(() => toast.classList.remove('show'), 3400);
     }
 
     function formatINR(val) {
@@ -4357,14 +6585,128 @@
       return num.toLocaleString('en-IN');
     }
 
-    function formatDate(val) {
+    function getTodayISTDateString() {
+      const d = new Date();
+      return new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).format(d);
+    }
+
+    /**
+     * Formats a date or timestamp with timezone awareness and clean separation.
+     *
+     * 1. Date-only values (e.g. 'YYYY-MM-DD', or ISO strings with midnight 00:00:00)
+     *    represent calendar dates (such as purchases.purchase_date).
+     *    They are parsed directly into calendar components and formatted as a pure
+     *    calendar date (e.g. '24 Jun 2026' or '6 Oct 2026') without any artificial
+     *    time of day (such as 05:30 AM) and without UTC-to-local day shifting.
+     *
+     * 2. Actual timestamps (e.g. '2026-06-26T16:09:25', '2026-11-09T18:00:00Z')
+     *    represent discrete points in time (such as bills.transaction_datetime,
+     *    technical_audit_logs.performed_at, inventory.last_updated).
+     *    They are converted to 'Asia/Kolkata' (IST, UTC+05:30) and formatted with
+     *    both date and time (e.g. '26 Jun 2026, 04:09 pm').
+     *
+     * 3. An options object can specify { dateOnly: true } to force date-only format.
+     */
+    function formatDate(val, options) {
       if (!val) return '—';
       try {
-        const d = new Date(val);
-        return d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        if (val instanceof Date) {
+          if (isNaN(val.getTime())) return '—';
+          if ((options && options.dateOnly) || (val.getUTCHours() === 0 && val.getUTCMinutes() === 0 && val.getUTCSeconds() === 0 && val.getUTCMilliseconds() === 0)) {
+            return val.toLocaleDateString('en-IN', {
+              timeZone: 'UTC',
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric'
+            });
+          }
+          return val.toLocaleString('en-IN', {
+            timeZone: 'Asia/Kolkata',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+          });
+        }
+
+        const trimmed = String(val).trim();
+        if (!trimmed) return '—';
+
+        // Pure calendar date: YYYY-MM-DD
+        if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+          const [y, m, d] = trimmed.split('-').map(Number);
+          const dt = new Date(Date.UTC(y, m - 1, d));
+          return dt.toLocaleDateString('en-IN', {
+            timeZone: 'UTC',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+          });
+        }
+
+        // Calendar date serialized as ISO midnight (00:00:00)
+        if (/^\d{4}-\d{2}-\d{2}[T\s]00:00:00(\.0+)?(Z|[+-]00:00)?$/.test(trimmed)) {
+          const [y, m, d] = trimmed.substring(0, 10).split('-').map(Number);
+          const dt = new Date(Date.UTC(y, m - 1, d));
+          return dt.toLocaleDateString('en-IN', {
+            timeZone: 'UTC',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+          });
+        }
+
+        // Explicit dateOnly requested
+        if (options && options.dateOnly) {
+          let dt;
+          if (/^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(\.\d+)?$/.test(trimmed)) {
+            dt = new Date(trimmed.replace(' ', 'T') + '+05:30');
+          } else {
+            dt = new Date(trimmed);
+          }
+          if (isNaN(dt.getTime())) return trimmed;
+          return dt.toLocaleDateString('en-IN', {
+            timeZone: 'Asia/Kolkata',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+          });
+        }
+
+        // Actual timestamp with time component
+        let dt;
+        if (/^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(\.\d+)?$/.test(trimmed)) {
+          // Naive store timestamp: interpret in Asia/Kolkata (+05:30)
+          dt = new Date(trimmed.replace(' ', 'T') + '+05:30');
+        } else {
+          dt = new Date(trimmed);
+        }
+
+        if (isNaN(dt.getTime())) return trimmed;
+
+        return dt.toLocaleString('en-IN', {
+          timeZone: 'Asia/Kolkata',
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        });
       } catch (e) {
         return String(val);
       }
+    }
+
+    function formatDateTime(val) {
+      return formatDate(val, { dateOnly: false });
     }
 
     function escapeHtml(str) {
@@ -4379,18 +6721,14 @@
 
     
     document.addEventListener('DOMContentLoaded', () => {
+      if (window.__appInitialized) return;
+      window.__appInitialized = true;
       initAuthSession();
 
       const logoutBtn = document.getElementById('logoutBtn');
       if (logoutBtn) {
         logoutBtn.addEventListener('click', async () => {
-          AUTH_TOKEN = '';
-          CURRENT_USER = null;
-          localStorage.removeItem('sb_access_token');
-          if (_supabase) {
-            try { await _supabase.auth.signOut(); } catch(e) {}
-          }
-          showAuthModal('Signed out successfully.');
+          await performLogout('Signed out successfully.');
         });
       }
 
@@ -4436,7 +6774,13 @@
         });
       });
 
-      document.getElementById('openDashboardCTA').addEventListener('click', () => switchView('dashboard'));
+      const openDashboardCTA = document.getElementById('openDashboardCTA');
+      if (openDashboardCTA) {
+        openDashboardCTA.addEventListener('click', () => {
+          const target = openDashboardCTA.getAttribute('data-target-view') || 'dashboard';
+          switchView(target);
+        });
+      }
       document.getElementById('navLogoLink').addEventListener('click', (e) => {
         e.preventDefault();
         switchView('home');
@@ -4453,7 +6797,8 @@
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           closeDrawer();
-          document.getElementById('receiptModal').classList.remove('open');
+          closeReceiptModal();
+          closeAddEmployeeModal();
         }
       });
 
@@ -4461,22 +6806,27 @@
       const heroSendBtn = document.getElementById('heroSendBtn');
 
       function sendHeroQuery() {
+        if (!heroInput) return;
         const q = heroInput.value.trim();
         if (q) submitAIQuestion(q, 'hero');
       }
 
-      heroSendBtn.addEventListener('click', sendHeroQuery);
-      heroInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          sendHeroQuery();
-        }
-      });
+      if (heroSendBtn) {
+        heroSendBtn.addEventListener('click', sendHeroQuery);
+      }
+      if (heroInput) {
+        heroInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendHeroQuery();
+          }
+        });
+      }
 
       document.querySelectorAll('.suggestion-chip').forEach(chip => {
         chip.addEventListener('click', () => {
           const q = chip.getAttribute('data-query');
-          heroInput.value = q;
+          if (heroInput) heroInput.value = q;
           submitAIQuestion(q, 'hero');
         });
       });
@@ -4589,31 +6939,155 @@
       initVoiceDictation('heroMicBtn', 'heroComposerInput', 'hero');
 
 
-      document.getElementById('purchaseForm').addEventListener('submit', handleReceiveStock);
+      const purchaseFormEl = document.getElementById('purchaseForm');
+      if (purchaseFormEl) {
+        purchaseFormEl.addEventListener('submit', handleReceiveStock);
+        purchaseFormEl.addEventListener('input', () => {
+          const notifEl = document.getElementById('stockReceivingNotification');
+          if (notifEl && notifEl.style.display !== 'none' && notifEl.style.color.includes('248')) {
+            hideStockNotification();
+          }
+        });
+      }
 
       document.getElementById('inventorySearchInput').addEventListener('input', renderInventoryTable);
       document.getElementById('inventoryCatSelect').addEventListener('change', renderInventoryTable);
       document.getElementById('inventoryStatusSelect').addEventListener('change', renderInventoryTable);
       document.getElementById('inventorySortSelect').addEventListener('change', renderInventoryTable);
 
-      document.getElementById('salesSearchInput').addEventListener('input', () => {
-        fetch(`${API_BASE}/bills/?limit=100`).then(r => r.json()).then(renderSalesTable);
+      const salesSearchInput = document.getElementById('salesSearchInput');
+      if (salesSearchInput) {
+        salesSearchInput.addEventListener('input', handleSalesSearchInput);
+      }
+
+      // Prefetch recent bills on hover over the Sales nav button
+      document.querySelectorAll('[data-view="sales"]').forEach(btn => {
+        btn.addEventListener('mouseenter', () => { prefetchRecentBills(); }, { passive: true });
       });
 
       document.getElementById('productsSearchInput').addEventListener('input', renderProductsTable);
       document.getElementById('productsCategorySelect').addEventListener('change', renderProductsTable);
 
-      document.getElementById('closeReceiptModalBtn').addEventListener('click', () => {
-        document.getElementById('receiptModal').classList.remove('open');
-      });
-      document.getElementById('receiptModal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('receiptModal')) {
-          document.getElementById('receiptModal').classList.remove('open');
-        }
-      });
+      const closeReceiptBtn = document.getElementById('closeReceiptModalBtn');
+      if (closeReceiptBtn) {
+        closeReceiptBtn.addEventListener('click', closeReceiptModal);
+      }
+      const receiptModalEl = document.getElementById('receiptModal');
+      if (receiptModalEl) {
+        receiptModalEl.addEventListener('click', (e) => {
+          if (e.target === receiptModalEl) {
+            closeReceiptModal();
+          }
+        });
+      }
 
-      ensureProductsCached();
-      ensureSuppliersCached();
+      // Employees Management Event Bindings
+      const openModalBtn = document.getElementById('openAddEmployeeModalBtn');
+      if (openModalBtn) openModalBtn.addEventListener('click', openAddEmployeeModal);
+
+      const closeModalBtn = document.getElementById('closeAddEmployeeModalBtn');
+      if (closeModalBtn) closeModalBtn.addEventListener('click', closeAddEmployeeModal);
+
+      const cancelModalBtn = document.getElementById('cancelAddEmployeeBtn');
+      if (cancelModalBtn) cancelModalBtn.addEventListener('click', closeAddEmployeeModal);
+
+      const addEmpModal = document.getElementById('addEmployeeModal');
+      if (addEmpModal) {
+        addEmpModal.addEventListener('click', (e) => {
+          if (e.target === addEmpModal) closeAddEmployeeModal();
+        });
+      }
+
+      const togglePwdBtn = document.getElementById('toggleEmpPasswordBtn');
+      if (togglePwdBtn) {
+        togglePwdBtn.addEventListener('click', () => {
+          const pwd = document.getElementById('newEmpPassword');
+          if (pwd) {
+            const isPwd = pwd.type === 'password';
+            pwd.type = isPwd ? 'text' : 'password';
+            togglePwdBtn.textContent = isPwd ? 'Hide' : 'Show';
+          }
+        });
+      }
+
+      const createEmpForm = document.getElementById('createEmployeeForm');
+      if (createEmpForm) createEmpForm.addEventListener('submit', handleCreateEmployeeSubmit);
+
+      const refreshEmpBtn = document.getElementById('refreshEmployeesBtn');
+      if (refreshEmpBtn) {
+        refreshEmpBtn.addEventListener('click', () => {
+          loadEmployeesView();
+          showEnterpriseToast('Staff directory refreshed.');
+        });
+      }
+
+      // Delete Employee Modal Event Bindings
+      const closeDelBtn = document.getElementById('closeDeleteEmployeeModalBtn');
+      if (closeDelBtn) closeDelBtn.addEventListener('click', closeDeleteEmployeeModal);
+
+      const cancelDelBtn = document.getElementById('cancelDeleteEmployeeBtn');
+      if (cancelDelBtn) cancelDelBtn.addEventListener('click', closeDeleteEmployeeModal);
+
+      const delInput = document.getElementById('deleteConfirmInput');
+      if (delInput) delInput.addEventListener('input', updateDeleteConfirmButtonState);
+
+      const confirmDelBtn = document.getElementById('confirmDeleteEmployeeBtn');
+      if (confirmDelBtn) confirmDelBtn.addEventListener('click', handleConfirmDeleteEmployee);
+
+      const delModal = document.getElementById('deleteEmployeeModal');
+      if (delModal) {
+        delModal.addEventListener('click', (e) => {
+          if (e.target === delModal) closeDeleteEmployeeModal();
+        });
+      }
+
+      const empSearch = document.getElementById('employeesSearchInput');
+      if (empSearch) empSearch.addEventListener('input', renderEmployeesTable);
+
+      const empRoleFilter = document.getElementById('employeesRoleFilter');
+      if (empRoleFilter) empRoleFilter.addEventListener('change', renderEmployeesTable);
+
+      const empStatusFilter = document.getElementById('employeesStatusFilter');
+      if (empStatusFilter) empStatusFilter.addEventListener('change', renderEmployeesTable);
+
+      // System Maintenance Event Bindings
+      const refreshSysBtn = document.getElementById('refreshSystemBtn');
+      if (refreshSysBtn) {
+        refreshSysBtn.addEventListener('click', () => {
+          loadSystemView();
+          showEnterpriseToast('System telemetry refreshed.');
+        });
+      }
+
+      const checkAiBtn = document.getElementById('checkAiConnectivityBtn');
+      if (checkAiBtn) checkAiBtn.addEventListener('click', checkAiConnectivityLive);
+
+      const triggerSyncBtnEl = document.getElementById('triggerSyncBtn');
+      if (triggerSyncBtnEl) triggerSyncBtnEl.addEventListener('click', triggerManualSync);
+
+      const refreshAuditBtn = document.getElementById('refreshAuditLogsBtn');
+      if (refreshAuditBtn) {
+        refreshAuditBtn.addEventListener('click', async () => {
+          try {
+            const res = await fetch(`${API_BASE}/system/audit-logs?limit=50`);
+            if (res.ok) {
+              allAuditLogs = await res.json();
+              renderAuditLogsTable();
+              showEnterpriseToast('Audit logs refreshed.');
+            }
+          } catch (_) {
+            showEnterpriseToast('Failed to refresh audit logs.', 'error');
+          }
+        });
+      }
+
+      const auditSearch = document.getElementById('auditSearchInput');
+      if (auditSearch) auditSearch.addEventListener('input', renderAuditLogsTable);
+
+      const auditFilter = document.getElementById('auditActionFilter');
+      if (auditFilter) auditFilter.addEventListener('change', renderAuditLogsTable);
+
+      // Note: Data preloading is triggered in applyRoleNavigation once authenticated role is verified
 
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         const revealObserver = new IntersectionObserver((entries) => {
@@ -4653,9 +7127,8 @@
       setTimeout(() => {
         document.documentElement.classList.remove('entrance-s2');
       }, 3200);
-    });
 
-    document.addEventListener('DOMContentLoaded', () => {
+      // POS Cashier Action Bindings
       const addBtn = document.getElementById('posManualAddBtn');
       const checkoutBtn = document.getElementById('posCompleteSaleBtn');
       const clearBtn = document.getElementById('posClearBtn');
@@ -4715,9 +7188,8 @@
           showPOSMessage('Cart cleared. Ready for the next bill.', 'success');
         });
       }
-    });
 
-    document.addEventListener('DOMContentLoaded', () => {
+      // Live AI Query Controls
       const liveInput = document.getElementById('liveChatInput');
       const liveSendBtn = document.getElementById('liveChatSendBtn');
       const clearChatBtn = document.getElementById('clearChatHistoryBtn');

@@ -58,6 +58,7 @@ def test_owner_has_full_business_and_employee_management():
     assert owner.has_permission(Permission.INVENTORY_MANAGE)
     assert owner.has_permission(Permission.SUPPLIERS_MANAGE)
     assert owner.has_permission(Permission.PURCHASES_MANAGE)
+    assert owner.has_permission(Permission.SYSTEM_HEALTH_MONITOR)
 
     assert owner.can_manage_role(AppRole.MANAGER)
     assert owner.can_manage_role(AppRole.CASHIER)
@@ -84,6 +85,7 @@ def test_cashier_permissions():
 
     assert cashier.has_permission(Permission.BILLING_CREATE)
     assert cashier.has_permission(Permission.BILLING_READ)
+    assert not cashier.has_permission(Permission.BILLING_MANAGE)
     assert cashier.has_permission(Permission.PRODUCTS_READ)
     assert cashier.has_permission(Permission.INVENTORY_READ)
 

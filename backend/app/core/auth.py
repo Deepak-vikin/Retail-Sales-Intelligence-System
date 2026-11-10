@@ -1,7 +1,9 @@
 import os
 import json
 import time
-from typing import Optional, Callable, Dict, Any
+import tempfile
+import threading
+from typing import Optional, Callable, Dict, Any, Tuple
 import jwt
 from jwt import PyJWKClient, PyJWKClientError
 from fastapi import HTTPException, Depends, status
@@ -185,6 +187,65 @@ def verify_supabase_jwt(token: str) -> Dict[str, Any]:
 
 _employee_lookup_override: Optional[Callable[[str], Optional[Dict[str, Any]]]] = None
 
+_profile_cache: Dict[str, Tuple[Dict[str, Any], float, float]] = {}
+_profile_cache_lock = threading.Lock()
+PROFILE_CACHE_TTL_SECONDS = 60.0
+
+_INVALIDATION_FILE = os.path.join(tempfile.gettempdir(), "retail_auth_cache_invalidations.json")
+_last_invalidation_mtime: float = 0.0
+_cross_worker_invalidations: Dict[str, float] = {}
+
+def _record_cross_worker_invalidation(user_uuid: Optional[str] = None):
+    """Persists invalidation event to shared temp file so other worker processes see it immediately."""
+    try:
+        now = time.time()
+        data = {}
+        if os.path.exists(_INVALIDATION_FILE):
+            try:
+                with open(_INVALIDATION_FILE, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+            except Exception:
+                data = {}
+
+        # Retain recent invalidations within twice the cache TTL
+        cutoff = now - (PROFILE_CACHE_TTL_SECONDS * 2)
+        data = {k: v for k, v in data.items() if v > cutoff}
+
+        if user_uuid:
+            data[user_uuid] = now
+        else:
+            data["__all__"] = now
+
+        temp_file = f"{_INVALIDATION_FILE}.tmp.{os.getpid()}_{int(now*1000)}"
+        with open(temp_file, "w", encoding="utf-8") as f:
+            json.dump(data, f)
+        os.replace(temp_file, _INVALIDATION_FILE)
+    except Exception:
+        pass
+
+def _sync_cross_worker_invalidations():
+    """Checks if another worker process invalidated any profiles since our last check."""
+    global _last_invalidation_mtime, _cross_worker_invalidations
+    try:
+        if not os.path.exists(_INVALIDATION_FILE):
+            return
+        mtime = os.stat(_INVALIDATION_FILE).st_mtime
+        if mtime > _last_invalidation_mtime:
+            with open(_INVALIDATION_FILE, "r", encoding="utf-8") as f:
+                _cross_worker_invalidations = json.load(f)
+            _last_invalidation_mtime = mtime
+    except Exception:
+        pass
+
+def invalidate_employee_cache(user_uuid: Optional[str] = None):
+    """Evicts cached employee profile(s) when roles or active status change across all workers."""
+    with _profile_cache_lock:
+        if user_uuid:
+            _profile_cache.pop(user_uuid, None)
+        else:
+            _profile_cache.clear()
+    _record_cross_worker_invalidation(user_uuid)
+
 def set_employee_lookup_override(fn: Optional[Callable[[str], Optional[Dict[str, Any]]]]):
     global _employee_lookup_override
     _employee_lookup_override = fn
@@ -192,6 +253,19 @@ def set_employee_lookup_override(fn: Optional[Callable[[str], Optional[Dict[str,
 def get_employee_from_db(user_uuid: str) -> Optional[Dict[str, Any]]:
     if _employee_lookup_override is not None:
         return _employee_lookup_override(user_uuid)
+
+    _sync_cross_worker_invalidations()
+    now = time.time()
+    with _profile_cache_lock:
+        if user_uuid in _profile_cache:
+            profile, expiry, cached_at = _profile_cache[user_uuid]
+            user_inv = _cross_worker_invalidations.get(user_uuid, 0.0)
+            all_inv = _cross_worker_invalidations.get("__all__", 0.0)
+            if user_inv >= cached_at or all_inv >= cached_at:
+                _profile_cache.pop(user_uuid, None)
+            elif now < expiry:
+                return profile
+
     try:
         conn = connection()
         cur = conn.cursor()
@@ -203,13 +277,16 @@ def get_employee_from_db(user_uuid: str) -> Optional[Dict[str, Any]]:
         cur.close()
         conn.close()
         if row:
-            return {
+            profile_data = {
                 "id": str(row[0]),
                 "full_name": row[1],
                 "email": row[2],
                 "role": row[3],
                 "is_active": row[4],
             }
+            with _profile_cache_lock:
+                _profile_cache[user_uuid] = (profile_data, now + PROFILE_CACHE_TTL_SECONDS, now)
+            return profile_data
     except Exception:
         pass
     return None

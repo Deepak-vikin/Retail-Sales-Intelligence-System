@@ -1,4 +1,6 @@
 import os
+import time
+import logging
 from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,6 +16,8 @@ from app.api.query import router as query_router
 from app.api.employees import router as employees_router
 from app.api.system import router as system_router
 
+logger = logging.getLogger(__name__)
+
 app = FastAPI(
     title="Retail Sales Intelligence Platform",
     description="AI-powered retail sales and inventory intelligence system",
@@ -26,7 +30,24 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["Server-Timing", "Content-Disposition"],
 )
+
+@app.middleware("http")
+async def performance_profiling_middleware(request: Request, call_next):
+    start_time = time.perf_counter()
+    response = await call_next(request)
+    duration_ms = (time.perf_counter() - start_time) * 1000
+    response.headers["Server-Timing"] = f"total;dur={duration_ms:.2f}"
+    # Structured audit logging of request duration without exposing secrets or tokens
+    logger.info(
+        "[PERF_HTTP] %s %s -> status=%d duration=%.2fms",
+        request.method,
+        request.url.path,
+        response.status_code,
+        duration_ms,
+    )
+    return response
 
 app.include_router(products_router)
 app.include_router(inventory_router)

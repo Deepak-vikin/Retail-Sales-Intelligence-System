@@ -66,6 +66,7 @@ ROLE_PERMISSIONS: Dict[AppRole, Set[Permission]] = {
         Permission.EMPLOYEES_MANAGE,
         Permission.BUSINESS_SETTINGS,
         Permission.AUDIT_LOGS_VIEW,
+        Permission.SYSTEM_HEALTH_MONITOR,
     },
     AppRole.MANAGER: {
         Permission.BILLING_CREATE,

@@ -1,5 +1,6 @@
 from datetime import date
 from decimal import Decimal
+import threading
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, Field
 from app.Services.purchase_service import (
@@ -16,6 +17,9 @@ from app.core.permissions import Permission, UserContext
 
 router = APIRouter(prefix="/purchases", tags=["Purchases"])
 
+_purchase_lock = threading.Lock()
+_in_flight_purchases = set()
+
 class PurchaseCreate(BaseModel):
     purchase_id: int
     product_id: int
@@ -26,6 +30,14 @@ class PurchaseCreate(BaseModel):
 
 @router.post("/")
 def add_purchase(purchase: PurchaseCreate, user: UserContext = Depends(require_permission(Permission.PURCHASES_MANAGE))):
+    with _purchase_lock:
+        if purchase.purchase_id in _in_flight_purchases:
+            raise HTTPException(
+                status_code=409,
+                detail=f"Purchase reference #{purchase.purchase_id} is currently being processed. Duplicate submission prevented."
+            )
+        _in_flight_purchases.add(purchase.purchase_id)
+
     try:
         return create_purchase(
             purchase_id=purchase.purchase_id,
@@ -36,12 +48,27 @@ def add_purchase(purchase: PurchaseCreate, user: UserContext = Depends(require_p
             purchase_date=purchase.purchase_date,
         )
     except ValueError as error:
-        raise HTTPException(status_code=400, detail=str(error))
-    except Exception:
+        err_msg = str(error)
+        if "already exists" in err_msg.lower():
+            raise HTTPException(
+                status_code=409,
+                detail=f"Purchase reference #{purchase.purchase_id} already exists."
+            )
+        raise HTTPException(status_code=400, detail=err_msg)
+    except Exception as e:
+        err_msg = str(e).lower()
+        if "duplicate key" in err_msg or "unique constraint" in err_msg or "already exists" in err_msg:
+            raise HTTPException(
+                status_code=409,
+                detail=f"Purchase reference #{purchase.purchase_id} already exists."
+            )
         raise HTTPException(
             status_code=500,
             detail="Failed to record purchase."
         )
+    finally:
+        with _purchase_lock:
+            _in_flight_purchases.discard(purchase.purchase_id)
 
 @router.get("/")
 def purchases(user: UserContext = Depends(require_permission(Permission.PURCHASES_READ))):

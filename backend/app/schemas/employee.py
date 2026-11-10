@@ -1,5 +1,5 @@
 import uuid
-from typing import Optional
+from typing import Optional, List, Dict, Any
 from datetime import datetime
 from pydantic import BaseModel, Field, ConfigDict
 from app.core.permissions import AppRole
@@ -28,6 +28,11 @@ class EmployeeProfileResponse(EmployeeProfileBase):
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
+class EmployeeDeleteResponse(BaseModel):
+    status: str = "success"
+    message: str
+    employee_id: str
+
 class SystemHealthResponse(BaseModel):
     status: str
     database_connected: bool
@@ -44,3 +49,38 @@ class AuditLogResponse(BaseModel):
     target_resource: Optional[str] = None
     details: Optional[str] = None
     performed_at: Optional[datetime] = None
+
+class AIGatewayStatusResponse(BaseModel):
+    provider: str
+    is_configured: bool
+    provider_reachable: Optional[bool] = None
+    primary_model: str
+    fallback_models: List[str]
+    all_models: List[str]
+    fallback_count: int
+    status: str
+
+class DataSyncQueueMetrics(BaseModel):
+    pending_sales: int
+    pending_purchases: int
+    processed_sales: int
+    processed_purchases: int
+    rejected_sales: int
+    rejected_purchases: int
+    total_pending: int
+    total_processed: int
+    total_rejected: int
+
+class DataSyncStatusResponse(BaseModel):
+    status: str
+    is_syncing: bool
+    queue: DataSyncQueueMetrics
+    last_sync: Optional[Dict[str, Any]] = None
+    scheduler_configured: bool
+    timestamp: datetime
+
+class DataSyncTriggerResponse(BaseModel):
+    status: str
+    message: str
+    triggered_by: Optional[str] = None
+    started_at: datetime

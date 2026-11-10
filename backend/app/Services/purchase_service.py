@@ -52,7 +52,7 @@ def get_product_purchases(product_id):
                    quantity_received, cost_price
             FROM purchases
             WHERE product_id = %s
-            ORDER BY purchase_date DESC;
+            ORDER BY purchase_date DESC, purchase_id DESC;
             """,
             (product_id,),
         )
@@ -70,7 +70,7 @@ def get_recent_purchases(limit=10):
             SELECT purchase_id, product_id, supplier_id,
                    purchase_date, quantity_received, cost_price
             FROM purchases
-            ORDER BY purchase_date DESC
+            ORDER BY purchase_date DESC, purchase_id DESC
             LIMIT %s;
             """,
             (limit,),
