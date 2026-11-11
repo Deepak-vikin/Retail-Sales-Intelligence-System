@@ -32,42 +32,37 @@
   <style>
     
     :root {
+      /* Kindred Design System Tokens */
+      --bg: #f7f7f5;
+      --surface-1: #ffffff;
+      --surface-2: #f2f2ee;
+      --surface-3: #eaeae5;
+      --surface-chat: #ffffff;
       
-      --bg: #0c0c0e;
-      --surface-1: #111317;
-      --surface-2: #16191f;
-      --surface-3: #1c2027;
-      --surface-chat: #101214;
+      --hairline: rgba(0, 0, 0, 0.08);
+      --hairline-hover: rgba(0, 0, 0, 0.16);
+      --hairline-focus: #111111;
       
+      --text-1: #111111;
+      --text-2: #555555;
+      --text-3: #777777;
       
-      --hairline: rgba(255, 255, 255, 0.07);
-      --hairline-hover: rgba(255, 255, 255, 0.14);
-      --hairline-focus: rgba(255, 255, 255, 0.22);
+      --accent-yellow: #111111;
+      --accent-green: #15803d;
+      --accent-teal: #0f766e;
+      --accent-primary: #111111;
+      --grad-accent: linear-gradient(135deg, #111111 0%, #333333 100%);
+      --grad-glow: none;
       
-      
-      --text-1: #f3f4f6;
-      --text-2: #9ca3af;
-      --text-3: #6b7280;
-      
-      
-      --accent-yellow: #e7c84b;
-      --accent-green: #78b982;
-      --accent-teal: #6fb7b5;
-      --grad-accent: linear-gradient(135deg, #e7c84b 0%, #78b982 50%, #6fb7b5 100%);
-      --grad-glow: radial-gradient(circle, rgba(231, 200, 75, 0.12) 0%, rgba(111, 183, 181, 0.08) 60%, transparent 100%);
-      
-      
-      --status-healthy: #34d399;
-      --status-warning: #fbbf24;
-      --status-critical: #f87171;
-      
+      --status-healthy: #16a34a;
+      --status-warning: #d97706;
+      --status-critical: #dc2626;
       
       --radius-sm: 8px;
       --radius-md: 12px;
-      --radius-lg: 18px;
-      --radius-xl: 22px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
       --radius-pill: 999px;
-      
       
       --font-main: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
@@ -88,9 +83,22 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
+    :focus-visible {
+      outline: 2px solid #111111;
+      outline-offset: 2px;
+    }
+
+    button:focus:not(:focus-visible),
+    a:focus:not(:focus-visible) {
+      outline: none;
+    }
+
     @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
       }
     }
 
@@ -116,26 +124,16 @@
       background: transparent;
     }
     ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.14);
       border-radius: var(--radius-pill);
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.22);
+      background: rgba(0, 0, 0, 0.28);
     }
 
     
     .bg-grid-overlay {
-      position: fixed;
-      inset: 0;
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(231, 200, 75, 0.035) 0%, transparent 60%),
-        radial-gradient(circle at 85% 30%, rgba(111, 183, 181, 0.03) 0%, transparent 50%),
-        linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
-      background-position: center top;
-      pointer-events: none;
-      z-index: 0;
+      display: none !important;
     }
 
     
@@ -144,7 +142,7 @@
       top: 0;
       width: 100%;
       z-index: 60;
-      background: rgba(12, 12, 14, 0.82);
+      background: rgba(247, 247, 245, 0.92);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--hairline);
@@ -174,24 +172,18 @@
       width: 34px;
       height: 34px;
       border-radius: 9px;
-      background: var(--surface-2);
-      border: 1px solid var(--hairline);
+      background: #111111;
+      border: 1px solid rgba(0, 0, 0, 0.1);
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       overflow: hidden;
-      transition: border-color 0.2s ease, transform 0.2s ease;
+      transition: transform 0.2s ease;
     }
 
     .brand-icon-box::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: inherit;
-      background: var(--grad-accent);
-      opacity: 0.4;
-      z-index: 0;
+      display: none !important;
     }
 
     .brand-icon-inner {
@@ -200,14 +192,14 @@
       width: 32px;
       height: 32px;
       border-radius: 8px;
-      background: var(--surface-1);
+      background: #111111;
+      color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .brand-link:hover .brand-icon-box {
-      border-color: rgba(255, 255, 255, 0.25);
       transform: translateY(-1px);
     }
 
@@ -220,7 +212,7 @@
       font-size: 0.92rem;
       font-weight: 600;
       letter-spacing: -0.01em;
-      color: #fff;
+      color: var(--text-1);
     }
 
     .brand-badge {
@@ -235,7 +227,7 @@
       display: flex;
       align-items: center;
       list-style: none;
-      background: rgba(255, 255, 255, 0.025);
+      background: rgba(0, 0, 0, 0.04);
       border: 1px solid var(--hairline);
       padding: 3px;
       border-radius: var(--radius-pill);
@@ -265,8 +257,8 @@
     }
 
     .nav-btn:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-1);
+      background: rgba(0, 0, 0, 0.05);
     }
 
     .nav-btn:hover svg {
@@ -275,28 +267,18 @@
     }
 
     .nav-btn.active {
-      color: #fff;
-      background: var(--surface-3);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      background: #111111;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
     }
 
     .nav-btn.active svg {
       opacity: 1;
-      color: #fff;
+      color: #ffffff;
     }
 
     .nav-btn .nav-dot {
       display: none;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--accent-yellow);
-      box-shadow: 0 0 6px rgba(231, 200, 75, 0.8);
-      flex-shrink: 0;
-    }
-
-    .nav-btn.active .nav-dot {
-      display: inline-block;
     }
 
     
@@ -327,55 +309,74 @@
       transform: translateY(-1px);
     }
 
-    .btn-tactile:active {
-      transform: scale(0.97);
+    .btn-tactile:active,
+    .landing-signin-btn:active,
+    .composer-round-btn:active,
+    .kindred-cta-btn:active,
+    .burger-btn:active,
+    .nav-btn:active,
+    .landing-nav-link:active {
+      transform: scale(0.97) !important;
     }
 
     .btn-primary-accent {
-      background: #ffffff;
-      color: #0c0c0e;
-      font-weight: 600;
-      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+      background: #111111;
+      color: #ffffff;
+      font-weight: 500;
+      border: 1px solid #111111;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
     }
 
     .btn-primary-accent:hover {
-      background: #f0f0f2;
-      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.12);
+      background: #2a2a2a;
+      border-color: #2a2a2a;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
     }
 
     .btn-ghost-dark {
-      background: rgba(255, 255, 255, 0.04);
-      border-color: var(--hairline);
-      color: var(--text-2);
+      background: #ffffff;
+      border: 1px solid var(--hairline);
+      color: var(--text-1);
     }
 
     .btn-ghost-dark:hover {
-      background: rgba(255, 255, 255, 0.08);
+      background: var(--surface-2);
       border-color: var(--hairline-hover);
-      color: #fff;
+      color: var(--text-1);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      border: 1px solid var(--hairline);
+      color: var(--text-1);
+    }
+    .btn-secondary:hover {
+      background: var(--surface-2);
+      border-color: var(--hairline-hover);
+      color: var(--text-1);
     }
 
     .btn-danger-accent {
-      background: rgba(239, 68, 68, 0.12);
-      border-color: rgba(239, 68, 68, 0.35);
-      color: #ef4444;
+      background: rgba(220, 38, 38, 0.08);
+      border-color: rgba(220, 38, 38, 0.25);
+      color: #dc2626;
     }
     .btn-danger-accent:hover {
-      background: rgba(239, 68, 68, 0.22);
-      border-color: rgba(239, 68, 68, 0.6);
-      color: #f87171;
+      background: rgba(220, 38, 38, 0.16);
+      border-color: rgba(220, 38, 38, 0.5);
+      color: #b91c1c;
     }
     .btn-danger-solid {
-      background: #ef4444;
-      border-color: #dc2626;
-      color: #ffffff;
-      font-weight: 600;
-      box-shadow: 0 2px 10px rgba(239, 68, 68, 0.35);
-    }
-    .btn-danger-solid:hover:not(:disabled) {
       background: #dc2626;
       border-color: #b91c1c;
-      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.5);
+      color: #ffffff;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
+    }
+    .btn-danger-solid:hover:not(:disabled) {
+      background: #b91c1c;
+      border-color: #991b1b;
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
     }
 
     
@@ -396,7 +397,7 @@
     .burger-line {
       width: 20px;
       height: 1.5px;
-      background: #fff;
+      background: #111111;
       transition: transform 0.2s ease, opacity 0.2s ease;
     }
 
@@ -424,7 +425,7 @@
     .nav-drawer {
       position: fixed;
       inset: 0;
-      background: rgba(10, 11, 13, 0.94);
+      background: rgba(247, 247, 245, 0.98);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       z-index: 100;
@@ -475,7 +476,7 @@
 
     .drawer-link-btn:hover,
     .drawer-link-btn.active {
-      color: #fff;
+      color: #111111;
     }
 
     
@@ -536,7 +537,7 @@
       font-weight: 500;
       line-height: 1.1;
       letter-spacing: -0.025em;
-      color: #ffffff;
+      color: var(--text-1);
       margin: 0;
     }
 
@@ -609,7 +610,7 @@
       background: transparent;
       border: none;
       outline: none;
-      color: #fff;
+      color: var(--text-1);
       font-size: 1.05rem;
       font-family: inherit;
       resize: none;
@@ -632,7 +633,7 @@
       text-align: left;
       font-size: 0.92rem;
       line-height: 1.55;
-      color: #e5e7eb;
+      color: var(--text-1);
       max-height: 220px;
       overflow-y: auto;
     }
@@ -674,8 +675,8 @@
     }
 
     .composer-pill-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
+      background: var(--surface-2);
+      color: var(--text-1);
       border-color: var(--hairline-hover);
     }
 
@@ -744,8 +745,8 @@
     }
 
     .quick-query-item:hover {
-      background: rgba(255, 255, 255, 0.06);
-      color: #fff;
+      background: var(--surface-2);
+      color: var(--text-1);
     }
 
     .quick-query-item svg {
@@ -768,17 +769,17 @@
     }
 
     .composer-round-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
+      background: var(--surface-2);
+      color: var(--text-1);
     }
 
     .composer-send-btn {
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: var(--surface-3);
-      border: 1px solid var(--hairline-hover);
-      color: #fff;
+      background: #111111;
+      border: 1px solid #111111;
+      color: #ffffff;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -787,23 +788,10 @@
       position: relative;
     }
 
-    .composer-send-btn::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: 50%;
-      padding: 1px;
-      background: var(--grad-accent);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity: 0.6;
-      transition: opacity 0.2s ease;
-    }
-
     .composer-send-btn:hover {
+      background: #000000;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .composer-send-btn:hover::before {
@@ -838,8 +826,8 @@
     }
 
     .suggestion-chip:hover {
-      background: rgba(255, 255, 255, 0.06);
-      color: #fff;
+      background: var(--surface-2);
+      color: var(--text-1);
       border-color: var(--hairline-hover);
       transform: translateY(-1px);
     }
@@ -908,7 +896,7 @@
       font-weight: 500;
       line-height: 1.15;
       letter-spacing: -0.02em;
-      color: #fff;
+      color: var(--text-1);
     }
 
     .s2-subtitle {
@@ -922,10 +910,10 @@
     .ai-workspace-container {
       width: 100%;
       max-width: 880px;
-      background: var(--surface-chat);
+      background: #ffffff;
       border: 1px solid var(--hairline);
       border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
       position: relative;
       z-index: 1;
       display: flex;
@@ -940,7 +928,7 @@
       justify-content: space-between;
       padding: 12px 20px;
       border-bottom: 1px solid var(--hairline);
-      background: rgba(255, 255, 255, 0.015);
+      background: #fafaf8;
     }
 
     .workspace-status-box {
@@ -958,7 +946,7 @@
     .workspace-status-title {
       font-size: 0.85rem;
       font-weight: 600;
-      color: #fff;
+      color: var(--text-1);
       letter-spacing: -0.01em;
     }
 
@@ -974,8 +962,8 @@
       font-size: 0.72rem;
       font-weight: 500;
       color: var(--status-healthy);
-      background: rgba(52, 211, 153, 0.08);
-      border: 1px solid rgba(52, 211, 153, 0.2);
+      background: rgba(22, 163, 74, 0.08);
+      border: 1px solid rgba(22, 163, 74, 0.2);
       padding: 3px 9px;
       border-radius: var(--radius-pill);
     }
@@ -985,7 +973,7 @@
       height: 6px;
       border-radius: 50%;
       background: var(--status-healthy);
-      box-shadow: 0 0 8px rgba(52, 211, 153, 0.8);
+      box-shadow: 0 0 8px rgba(22, 163, 74, 0.6);
       flex-shrink: 0;
       animation: pulseGlow 2.2s ease-in-out infinite;
     }
@@ -1007,9 +995,9 @@
     }
 
     .btn-clear-chat:hover {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(0, 0, 0, 0.04);
       border-color: var(--hairline-hover);
-      color: #fff;
+      color: var(--text-1);
       transform: translateY(-1px);
     }
 
@@ -1030,16 +1018,16 @@
       height: 42px;
       display: grid;
       place-items: center;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid var(--hairline);
       border-radius: 14px;
-      background: rgba(255, 255, 255, 0.035);
-      color: #d8d9a0;
+      background: var(--surface-2);
+      color: var(--text-1);
       margin-bottom: 2px;
     }
 
     .chat-empty-state h3 {
       margin: 0;
-      color: #f3f4f6;
+      color: var(--text-1);
       font-size: 1rem;
       font-weight: 600;
     }
@@ -1060,8 +1048,9 @@
       padding: 24px 22px;
       max-height: 520px;
       overflow-y: auto;
+      background: #ffffff;
       scrollbar-width: thin;
-      scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
+      scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
     }
 
     .chat-stream-box::-webkit-scrollbar {
@@ -1073,26 +1062,26 @@
     }
 
     .chat-stream-box::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.12);
       border-radius: var(--radius-pill);
     }
 
     .chat-stream-box::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.18);
+      background: rgba(0, 0, 0, 0.22);
     }
 
     
     .chat-bubble-user {
       align-self: flex-end;
       max-width: 76%;
-      background: #191c21;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: #f3f4f6;
+      background: #111111;
+      border: 1px solid #111111;
+      color: #ffffff;
       border-radius: 16px 16px 4px 16px;
       padding: 12px 18px;
       font-size: 0.92rem;
       line-height: 1.45;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     }
 
     
@@ -1108,8 +1097,8 @@
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      background: #15181d;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #111111;
+      border: 1px solid rgba(0, 0, 0, 0.1);
       flex-shrink: 0;
       display: flex;
       align-items: center;
@@ -1119,13 +1108,7 @@
     }
 
     .ai-avatar-emblem::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: 50%;
-      background: var(--grad-accent);
-      opacity: 0.7;
-      z-index: 0;
+      display: none !important;
     }
 
     .ai-avatar-emblem-inner {
@@ -1134,7 +1117,8 @@
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      background: #101214;
+      background: #111111;
+      color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1143,22 +1127,22 @@
     .ai-avatar-emblem svg {
       width: 14px;
       height: 14px;
-      color: var(--accent-yellow);
+      color: #ffffff;
     }
 
     .chat-card-ai {
-      background: #15171c;
+      background: #fafaf8;
       border: 1px solid var(--hairline);
       border-radius: 4px 16px 16px 16px;
       padding: 16px 20px;
-      color: #e5e7eb;
+      color: var(--text-1);
       font-size: 0.92rem;
       line-height: 1.5;
       display: flex;
       flex-direction: column;
       gap: 12px;
       width: 100%;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.03);
     }
 
     
@@ -1180,7 +1164,7 @@
     .ai-metric-value {
       font-size: 1.55rem;
       font-weight: 600;
-      color: #fff;
+      color: var(--text-1);
       letter-spacing: -0.02em;
     }
 
@@ -1195,7 +1179,7 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
-      color: #d1d5db;
+      color: var(--text-2);
       padding-left: 2px;
     }
 
@@ -1207,61 +1191,61 @@
 
     .ai-drivers-list li::before {
       content: '•';
-      color: var(--accent-yellow);
+      color: #111111;
       font-weight: bold;
     }
 
     .ai-recommendation-box {
-      background: rgba(231, 200, 75, 0.05);
-      border-left: 2px solid var(--accent-yellow);
+      background: var(--surface-2);
+      border-left: 2px solid #111111;
       padding: 10px 14px;
       border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
       font-size: 0.86rem;
-      color: #e5e7eb;
+      color: var(--text-1);
     }
 
     
     .chat-bottom-composer {
       padding: 16px 20px;
       border-top: 1px solid var(--hairline);
-      background: rgba(255, 255, 255, 0.015);
+      background: #fafaf8;
     }
 
     .chat-composer-inner {
       display: flex;
       align-items: center;
       gap: 10px;
-      background: #14171c;
-      border: 1px solid var(--hairline);
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.12);
       border-radius: 18px;
       padding: 7px 10px 7px 12px;
       min-height: 52px;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 4px 16px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
       transition: border-color 0.22s cubic-bezier(0.22, 1, 0.36, 1),
                   box-shadow 0.22s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .chat-composer-inner:hover {
-      border-color: var(--hairline-hover);
+      border-color: rgba(0, 0, 0, 0.22);
     }
 
     .chat-composer-inner:focus-within {
-      border-color: rgba(255, 255, 255, 0.22);
-      box-shadow: 0 0 0 1px rgba(231, 200, 75, 0.16), 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      border-color: #111111;
+      box-shadow: 0 0 0 1px #111111;
     }
 
     .composer-plus-btn {
       color: var(--text-2);
-      background: rgba(255, 255, 255, 0.04);
+      background: var(--surface-2);
       border: 1px solid var(--hairline);
       transition: all 0.18s ease;
       flex-shrink: 0;
     }
 
     .composer-plus-btn:hover {
-      background: rgba(255, 255, 255, 0.09);
+      background: rgba(0, 0, 0, 0.06);
       border-color: var(--hairline-hover);
-      color: #fff;
+      color: var(--text-1);
       transform: translateY(-0.5px);
     }
 
@@ -1270,7 +1254,7 @@
       border: none;
       background: transparent;
       outline: none;
-      color: #fff;
+      color: var(--text-1);
       font-size: 0.94rem;
       font-family: inherit;
       line-height: 1.4;
@@ -1284,9 +1268,9 @@
       width: 34px;
       height: 34px;
       border-radius: 50%;
-      background: var(--surface-3);
-      border: 1px solid var(--hairline-hover);
-      color: #fff;
+      background: #111111;
+      border: 1px solid #111111;
+      color: #ffffff;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -1296,25 +1280,16 @@
       position: relative;
     }
 
-    .chat-send-accent-btn::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: 50%;
-      background: var(--grad-accent);
-      opacity: 0.45;
-      z-index: 0;
-      transition: opacity 0.2s ease;
-    }
-
     .chat-send-accent-btn svg {
       position: relative;
       z-index: 1;
+      color: #ffffff;
     }
 
     .chat-send-accent-btn:hover {
+      background: #000000;
       transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .chat-send-accent-btn:hover::before {
@@ -1370,9 +1345,9 @@
     }
 
     .btn-retry:hover {
-      background: var(--surface-3);
-      border-color: rgba(255, 255, 255, 0.25);
-      color: #fff;
+      background: var(--surface-2);
+      border-color: var(--hairline-hover);
+      color: var(--text-1);
       transform: translateY(-1px);
     }
 
@@ -1451,11 +1426,11 @@
 
     
     .workspace-pane {
-      display: none;
+      display: none !important;
     }
 
     .workspace-pane.active {
-      display: block;
+      display: block !important;
       animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -1488,7 +1463,7 @@
       font-size: clamp(1.4rem, 2.2vw, 2rem);
       font-weight: 500;
       letter-spacing: -0.02em;
-      color: #fff;
+      color: var(--text-1);
     }
 
     .header-text-block p {
@@ -1506,7 +1481,7 @@
     }
 
     .kpi-card {
-      background: var(--surface-1);
+      background: #ffffff;
       border: 1px solid var(--hairline);
       border-radius: var(--radius-md);
       padding: 20px 22px;
@@ -1515,31 +1490,16 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
-                  border-color 300ms cubic-bezier(0.22, 1, 0.36, 1),
-                  box-shadow 300ms cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .kpi-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent-yellow), var(--accent-green), var(--accent-teal));
-      opacity: 0.5;
-      transition: opacity 0.3s ease;
-    }
-
-    .kpi-card:hover::before {
-      opacity: 0.85;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+      transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1),
+                  border-color 250ms cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 250ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .kpi-card:hover {
-      transform: translateY(-3px);
+      transform: translateY(-2px);
       border-color: var(--hairline-hover);
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
     }
 
     .kpi-label {
@@ -1554,7 +1514,7 @@
       font-size: clamp(1.6rem, 2.4vw, 2.1rem);
       font-weight: 600;
       letter-spacing: -0.02em;
-      color: #fff;
+      color: var(--text-1);
       line-height: 1.1;
     }
 
@@ -1587,43 +1547,43 @@
     }
 
     
-    .ai-md { color: #e2e8f0; font-size: 0.93rem; line-height: 1.65; }
+    .ai-md { color: var(--text-1); font-size: 0.93rem; line-height: 1.65; }
     .ai-md h1, .ai-md h2 {
-      font-size: 1.05rem; font-weight: 700; color: #f1f5f9;
+      font-size: 1.05rem; font-weight: 600; color: var(--text-1);
       margin: 0 0 8px; letter-spacing: -0.02em;
     }
     .ai-md h3 {
-      font-size: 0.88rem; font-weight: 600; color: var(--accent-primary);
+      font-size: 0.88rem; font-weight: 600; color: var(--text-1);
       text-transform: uppercase; letter-spacing: 0.06em;
       margin: 14px 0 6px;
     }
     .ai-md p { margin: 0 0 8px; }
-    .ai-md strong { color: #fff; font-weight: 600; }
+    .ai-md strong { color: var(--text-1); font-weight: 600; }
     .ai-md em { color: var(--text-2); font-style: italic; }
     .ai-md ul, .ai-md ol {
-      margin: 4px 0 10px 16px; padding: 0; color: #cbd5e1;
+      margin: 4px 0 10px 16px; padding: 0; color: var(--text-2);
     }
     .ai-md li { margin-bottom: 4px; }
     .ai-md table {
       width: 100%; border-collapse: collapse; font-size: 0.83rem;
-      margin: 8px 0 14px; color: #e2e8f0;
+      margin: 8px 0 14px; color: var(--text-1);
     }
     .ai-md th {
       text-align: left; padding: 6px 10px;
-      background: rgba(255,255,255,0.04);
+      background: #fafaf8;
       border-bottom: 1px solid var(--hairline);
-      font-weight: 600; color: #94a3b8; font-size: 0.78rem;
+      font-weight: 600; color: var(--text-3); font-size: 0.78rem;
       text-transform: uppercase; letter-spacing: 0.05em;
     }
-    .ai-md td { padding: 6px 10px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .ai-md td { padding: 6px 10px; border-bottom: 1px solid var(--hairline); }
     .ai-md tr:last-child td { border-bottom: none; }
     .ai-md code {
       font-family: monospace; font-size: 0.8rem;
-      background: rgba(255,255,255,0.07); padding: 1px 5px; border-radius: 3px;
-      color: var(--accent-primary);
+      background: var(--surface-2); padding: 1px 5px; border-radius: 3px;
+      color: var(--text-1);
     }
     .ai-md blockquote {
-      border-left: 3px solid var(--accent-primary);
+      border-left: 3px solid #111111;
       margin: 6px 0; padding: 4px 12px;
       color: var(--text-2); font-style: italic;
     }
@@ -1632,13 +1592,13 @@
     
     .ai-chart-wrap {
       margin: 14px 0 4px;
-      background: rgba(255,255,255,0.03);
+      background: #fafaf8;
       border: 1px solid var(--hairline);
       border-radius: 10px;
       padding: 16px 18px;
     }
     .ai-chart-title {
-      font-size: 0.8rem; font-weight: 600; color: #94a3b8;
+      font-size: 0.8rem; font-weight: 600; color: var(--text-3);
       text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px;
     }
     .ai-chart-wrap canvas { max-height: 260px; }
@@ -1647,7 +1607,7 @@
     .ai-followup-row {
       display: flex; flex-wrap: wrap; gap: 7px;
       margin-top: 12px; padding-top: 10px;
-      border-top: 1px solid rgba(255,255,255,0.05);
+      border-top: 1px solid var(--hairline);
     }
     .ai-followup-label {
       font-size: 0.72rem; color: var(--text-3); width: 100%;
@@ -1655,48 +1615,56 @@
     }
     .ai-followup-chip {
       display: inline-flex; align-items: center; gap: 5px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: #ffffff;
+      border: 1px solid var(--hairline);
       border-radius: 20px; padding: 4px 12px;
-      font-size: 0.78rem; color: #94a3b8; cursor: pointer;
+      font-size: 0.78rem; color: var(--text-2); cursor: pointer;
       transition: all 0.15s ease;
     }
     .ai-followup-chip:hover {
-      background: rgba(var(--accent-primary-rgb, 99,102,241), 0.15);
-      border-color: var(--accent-primary); color: #e2e8f0;
+      background: var(--surface-2);
+      border-color: var(--hairline-hover); color: var(--text-1);
     }
 
     
     #heroAnswerBox .analyst-card {
-      background: rgba(255,255,255,0.03);
+      background: #ffffff;
       border: 1px solid var(--hairline);
       border-radius: 14px; padding: 20px 24px;
     }
 
     
     .enterprise-panel {
-      background: var(--surface-1);
+      background: #ffffff;
       border: 1px solid var(--hairline);
       border-radius: var(--radius-lg);
       padding: 22px 24px;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
       display: flex;
       flex-direction: column;
       gap: 16px;
+      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+                  border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .enterprise-panel:hover {
+      border-color: rgba(0, 0, 0, 0.12);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
     }
 
     .panel-top-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid var(--hairline);
       padding-bottom: 12px;
     }
 
     .panel-heading {
       font-size: 0.98rem;
       font-weight: 600;
-      color: #fff;
+      color: var(--text-1);
       letter-spacing: -0.01em;
     }
 
@@ -1714,23 +1682,24 @@
 
     .enterprise-table th {
       color: var(--text-3);
-      font-weight: 500;
+      font-weight: 600;
       padding: 10px 14px;
       border-bottom: 1px solid var(--hairline);
       text-transform: uppercase;
       font-size: 0.72rem;
       letter-spacing: 0.05em;
+      background: #fafaf8;
     }
 
     .enterprise-table td {
       padding: 13px 14px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.035);
-      color: #e5e7eb;
+      border-bottom: 1px solid var(--hairline);
+      color: var(--text-1);
       transition: background-color 200ms ease;
     }
 
     .enterprise-table tr:hover td {
-      background-color: rgba(255, 255, 255, 0.025);
+      background-color: #fafaf8;
     }
 
     
@@ -1796,11 +1765,11 @@
 
     .form-input-dark {
       width: 100%;
-      background: var(--surface-2);
-      border: 1px solid var(--hairline);
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.12);
       border-radius: var(--radius-sm);
       padding: 9px 14px 9px 38px;
-      color: #fff;
+      color: var(--text-1);
       font-size: 0.88rem;
       font-family: inherit;
       outline: none;
@@ -1808,20 +1777,20 @@
     }
 
     .form-input-dark:hover {
-      border-color: var(--hairline-hover);
+      border-color: rgba(0, 0, 0, 0.25);
     }
 
     .form-input-dark:focus {
-      border-color: rgba(255, 255, 255, 0.25);
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+      border-color: #111111;
+      box-shadow: 0 0 0 1px #111111;
     }
 
     .form-select-dark {
-      background: var(--surface-2);
-      border: 1px solid var(--hairline);
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.12);
       border-radius: var(--radius-sm);
       padding: 9px 14px;
-      color: var(--text-2);
+      color: var(--text-1);
       font-size: 0.86rem;
       font-family: inherit;
       outline: none;
@@ -1830,13 +1799,18 @@
     }
 
     .form-select-dark:hover {
-      border-color: var(--hairline-hover);
+      border-color: rgba(0, 0, 0, 0.25);
+    }
+
+    .form-select-dark:focus {
+      border-color: #111111;
+      box-shadow: 0 0 0 1px #111111;
     }
 
     
     .pos-barcode-scanner-box {
-      background: linear-gradient(135deg, rgba(231, 200, 75, 0.03) 0%, rgba(111, 183, 181, 0.03) 100%), var(--surface-1);
-      border: 1px dashed rgba(255, 255, 255, 0.16);
+      background: #ffffff;
+      border: 1px dashed rgba(0, 0, 0, 0.22);
       border-radius: var(--radius-md);
       padding: 14px 18px;
       display: flex;
@@ -1847,12 +1821,12 @@
     }
 
     .pos-barcode-scanner-box:focus-within {
-      border-color: var(--accent-yellow);
+      border-color: #111111;
       border-style: solid;
     }
 
     .barcode-svg-icon {
-      color: var(--accent-yellow);
+      color: var(--text-1);
       flex-shrink: 0;
     }
 
@@ -1861,7 +1835,7 @@
       background: transparent;
       border: none;
       outline: none;
-      color: #fff;
+      color: var(--text-1);
       font-size: 1.05rem;
       font-family: monospace;
       letter-spacing: 0.04em;
@@ -1890,8 +1864,8 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(8px);
       z-index: 150;
       display: none;
       align-items: center;
@@ -1905,15 +1879,16 @@
     }
 
     .modal-surface {
-      background: var(--surface-1);
-      border: 1px solid var(--hairline-hover);
+      background: #ffffff;
+      border: 1px solid var(--hairline);
       border-radius: var(--radius-lg);
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
       width: 100%;
       max-width: 640px;
       max-height: 90vh;
       overflow-y: auto;
       padding: 24px 28px;
+      color: var(--text-1);
     }
 
     
@@ -1921,12 +1896,12 @@
       position: fixed;
       bottom: 24px;
       right: 24px;
-      background: var(--surface-2);
-      border: 1px solid var(--hairline-hover);
+      background: #111111;
+      border: 1px solid rgba(0, 0, 0, 0.2);
       border-radius: var(--radius-md);
       padding: 12px 20px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-      color: #fff;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+      color: #ffffff;
       font-size: 0.88rem;
       z-index: 200;
       display: none;
@@ -2127,9 +2102,417 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* ==========================================================================
+       KINDRED — DOT-MATRIX HANDS HERO & EDITORIAL LANDING PAGE DESIGN
+       Warm off-white (#f7f7f5), near-black (#111111), minimal typography, Inter
+       ========================================================================== */
+    body.landing-mode {
+      background-color: #f7f7f5 !important;
+      color: #111111 !important;
+    }
+
+    body.landing-mode .bg-grid-overlay {
+      display: none !important;
+    }
+
+    /* Landing Topbar in Landing Mode */
+    body.landing-mode .topbar-wrapper {
+      background: rgba(247, 247, 245, 0.90) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    body.landing-mode .brand-link {
+      color: #111111 !important;
+    }
+
+    body.landing-mode .brand-icon-box {
+      background: #ffffff !important;
+      border: 1px solid rgba(0, 0, 0, 0.12) !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    body.landing-mode .brand-icon-box::before {
+      display: none !important;
+    }
+
+    body.landing-mode .brand-icon-inner {
+      background: #111111 !important;
+    }
+
+    body.landing-mode .brand-icon-inner svg {
+      stroke: #f7f7f5 !important;
+    }
+
+    body.landing-mode .brand-title {
+      color: #111111 !important;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    /* Hide internal dashboard nav in landing mode */
+    body.landing-mode .nav-links-center {
+      display: none !important;
+    }
+
+    /* Public Landing Navigation (Kindred minimal editorial style) */
+    .landing-nav-center {
+      display: none;
+      align-items: center;
+      list-style: none;
+      gap: 32px;
+      margin: 0;
+      padding: 0;
+    }
+
+    body.landing-mode .landing-nav-center {
+      display: flex;
+    }
+
+    .landing-nav-link {
+      background: none;
+      border: none;
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #555555;
+      cursor: pointer;
+      padding: 6px 0;
+      position: relative;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      letter-spacing: -0.01em;
+    }
+
+    .landing-nav-link:hover {
+      color: #111111;
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .landing-signin-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      color: #111111;
+      font-family: var(--font-main);
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      transition: color 0.2s ease, background 0.2s ease;
+      letter-spacing: -0.01em;
+    }
+
+    body.landing-mode .landing-signin-btn {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    body.landing-mode.user-authenticated .landing-signin-btn {
+      display: none !important;
+    }
+
+    body.landing-mode:not(.user-authenticated) #authStatusBadge {
+      display: none !important;
+    }
+
+    .landing-signin-btn:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: #000000;
+    }
+
+    body.landing-mode #authStatusBadge {
+      background: #ffffff !important;
+      border-color: rgba(0, 0, 0, 0.1) !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    body.landing-mode #authStatusBadge #userRoleBadge {
+      color: #111111 !important;
+    }
+
+    body.landing-mode #authStatusBadge button#logoutBtn {
+      color: #666666 !important;
+      border-left-color: rgba(0, 0, 0, 0.1) !important;
+    }
+
+    body.landing-mode #authStatusBadge button#logoutBtn:hover {
+      color: #111111 !important;
+    }
+
+    body.landing-mode .burger-line {
+      background: #111111 !important;
+    }
+
+    body.landing-mode .nav-drawer {
+      background: rgba(247, 247, 245, 0.97) !important;
+    }
+
+    body.landing-mode .drawer-header {
+      border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+    }
+
+    body.landing-mode .drawer-header .brand-title {
+      color: #111111 !important;
+    }
+
+    body.landing-mode .drawer-link-btn {
+      color: #333333 !important;
+    }
+
+    body.landing-mode .drawer-link-btn:hover {
+      background: rgba(0, 0, 0, 0.05) !important;
+      color: #000000 !important;
+    }
+
+    body.landing-mode:not(.user-authenticated) .drawer-links:not(.landing-drawer-links) {
+      display: none !important;
+    }
+
+    body:not(.landing-mode) .landing-drawer-links,
+    body.user-authenticated .landing-drawer-links {
+      display: none !important;
+    }
+
+    /* ==========================================================================
+       VIEW HOME: KINDRED HERO SECTION
+       ========================================================================== */
+    #viewHome {
+      background-color: #f7f7f5;
+      position: relative;
+      overflow: hidden;
+      display: none !important;
+    }
+
+    #viewHome.active {
+      display: flex !important;
+      flex-direction: column;
+      min-height: calc(100vh - 65px);
+    }
+
+    .kindred-hero-wrap {
+      position: relative;
+      width: 100%;
+      min-height: calc(100vh - 65px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      overflow: hidden;
+      background-color: #f7f7f5;
+    }
+
+    /* Animated Dot-Matrix Hands Canvas */
+    #kindredHandsCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Centered Minimal Editorial Content */
+    .kindred-hero-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 960px;
+      padding: clamp(64px, 14vh, 140px) 24px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin: auto 0;
+    }
+
+    .kindred-hero-headline {
+      font-family: var(--font-main);
+      font-size: clamp(2.4rem, 5.6vw, 4.5rem);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+      color: #111111;
+      margin: 0 auto;
+      max-width: 820px;
+      user-select: text;
+    }
+
+    .kindred-hero-headline span.kindred-headline-line {
+      display: block;
+    }
+
+    .kindred-hero-subtitle {
+      font-family: var(--font-main);
+      font-size: clamp(0.98rem, 1.5vw, 1.15rem);
+      font-weight: 400;
+      line-height: 1.55;
+      color: #666666;
+      max-width: 530px;
+      margin: 22px auto 36px;
+      user-select: text;
+    }
+
+    /* The Rainbow Underglow Pill CTA */
+    .kindred-cta-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 4px;
+    }
+
+    .kindred-rainbow-glow {
+      position: absolute;
+      inset: -3px;
+      border-radius: 9999px;
+      background: linear-gradient(
+        90deg,
+        #ff3b30 0%,
+        #ff9500 20%,
+        #34c759 40%,
+        #00c7be 60%,
+        #5856d6 80%,
+        #af52de 100%
+      );
+      filter: blur(14px);
+      opacity: 0.70;
+      transform: translateY(6px);
+      transition: filter 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .kindred-cta-wrapper:hover .kindred-rainbow-glow {
+      filter: blur(20px);
+      opacity: 0.90;
+      transform: translateY(8px) scale(1.04);
+    }
+
+    .kindred-cta-btn {
+      position: relative;
+      z-index: 1;
+      background: #111111;
+      color: #ffffff;
+      border: none;
+      border-radius: 9999px;
+      padding: 15px 36px;
+      font-family: var(--font-main);
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: -0.015em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                  background-color 0.2s ease,
+                  box-shadow 0.2s ease;
+    }
+
+    .kindred-cta-btn:hover {
+      background: #000000;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    .kindred-cta-btn:active {
+      transform: translateY(1px);
+    }
+
+    .kindred-cta-btn svg {
+      transition: transform 0.2s ease;
+    }
+
+    .kindred-cta-btn:hover svg {
+      transform: translateX(3px);
+    }
+
+    /* Bottom Retail Intelligence Capabilities Row */
+    .kindred-bottom-strip {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px 32px 32px;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .kindred-cap-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #777777;
+      font-family: var(--font-main);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .kindred-cap-item:hover {
+      color: #111111;
+    }
+
+    .kindred-cap-item svg {
+      stroke: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .landing-nav-center {
+        display: none !important;
+      }
+      .kindred-bottom-strip {
+        justify-content: center;
+        gap: 16px 28px;
+        padding: 20px 20px 28px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .kindred-hero-content {
+        padding: 44px 18px 30px;
+      }
+      .kindred-hero-headline {
+        font-size: clamp(2rem, 8.5vw, 2.75rem);
+        line-height: 1.12;
+      }
+      .kindred-hero-subtitle {
+        font-size: 0.95rem;
+        margin: 16px auto 28px;
+      }
+      .kindred-cta-btn {
+        padding: 13px 28px;
+        font-size: 0.9rem;
+      }
+      .kindred-bottom-strip {
+        gap: 12px 20px;
+        padding: 18px 16px 24px;
+      }
+      .kindred-cap-item {
+        font-size: 0.75rem;
+      }
+    }
   </style>
 </head>
-<body>
+<body class="landing-mode">
 
   <!-- Subtle Ambient Background Pattern -->
   <div class="bg-grid-overlay" aria-hidden="true"></div>
@@ -2156,7 +2539,7 @@
         </div>
       </a>
 
-      <!-- Center: Workspace Switching Navigation -->
+      <!-- Center: Workspace Switching Navigation & Public Landing Navigation -->
       <nav aria-label="Workspace navigation">
         <ul class="nav-links-center">
           <li><button type="button" class="nav-btn active" data-view="home"><span class="nav-dot"></span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg><span>Home</span></button></li>
@@ -2171,16 +2554,24 @@
           <li><button type="button" class="nav-btn" data-view="employees"><span class="nav-dot"></span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Employees</span></button></li>
           <li><button type="button" class="nav-btn" data-view="system"><span class="nav-dot"></span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg><span>System</span></button></li>
         </ul>
+
+        <!-- Public Minimal Editorial Navigation (Kindred style) -->
+        <ul class="landing-nav-center" aria-label="Landing navigation">
+          <li><button type="button" class="landing-nav-link" data-landing-nav="platform">Platform</button></li>
+          <li><button type="button" class="landing-nav-link" data-landing-nav="analytics">Analytics</button></li>
+          <li><button type="button" class="landing-nav-link" data-landing-nav="inventory">Inventory</button></li>
+          <li><button type="button" class="landing-nav-link" data-landing-nav="about">About</button></li>
+        </ul>
       </nav>
 
       <!-- Right: Direct Quick Action CTA & Auth Status -->
       <div class="topbar-right">
+        <button type="button" class="landing-signin-btn" id="landingSignInBtn">Sign In</button>
         <div id="authStatusBadge" style="display:flex; align-items:center; gap:8px; background:var(--surface-2); padding:4px 10px; border-radius:8px; border:1px solid var(--hairline); font-size:0.75rem;">
           <span class="status-indicator-dot healthy" style="display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--status-healthy);"></span>
           <span id="userRoleBadge" style="color:var(--text-1); font-weight:600; text-transform:uppercase;">Owner</span>
           <button type="button" id="logoutBtn" style="background:none; border:none; color:var(--text-3); cursor:pointer; font-size:0.72rem; padding:0 0 0 6px; border-left:1px solid var(--hairline);" title="Sign Out">Sign Out</button>
         </div>
-        <button type="button" class="btn-tactile btn-primary-accent" id="openDashboardCTA">Open Dashboard</button>
         <button type="button" class="burger-btn" id="burgerToggleBtn" aria-label="Toggle menu" aria-expanded="false">
           <span class="burger-line"></span>
           <span class="burger-line"></span>
@@ -2213,6 +2604,15 @@
       <li><button type="button" class="drawer-link-btn" data-view="employees">Employees <span>→</span></button></li>
       <li><button type="button" class="drawer-link-btn" data-view="system">System <span>→</span></button></li>
     </ul>
+
+    <!-- Public Mobile Drawer Navigation (Kindred Editorial Style) -->
+    <ul class="drawer-links landing-drawer-links">
+      <li><button type="button" class="drawer-link-btn" data-landing-nav="platform">Platform <span>→</span></button></li>
+      <li><button type="button" class="drawer-link-btn" data-landing-nav="analytics">Analytics <span>→</span></button></li>
+      <li><button type="button" class="drawer-link-btn" data-landing-nav="inventory">Inventory <span>→</span></button></li>
+      <li><button type="button" class="drawer-link-btn" data-landing-nav="about">About <span>→</span></button></li>
+      <li><button type="button" class="drawer-link-btn" id="drawerSignInBtn" style="color:#111111; font-weight:600;">Sign In <span>→</span></button></li>
+    </ul>
   </div>
 
   <!-- ========================================================================
@@ -2221,45 +2621,74 @@
   <main id="appContent">
 
     <!-- ======================================================================
-         VIEW 1: HOME (HERO + REDESIGNED AI WORKSPACE)
+         VIEW 1: HOME (KINDRED — DOT-MATRIX HANDS HERO)
          ====================================================================== -->
     <div id="viewHome" class="workspace-pane active">
 
-      <!-- SECTION 1: HERO -->
-      <section class="hero-section" id="home">
-        <div class="hero-container">
-          <div class="hero-pill-tag">
-            <span class="pulse-dot-green"></span>
-            <span>Structured Retail Intelligence Engine</span>
-          </div>
+      <section class="kindred-hero-wrap" id="home">
+        <!-- Animated Halftone Dot-Matrix Hands Canvas -->
+        <canvas id="kindredHandsCanvas" aria-label="Animated dot-matrix reaching hands background"></canvas>
 
-          <h1 class="hero-title">
-            <span class="hl-mask"><span class="hl-line">Understand your store.</span></span>
-            <span class="hl-mask"><span class="hl-line">Make better decisions.</span></span>
+        <!-- Centered Editorial Content -->
+        <div class="kindred-hero-content">
+          <h1 class="kindred-hero-headline">
+            <span class="kindred-headline-line">Understand Your Store.</span>
+            <span class="kindred-headline-line">Make Smarter Decisions.</span>
           </h1>
 
-          <p class="hero-subtitle">
-            AI-powered intelligence for sales, inventory and day-to-day retail decisions.
+          <p class="kindred-hero-subtitle">
+            Your retail operations, sales intelligence and inventory insights &mdash; connected through AI.
           </p>
 
-          <!-- Capabilities Strip -->
-          <div class="capabilities-strip">
-            <div class="capability-item">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-              <span>Sales Analytics</span>
-            </div>
-            <div class="capability-item">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-              <span>Real-Time Inventory</span>
-            </div>
-            <div class="capability-item">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-              <span>Fast POS Checkout</span>
-            </div>
-            <div class="capability-item">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-              <span>Hybrid RAG Reasoning</span>
-            </div>
+          <!-- Primary Rounded Pill CTA with Rainbow Underglow -->
+          <div class="kindred-cta-wrapper">
+            <div class="kindred-rainbow-glow" aria-hidden="true"></div>
+            <button type="button" class="kindred-cta-btn" id="explorePlatformCTA">
+              <span>Explore Platform</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Subtle Bottom Retail Intelligence Capabilities Row -->
+        <div class="kindred-bottom-strip" id="landingCapabilities">
+          <div class="kindred-cap-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            <span>Sales Intelligence</span>
+          </div>
+          <div class="kindred-cap-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            </svg>
+            <span>Inventory Tracking</span>
+          </div>
+          <div class="kindred-cap-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 5v14M8 5v14M12 5v14M17 5v14M21 5v14M6 5v14M14 5v14"/>
+            </svg>
+            <span>Smart Billing</span>
+          </div>
+          <div class="kindred-cap-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+            <span>AI Analytics</span>
+          </div>
+          <div class="kindred-cap-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            <span>Business Insights</span>
+          </div>
+          <div class="kindred-cap-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            <span>Data-Driven Decisions</span>
           </div>
         </div>
       </section>
@@ -2721,19 +3150,19 @@
               <div style="margin-top:10px; padding:14px; background:var(--surface-2); border-radius:var(--radius-md); border:1px solid var(--hairline); display:flex; flex-direction:column; gap:8px;">
                 <div style="display:flex; justify-content:space-between; font-size:0.86rem; color:var(--text-2);">
                   <span>Total Items</span>
-                  <span id="posItemsCount">0</span>
+                  <span id="posItemsCount" style="white-space:nowrap;">0</span>
                 </div>
                 <div style="display:flex; justify-content:space-between; font-size:0.86rem; color:var(--text-2);">
                   <span>Gross Subtotal</span>
-                  <span id="posSubtotalAmount">₹0.00</span>
+                  <span id="posSubtotalAmount" style="white-space:nowrap;">₹0.00</span>
                 </div>
                 <div style="display:flex; justify-content:space-between; font-size:0.86rem; color:var(--text-2);">
                   <span>Total Discount</span>
-                  <span id="posDiscountAmount">₹0.00</span>
+                  <span id="posDiscountAmount" style="white-space:nowrap;">₹0.00</span>
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:baseline; padding-top:10px; border-top:1px solid var(--hairline); margin-top:4px;">
-                  <span style="font-weight:600; color:#fff;">Net Payable</span>
-                  <span style="font-size:1.55rem; font-weight:600; color:#fff;" id="posTotalAmount">₹0.00</span>
+                  <span style="font-weight:600; color:var(--text-1);">Net Payable</span>
+                  <span style="font-size:1.55rem; font-weight:600; color:var(--text-1); white-space:nowrap;" id="posTotalAmount">₹0.00</span>
                 </div>
               </div>
 
@@ -3052,9 +3481,9 @@
               <!-- Pending Queue Card -->
               <div style="background:var(--surface-2); border:1px solid var(--hairline); border-radius:var(--radius-md); padding:12px 14px;">
                 <div style="font-size:0.72rem; text-transform:uppercase; color:var(--text-3); font-weight:600;">Pending Ingestion</div>
-                <div style="font-size:1.4rem; font-weight:700; color:#fff; margin-top:4px;" id="syncMetricPending">0</div>
+                <div style="font-size:1.4rem; font-weight:700; color:var(--text-1); margin-top:4px;" id="syncMetricPending">0</div>
                 <div style="font-size:0.72rem; color:var(--text-3); margin-top:2px;">
-                  Sales: <span id="syncSalesPending" style="color:#fff;">0</span> | Purchases: <span id="syncPurchPending" style="color:#fff;">0</span>
+                  Sales: <span id="syncSalesPending" style="color:var(--text-1);">0</span> | Purchases: <span id="syncPurchPending" style="color:var(--text-1);">0</span>
                 </div>
               </div>
 
@@ -3063,7 +3492,7 @@
                 <div style="font-size:0.72rem; text-transform:uppercase; color:var(--text-3); font-weight:600;">Processed Files</div>
                 <div style="font-size:1.4rem; font-weight:700; color:var(--status-healthy); margin-top:4px;" id="syncMetricProcessed">0</div>
                 <div style="font-size:0.72rem; color:var(--text-3); margin-top:2px;">
-                  Sales: <span id="syncSalesProcessed" style="color:#fff;">0</span> | Purchases: <span id="syncPurchProcessed" style="color:#fff;">0</span>
+                  Sales: <span id="syncSalesProcessed" style="color:var(--text-1);">0</span> | Purchases: <span id="syncPurchProcessed" style="color:var(--text-1);">0</span>
                 </div>
               </div>
 
@@ -3072,7 +3501,7 @@
                 <div style="font-size:0.72rem; text-transform:uppercase; color:var(--text-3); font-weight:600;">Rejected Files</div>
                 <div style="font-size:1.4rem; font-weight:700; color:var(--status-critical); margin-top:4px;" id="syncMetricRejected">0</div>
                 <div style="font-size:0.72rem; color:var(--text-3); margin-top:2px;">
-                  Sales: <span id="syncSalesRejected" style="color:#fff;">0</span> | Purchases: <span id="syncPurchRejected" style="color:#fff;">0</span>
+                  Sales: <span id="syncSalesRejected" style="color:var(--text-1);">0</span> | Purchases: <span id="syncPurchRejected" style="color:var(--text-1);">0</span>
                 </div>
               </div>
             </div>
@@ -3150,7 +3579,7 @@
     <div class="modal-surface" style="max-width:560px; width:100%;">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--hairline);">
         <div>
-          <h3 style="font-size:1.15rem; font-weight:600; color:#fff;" id="modalBillHeading">Receipt</h3>
+          <h3 style="font-size:1.15rem; font-weight:600; color:var(--text-1);" id="modalBillHeading">Receipt</h3>
           <p style="font-size:0.78rem; color:var(--text-3);" id="modalBillSub">—</p>
         </div>
         <button type="button" class="composer-round-btn" id="closeReceiptModalBtn" onclick="closeReceiptModal()" aria-label="Close">
@@ -3162,7 +3591,7 @@
       <div style="background:var(--surface-2); border:1px solid var(--hairline); border-radius:var(--radius-md); padding:10px 14px; margin-bottom:14px;">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px;">
           <div>
-            <div style="font-size:0.88rem; font-weight:600; color:#fff;" id="modalStoreName">Retail Sales Intelligence Platform</div>
+            <div style="font-size:0.88rem; font-weight:600; color:var(--text-1);" id="modalStoreName">Retail Sales Intelligence Platform</div>
             <div style="font-size:0.75rem; color:var(--text-3); margin-top:2px; display:none;" id="modalStoreAddress"></div>
           </div>
           <div style="text-align:right; font-size:0.74rem; color:var(--text-3); display:none;" id="modalStoreTaxContact">
@@ -3176,7 +3605,7 @@
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(110px, 1fr)); gap:10px; margin-bottom:14px; padding:10px 12px; background:rgba(255,255,255,0.02); border:1px solid var(--hairline); border-radius:var(--radius-md); font-size:0.78rem;">
         <div>
           <div style="color:var(--text-3);">Bill Number</div>
-          <div style="font-family:var(--font-mono); font-weight:600; color:#fff;" id="modalBillId">—</div>
+          <div style="font-family:var(--font-mono); font-weight:600; color:var(--text-1);" id="modalBillId">—</div>
         </div>
         <div>
           <div style="color:var(--text-3);">Date &amp; Time</div>
@@ -3194,14 +3623,14 @@
 
       <!-- Itemized Table -->
       <div class="table-scroll-wrap" style="max-height:260px; overflow-y:auto; margin-bottom:14px;">
-        <table class="enterprise-table">
+        <table class="enterprise-table" style="width:100%;">
           <thead>
             <tr>
-              <th>Item</th>
-              <th style="text-align:right;">Qty</th>
-              <th style="text-align:right;">Unit Price</th>
-              <th style="text-align:right;">Disc</th>
-              <th style="text-align:right;">Subtotal</th>
+              <th style="min-width:130px;">Item</th>
+              <th style="text-align:right; width:45px; white-space:nowrap;">Qty</th>
+              <th style="text-align:right; width:85px; white-space:nowrap;">Unit Price</th>
+              <th style="text-align:right; width:85px; white-space:nowrap;">Disc</th>
+              <th style="text-align:right; width:90px; white-space:nowrap;">Subtotal</th>
             </tr>
           </thead>
           <tbody id="modalBillItemsBody"></tbody>
@@ -3212,15 +3641,15 @@
       <div style="background:var(--surface-2); border:1px solid var(--hairline); border-radius:var(--radius-md); padding:10px 14px; margin-bottom:16px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; font-size:0.82rem;">
           <span style="color:var(--text-3);">Subtotal</span>
-          <span style="color:var(--text-1); font-family:var(--font-mono);" id="modalBillSubtotal">₹0.00</span>
+          <span style="color:var(--text-1); font-family:var(--font-mono); white-space:nowrap;" id="modalBillSubtotal">₹0.00</span>
         </div>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:0.82rem;">
           <span style="color:var(--text-3);">Total Discounts</span>
-          <span style="color:var(--accent-red, #ff6b6b); font-family:var(--font-mono);" id="modalBillDiscount">₹0.00</span>
+          <span style="color:var(--accent-red, #ff6b6b); font-family:var(--font-mono); white-space:nowrap;" id="modalBillDiscount">₹0.00</span>
         </div>
         <div style="display:flex; justify-content:space-between; align-items:baseline; padding-top:6px; border-top:1px solid var(--hairline);">
-          <span style="color:#fff; font-size:0.88rem; font-weight:600;">Grand Total</span>
-          <span style="font-size:1.45rem; font-weight:600; color:#fff;" id="modalBillTotal">₹0.00</span>
+          <span style="color:var(--text-1); font-size:0.88rem; font-weight:600;">Grand Total</span>
+          <span style="font-size:1.45rem; font-weight:600; color:var(--text-1); white-space:nowrap;" id="modalBillTotal">₹0.00</span>
         </div>
       </div>
 
@@ -3243,7 +3672,10 @@
 
   <!-- Authentication Modal (Supabase Auth) -->
   <div id="authModal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(12,12,14,0.95); backdrop-filter:blur(10px); align-items:center; justify-content:center;">
-    <div style="background:var(--surface-1); border:1px solid var(--hairline); width:100%; max-width:380px; border-radius:var(--radius-lg); padding:32px; box-shadow:0 20px 40px rgba(0,0,0,0.5);">
+    <div style="position:relative; background:var(--surface-1); border:1px solid var(--hairline); width:100%; max-width:380px; border-radius:var(--radius-lg); padding:32px; box-shadow:0 20px 40px rgba(0,0,0,0.5);">
+      <button type="button" class="composer-round-btn" id="closeAuthModalBtn" aria-label="Close" style="position:absolute; top:16px; right:16px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
       <div style="text-align:center; margin-bottom:24px;">
         <div class="brand-icon-box" style="margin:0 auto 12px; width:44px; height:44px;">
           <div class="brand-icon-inner" style="width:36px; height:36px;">
@@ -3260,11 +3692,21 @@
       <form id="authLoginForm" style="display:flex; flex-direction:column; gap:16px;">
         <div>
           <label style="display:block; font-size:0.75rem; text-transform:uppercase; color:var(--text-3); font-weight:600; margin-bottom:6px;">Email Address</label>
-          <input type="email" id="authEmailInput" required class="form-input-dark" style="width:100%;" placeholder="employee@store.com" />
+          <div style="position:relative; display:flex; align-items:center;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute; left:12px; color:var(--text-3); pointer-events:none;">
+              <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+            <input type="email" id="authEmailInput" required class="form-input-dark" style="width:100%; padding-left:36px;" placeholder="employee@store.com" />
+          </div>
         </div>
         <div>
           <label style="display:block; font-size:0.75rem; text-transform:uppercase; color:var(--text-3); font-weight:600; margin-bottom:6px;">Password</label>
-          <input type="password" id="authPasswordInput" required class="form-input-dark" style="width:100%;" placeholder="••••••••" />
+          <div style="position:relative; display:flex; align-items:center;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute; left:12px; color:var(--text-3); pointer-events:none;">
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <input type="password" id="authPasswordInput" required class="form-input-dark" style="width:100%; padding-left:36px;" placeholder="••••••••" />
+          </div>
         </div>
         <div id="authErrorMsg" style="display:none; color:var(--status-critical); font-size:0.8rem; background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.2); padding:8px 12px; border-radius:6px;"></div>
         <button type="submit" id="authSubmitBtn" class="btn-tactile btn-primary-accent" style="width:100%; padding:10px; margin-top:8px; font-weight:600;">Sign In</button>
@@ -3277,7 +3719,7 @@
     <div class="modal-surface" style="background:var(--surface-1); border:1px solid var(--hairline); width:100%; max-width:440px; border-radius:var(--radius-lg); padding:28px; box-shadow:0 24px 48px rgba(0,0,0,0.6);">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding-bottom:12px; border-bottom:1px solid var(--hairline);">
         <div>
-          <h3 style="font-size:1.15rem; font-weight:600; color:#fff;">Provision Employee Account</h3>
+          <h3 style="font-size:1.15rem; font-weight:600; color:var(--text-1);">Provision Employee Account</h3>
           <p style="font-size:0.78rem; color:var(--text-3); margin-top:2px;">Create credentials &amp; assign access role</p>
         </div>
         <button type="button" class="composer-round-btn" id="closeAddEmployeeModalBtn" aria-label="Close">
@@ -3334,7 +3776,7 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
           </div>
           <div>
-            <h3 style="font-size:1.1rem; font-weight:600; color:#fff; margin:0;">Delete Employee Account</h3>
+            <h3 style="font-size:1.1rem; font-weight:600; color:var(--text-1); margin:0;">Delete Employee Account</h3>
             <p style="font-size:0.76rem; color:var(--text-3); margin:2px 0 0 0;">Permanent account and profile removal</p>
           </div>
         </div>
@@ -3346,7 +3788,7 @@
       <div style="background:var(--surface-2); border:1px solid var(--hairline); border-radius:var(--radius-md); padding:12px 14px; margin-bottom:14px;">
         <div style="display:flex; flex-direction:column; gap:3px;">
           <span style="font-size:0.72rem; text-transform:uppercase; color:var(--text-3); font-weight:600; letter-spacing:0.04em;">Employee Details</span>
-          <span id="deleteModalEmpName" style="font-size:0.95rem; font-weight:600; color:#fff;">—</span>
+          <span id="deleteModalEmpName" style="font-size:0.95rem; font-weight:600; color:var(--text-1);">—</span>
           <span id="deleteModalEmpEmail" style="font-size:0.8rem; color:var(--text-2); font-family:var(--font-mono, monospace);">—</span>
         </div>
       </div>
@@ -3429,21 +3871,511 @@
       programmer: ['home', 'system']
     };
 
+    /* ==========================================================================
+       ROLE-BASED WORKSPACE ROUTING HELPERS
+       ========================================================================== */
+    function getRolePlatformView(role) {
+      const allowed = (role && ROLE_NAV_PERMISSIONS[role]) ? ROLE_NAV_PERMISSIONS[role] : [];
+      if (allowed.includes('dashboard')) return 'dashboard';
+      if (allowed.includes('billing')) return 'billing';
+      if (allowed.includes('system')) return 'system';
+      const nonHome = allowed.filter(v => v !== 'home');
+      return nonHome[0] || 'home';
+    }
+
+    function getRoleAnalyticsView(role) {
+      const allowed = (role && ROLE_NAV_PERMISSIONS[role]) ? ROLE_NAV_PERMISSIONS[role] : [];
+      if (allowed.includes('chat')) return 'chat';
+      if (allowed.includes('dashboard')) return 'dashboard';
+      if (allowed.includes('sales')) return 'sales';
+      const nonHome = allowed.filter(v => v !== 'home');
+      return nonHome[0] || 'home';
+    }
+
+    /* ==========================================================================
+       KINDRED DOT-MATRIX REACHING HANDS CANVAS ENGINE
+       Higgsfield Image-Backed Pipeline with Anatomical Procedural Fallback
+       ========================================================================== */
+    const KINDRED_IMAGE_URL = 'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261030_025250_100df7b8-31fd-4614-aa4a-c1b7d5b6b273.png&w=1600&q=85';
+    const KINDRED_SLICES = {
+      LA: [0, 0.06, 0.47, 0.40],
+      RA: [0.53, 0.06, 0.47, 0.40],
+      LB: [0, 0.55, 0.47, 0.40],
+      RB: [0.53, 0.55, 0.47, 0.40]
+    };
+
+    let _kindredCanvas = null;
+    let _kindredCtx = null;
+    let _kindredAnimId = null;
+    let _isKindredAnimating = false;
+    let _kindredPrefersReduced = false;
+    let _kindredWidth = 0;
+    let _kindredHeight = 0;
+    let _kindredTiles = null;
+    let _fA = null;
+    let _fB = null;
+    let _fACtx = null;
+    let _fBCtx = null;
+    let _cols = 0;
+    let _rows = 0;
+    let _step = 0;
+    let _rowStep = 0;
+    let _baseR = 0;
+    let _seedMap = null;
+    let _kindredStartTime = null;
+
+    function smoothstep(a, b, x) {
+      const t = Math.max(0, Math.min(1, (x - a) / (b - a)));
+      return t * t * (3 - 2 * t);
+    }
+
+    function mixAt(t, on, off, dur) {
+      return smoothstep(on, on + dur, t) * (1 - smoothstep(off, off + dur, t));
+    }
+
+    function hash2(a, b) {
+      const val = Math.sin(a * 127.1 + b * 311.7) * 43758.5453;
+      return val - Math.floor(val);
+    }
+
+    function createFallbackHandTile(isLeft, isOpen) {
+      const w = 420;
+      const h = Math.round(420 * (0.40 * 1520) / (0.47 * 2688));
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.save();
+      if (!isLeft) {
+        ctx.translate(w, 0);
+        ctx.scale(-1, 1);
+      }
+
+      // Arm & wrist
+      const armGrad = ctx.createLinearGradient(0, 100, 240, 100);
+      armGrad.addColorStop(0, '#111111');
+      armGrad.addColorStop(0.7, '#2a2a2a');
+      armGrad.addColorStop(1, '#444444');
+      ctx.fillStyle = armGrad;
+      ctx.beginPath();
+      ctx.moveTo(0, 50);
+      ctx.bezierCurveTo(70, 55, 140, 70, 210, 80);
+      ctx.bezierCurveTo(240, 85, 260, 95, 275, 110);
+      ctx.bezierCurveTo(250, 135, 190, 140, 120, 145);
+      ctx.bezierCurveTo(60, 150, 20, 155, 0, 160);
+      ctx.closePath();
+      ctx.fill();
+
+      // Hand palm & thumb
+      ctx.beginPath();
+      ctx.moveTo(210, 80);
+      ctx.bezierCurveTo(240, 70, 260, 60, 280, 70);
+      ctx.bezierCurveTo(300, 80, 310, 90, 295, 100);
+      ctx.bezierCurveTo(280, 105, 270, 105, 255, 100);
+      ctx.closePath();
+      ctx.fill();
+
+      if (isOpen) {
+        // Pose B: Open fingers reaching forward
+        const fingerOffsets = [
+          [270, 90, 330, 75, 395, 70, 14],
+          [275, 100, 345, 90, 410, 90, 15],
+          [270, 110, 335, 110, 395, 115, 13],
+          [260, 120, 315, 130, 370, 140, 11]
+        ];
+        ctx.lineCap = 'round';
+        for (const [x1, y1, x2, y2, x3, y3, thick] of fingerOffsets) {
+          ctx.strokeStyle = '#383838';
+          ctx.lineWidth = thick;
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.quadraticCurveTo(x2, y2, x3, y3);
+          ctx.stroke();
+        }
+      } else {
+        // Pose A: Pointing index finger, other fingers loosely curled
+        ctx.strokeStyle = '#383838';
+        ctx.lineCap = 'round';
+        ctx.lineWidth = 16;
+        ctx.beginPath();
+        ctx.moveTo(260, 95);
+        ctx.quadraticCurveTo(325, 92, 400, 88);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(260, 108);
+        ctx.bezierCurveTo(290, 110, 315, 118, 305, 130);
+        ctx.bezierCurveTo(290, 142, 265, 138, 250, 125);
+        ctx.bezierCurveTo(275, 132, 295, 135, 285, 148);
+        ctx.bezierCurveTo(270, 155, 250, 148, 235, 135);
+        ctx.closePath();
+        ctx.fillStyle = '#2c2c2c';
+        ctx.fill();
+      }
+
+      ctx.restore();
+      return canvas;
+    }
+
+    function initFallbackTiles() {
+      _kindredTiles = {
+        LA: createFallbackHandTile(true, false),
+        RA: createFallbackHandTile(false, false),
+        LB: createFallbackHandTile(true, true),
+        RB: createFallbackHandTile(false, true)
+      };
+    }
+
+    function loadHiggsfieldHandTiles() {
+      initFallbackTiles();
+      try {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          try {
+            const tiles = {};
+            const keys = ['LA', 'RA', 'LB', 'RB'];
+            const targetW = 420;
+            const targetH = Math.round(420 * (0.40 * 1520) / (0.47 * 2688));
+
+            for (const key of keys) {
+              const slice = KINDRED_SLICES[key];
+              const sx = slice[0] * img.naturalWidth;
+              const sy = slice[1] * img.naturalHeight;
+              const sw = slice[2] * img.naturalWidth;
+              const sh = slice[3] * img.naturalHeight;
+
+              const tileCanvas = document.createElement('canvas');
+              tileCanvas.width = targetW;
+              tileCanvas.height = targetH;
+              const tCtx = tileCanvas.getContext('2d');
+              tCtx.imageSmoothingQuality = 'high';
+              tCtx.drawImage(img, sx, sy, sw, sh, 0, 0, targetW, targetH);
+              tCtx.getImageData(0, 0, 1, 1);
+              tiles[key] = tileCanvas;
+            }
+            _kindredTiles = tiles;
+          } catch (e) {
+            console.warn('Higgsfield sheet loaded but pixel access restricted, using fallback tiles:', e);
+          }
+        };
+        img.onerror = () => {
+          console.info('Higgsfield image unreachable (offline sandbox mode), using high-res procedural hands.');
+        };
+        img.src = KINDRED_IMAGE_URL;
+      } catch (err) {
+        console.warn('Error starting Higgsfield image load:', err);
+      }
+    }
+
+    function initKindredHandsCanvas() {
+      _kindredCanvas = document.getElementById('kindredHandsCanvas');
+      if (!_kindredCanvas) return;
+      _kindredCtx = _kindredCanvas.getContext('2d');
+      if (!_kindredCtx) return;
+
+      loadHiggsfieldHandTiles();
+
+      const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      _kindredPrefersReduced = motionQuery.matches;
+      if (typeof motionQuery.addEventListener === 'function') {
+        motionQuery.addEventListener('change', (e) => {
+          _kindredPrefersReduced = e.matches;
+          if (_kindredPrefersReduced) {
+            stopKindredHandsAnimation();
+            renderKindredHandsFrame(0);
+          } else {
+            startKindredHandsAnimation();
+          }
+        });
+      }
+
+      function handleResize() {
+        if (!_kindredCanvas) return;
+        const parent = _kindredCanvas.parentElement;
+        const rect = parent ? parent.getBoundingClientRect() : _kindredCanvas.getBoundingClientRect();
+        const w = Math.max(320, Math.floor(rect.width));
+        const h = Math.max(480, Math.floor(rect.height || window.innerHeight));
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        _kindredWidth = w;
+        _kindredHeight = h;
+        _kindredCanvas.width = Math.round(w * dpr);
+        _kindredCanvas.height = Math.round(h * dpr);
+        _kindredCanvas.style.width = w + 'px';
+        _kindredCanvas.style.height = h + 'px';
+
+        _step = Math.max(5, w / 205);
+        _rowStep = _step * 2.05;
+        _cols = Math.ceil(w / _step);
+        _rows = Math.ceil(h / _rowStep);
+        _baseR = _step * 0.46;
+
+        _fA = document.createElement('canvas');
+        _fA.width = _cols;
+        _fA.height = _rows;
+        _fACtx = _fA.getContext('2d', { willReadFrequently: true });
+
+        _fB = document.createElement('canvas');
+        _fB.width = _cols;
+        _fB.height = _rows;
+        _fBCtx = _fB.getContext('2d', { willReadFrequently: true });
+
+        _seedMap = new Float32Array(_cols * _rows);
+        for (let j = 0; j < _rows; j++) {
+          const rowBias = 0.45 * hash2(j * 3.1, 7.7);
+          for (let i = 0; i < _cols; i++) {
+            _seedMap[j * _cols + i] = 0.55 * hash2(i, j) + rowBias;
+          }
+        }
+
+        if (_kindredPrefersReduced) {
+          renderKindredHandsFrame(0);
+        }
+      }
+
+      handleResize();
+      let resizeTimer = null;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(handleResize, 120);
+      });
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          stopKindredHandsAnimation();
+        } else {
+          const homePane = document.getElementById('viewHome');
+          if (homePane && homePane.classList.contains('active')) {
+            startKindredHandsAnimation();
+          }
+        }
+      });
+
+      startKindredHandsAnimation();
+    }
+
+    function startKindredHandsAnimation() {
+      if (_kindredPrefersReduced) {
+        renderKindredHandsFrame(0);
+        return;
+      }
+      if (!_isKindredAnimating) {
+        _isKindredAnimating = true;
+        _kindredStartTime = null;
+        _kindredAnimId = requestAnimationFrame(renderKindredHandsFrame);
+      }
+    }
+
+    function stopKindredHandsAnimation() {
+      _isKindredAnimating = false;
+      if (_kindredAnimId) {
+        cancelAnimationFrame(_kindredAnimId);
+        _kindredAnimId = null;
+      }
+    }
+
+    function renderKindredHandsFrame(timestamp) {
+      if (!_kindredCtx || !_kindredCanvas || !_kindredTiles) return;
+      if (_kindredStartTime === null) _kindredStartTime = timestamp || 0;
+      const t = ((timestamp || 0) - _kindredStartTime) * 0.001;
+
+      const W = _kindredWidth;
+      const H = _kindredHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      _kindredCtx.save();
+      _kindredCtx.scale(dpr, dpr);
+      _kindredCtx.clearRect(0, 0, W, H);
+
+      const LOOP = 20;
+      const tWrap = (t % LOOP + LOOP) % LOOP;
+      const a = (2 * Math.PI * tWrap) / LOOP;
+
+      const isPortrait = H > W;
+      const hw = isPortrait ? W * 0.66 : W * 0.53;
+      const hh = hw * (0.40 * 1520) / (0.47 * 2688);
+      const cy = isPortrait ? H * 0.66 : H * 0.54;
+
+      // Left hand motion (ph = 0)
+      const reachL = (0.035 * Math.sin(a) + 0.012 * Math.sin(2 * a + 1.3)) * W;
+      const scaleL = 1 + 0.07 * Math.sin(a + 0.9);
+      const rotL = 0.045 * Math.sin(a + 2.1);
+      const xL = reachL - W * 0.045;
+
+      // Right hand motion (ph = PI, counter-phase)
+      const reachR = (0.035 * Math.sin(a + Math.PI) + 0.012 * Math.sin(2 * a + 1.3 + Math.PI)) * W;
+      const scaleR = 1 + 0.07 * Math.sin(a + 0.9 + Math.PI);
+      const rotR = -0.045 * Math.sin(a + 2.1 + Math.PI);
+      const xR = W - hw + W * 0.045 - reachR;
+
+      if (!_fACtx || !_fBCtx || !_cols || !_rows) {
+        _kindredCtx.restore();
+        if (_isKindredAnimating && !_kindredPrefersReduced) {
+          _kindredAnimId = requestAnimationFrame(renderKindredHandsFrame);
+        }
+        return;
+      }
+
+      // Render into field fA
+      _fACtx.fillStyle = '#ffffff';
+      _fACtx.fillRect(0, 0, _cols, _rows);
+
+      _fACtx.save();
+      _fACtx.scale(_cols / W, _rows / H);
+      _fACtx.translate(0, cy);
+      _fACtx.rotate(rotL);
+      _fACtx.scale(scaleL, scaleL);
+      _fACtx.translate(0, -cy);
+      _fACtx.drawImage(_kindredTiles.LA, xL, cy - hh / 2, hw, hh);
+      _fACtx.restore();
+
+      _fACtx.save();
+      _fACtx.scale(_cols / W, _rows / H);
+      _fACtx.translate(W, cy);
+      _fACtx.rotate(rotR);
+      _fACtx.scale(scaleR, scaleR);
+      _fACtx.translate(-W, -cy);
+      _fACtx.drawImage(_kindredTiles.RA, xR, cy - hh / 2, hw, hh);
+      _fACtx.restore();
+
+      // Render into field fB
+      _fBCtx.fillStyle = '#ffffff';
+      _fBCtx.fillRect(0, 0, _cols, _rows);
+
+      _fBCtx.save();
+      _fBCtx.scale(_cols / W, _rows / H);
+      _fBCtx.translate(0, cy);
+      _fBCtx.rotate(rotL);
+      _fBCtx.scale(scaleL, scaleL);
+      _fBCtx.translate(0, -cy);
+      _fBCtx.drawImage(_kindredTiles.LB, xL, cy - hh / 2, hw, hh);
+      _fBCtx.restore();
+
+      _fBCtx.save();
+      _fBCtx.scale(_cols / W, _rows / H);
+      _fBCtx.translate(W, cy);
+      _fBCtx.rotate(rotR);
+      _fBCtx.scale(scaleR, scaleR);
+      _fBCtx.translate(-W, -cy);
+      _fBCtx.drawImage(_kindredTiles.RB, xR, cy - hh / 2, hw, hh);
+      _fBCtx.restore();
+
+      const dataA = _fACtx.getImageData(0, 0, _cols, _rows).data;
+      const dataB = _fBCtx.getImageData(0, 0, _cols, _rows).data;
+
+      const mL = mixAt(tWrap, 6.2, 14.6, 1.6);
+      const mR = mixAt(tWrap, 2.4, 10.4, 1.6);
+      const tick = Math.floor(tWrap * 7);
+
+      const p1 = new Path2D();
+      const p2 = new Path2D();
+      const p3 = new Path2D();
+      const p4 = new Path2D();
+
+      const r1 = _baseR * 0.38;
+      const r2 = _baseR * 0.52;
+      const r3 = _baseR * 0.78;
+      const r4 = _baseR * 1.00;
+      const tau = Math.PI * 2;
+
+      for (let j = 0; j < _rows; j++) {
+        let rowShift = 0;
+        if (hash2(j, tick) > 0.965) {
+          rowShift = Math.round((hash2(tick, j) - 0.5) * 8);
+        }
+        const yCenter = (j + 0.5) * _rowStep;
+        const ey = ((yCenter / H) - (isPortrait ? 0.33 : 0.385)) / 0.085;
+
+        for (let i = 0; i < _cols; i++) {
+          let si = i - rowShift;
+          if (si < 0) si = 0;
+          else if (si >= _cols) si = _cols - 1;
+
+          const idx = (j * _cols + si) * 4;
+          const seed = _seedMap[j * _cols + i];
+          const m = (i < _cols / 2) ? mL : mR;
+          const useB = seed < m;
+          const red = useB ? dataB[idx] : dataA[idx];
+          const lum = red / 255;
+          let v = (1 - lum - 0.16) / 0.42;
+          if (v <= 0) continue;
+          if (v > 1) v = 1;
+
+          // Front flicker
+          if (m > 0.001 && m < 0.999 && Math.abs(seed - m) < 0.12) {
+            v *= Math.abs(seed - m) / 0.12;
+            if (hash2(i + tick, j) <= 0.4) v *= 0.3;
+          }
+
+          // Shimmer
+          v *= 0.86 + 0.14 * Math.sin(tWrap * 3.2 + seed * 40);
+
+          // Centre fade
+          const cx = Math.abs((i + 0.5) / _cols - 0.5);
+          v *= smoothstep(0.035, 0.11, cx);
+
+          // Copy quiet zone
+          const ex = cx / (isPortrait ? 0.44 : 0.2);
+          v *= smoothstep(0.85, 1.25, Math.hypot(ex, ey));
+
+          if (v < 0.13) continue;
+
+          const xCenter = (i + 0.5) * _step;
+
+          // Quantise: LEVELS = [0, 0.26, 0.52, 0.78, 1]
+          if (v >= 0.87) {
+            p4.moveTo(xCenter + r4, yCenter);
+            p4.arc(xCenter, yCenter, r4, 0, tau);
+          } else if (v >= 0.65) {
+            p3.moveTo(xCenter + r3, yCenter);
+            p3.arc(xCenter, yCenter, r3, 0, tau);
+          } else if (v >= 0.39) {
+            p2.moveTo(xCenter + r2, yCenter);
+            p2.arc(xCenter, yCenter, r2, 0, tau);
+          } else {
+            p1.moveTo(xCenter + r1, yCenter);
+            p1.arc(xCenter, yCenter, r1, 0, tau);
+          }
+        }
+      }
+
+      _kindredCtx.fillStyle = '#0d0d0d';
+      _kindredCtx.fill(p1);
+      _kindredCtx.fill(p2);
+      _kindredCtx.fill(p3);
+      _kindredCtx.fill(p4);
+
+      _kindredCtx.restore();
+
+      if (_isKindredAnimating && !_kindredPrefersReduced) {
+        _kindredAnimId = requestAnimationFrame(renderKindredHandsFrame);
+      }
+    }
+
+    // Expose deterministic renderer for timing tests
+    window.__render = function(timeSeconds) {
+      renderKindredHandsFrame(timeSeconds * 1000);
+    };
+
     function applyRoleNavigation(role) {
       CURRENT_ROLE = role || null;
       const badge = document.getElementById('userRoleBadge');
       if (badge) badge.textContent = CURRENT_ROLE || 'Guest';
 
-      const ctaBtn = document.getElementById('openDashboardCTA');
-
       if (!CURRENT_ROLE) {
+        document.body.classList.remove('user-authenticated');
         document.querySelectorAll('[data-view]').forEach(btn => {
           const li = btn.closest('li') || btn;
           li.style.display = 'none';
         });
-        if (ctaBtn) ctaBtn.style.display = 'none';
         return;
       }
+
+      document.body.classList.add('user-authenticated');
 
       const allowedViews = ROLE_NAV_PERMISSIONS[CURRENT_ROLE] || ['home'];
       document.querySelectorAll('[data-view]').forEach(btn => {
@@ -3455,25 +4387,6 @@
           li.style.display = 'none';
         }
       });
-
-      // Update CTA button based on authorized role (cashier/programmer cannot open dashboard)
-      if (ctaBtn) {
-        if (allowedViews.includes('dashboard')) {
-          ctaBtn.style.display = '';
-          ctaBtn.textContent = 'Open Dashboard';
-          ctaBtn.setAttribute('data-target-view', 'dashboard');
-        } else if (allowedViews.includes('billing')) {
-          ctaBtn.style.display = '';
-          ctaBtn.textContent = 'Open POS';
-          ctaBtn.setAttribute('data-target-view', 'billing');
-        } else if (allowedViews.includes('system')) {
-          ctaBtn.style.display = '';
-          ctaBtn.textContent = 'System Status';
-          ctaBtn.setAttribute('data-target-view', 'system');
-        } else {
-          ctaBtn.style.display = 'none';
-        }
-      }
 
       const currentActiveBtn = document.querySelector('.nav-btn.active');
       const activeView = currentActiveBtn ? currentActiveBtn.getAttribute('data-view') : 'home';
@@ -3652,7 +4565,7 @@
       if (!AUTH_TOKEN) {
         CURRENT_USER = null;
         applyRoleNavigation(null);
-        showAuthModal();
+        hideAuthModal();
         return;
       }
 
@@ -3689,6 +4602,10 @@
       const allowedViews = (CURRENT_ROLE && ROLE_NAV_PERMISSIONS[CURRENT_ROLE]) ? ROLE_NAV_PERMISSIONS[CURRENT_ROLE] : ['home'];
       if (!allowedViews.includes(viewName)) {
         console.warn(`Access denied: view '${viewName}' is not permitted for role '${CURRENT_ROLE || 'unauthenticated'}'.`);
+        if (!CURRENT_ROLE) {
+          showAuthModal('Please sign in to access your store workspace.');
+          return false;
+        }
         if (typeof showEnterpriseToast === 'function') {
           showEnterpriseToast(`Access to ${viewName.toUpperCase()} is restricted for your role.`, 'warning');
         }
@@ -3701,6 +4618,15 @@
           }
         }
         return false;
+      }
+
+      // Synchronize landing mode styling and canvas animation
+      const isHome = (viewName === 'home');
+      document.body.classList.toggle('landing-mode', isHome);
+      if (isHome) {
+        startKindredHandsAnimation();
+      } else {
+        stopKindredHandsAnimation();
       }
 
       document.querySelectorAll('.workspace-pane').forEach(el => el.classList.remove('active'));
@@ -4158,7 +5084,7 @@
         return `
           <tr>
             <td style="font-weight:500;">${escapeHtml(name)}</td>
-            <td style="text-align:right; font-weight:600; color:#fff;">${formatNumber(qty)}</td>
+            <td style="text-align:right; font-weight:600; color:var(--text-1);">${formatNumber(qty)}</td>
             <td style="text-align:right;"><button type="button" class="btn-tactile btn-ghost-dark" style="padding:2px 8px; font-size:0.72rem;" onclick="quickAnalyzeProduct('${escapeHtml(name)}')">Analyze</button></td>
           </tr>`;
       }).join('');
@@ -4182,7 +5108,7 @@
         return `
           <tr>
             <td style="font-weight:500;">${escapeHtml(cat)}</td>
-            <td style="text-align:right; font-weight:600; color:#fff;">${formatINR(val)}</td>
+            <td style="text-align:right; font-weight:600; color:var(--text-1);">${formatINR(val)}</td>
           </tr>`;
       }).join('');
     }
@@ -4194,7 +5120,7 @@
           <tr><td colspan="5" class="empty-state-cell">
             <div class="empty-state-wrap" style="color:var(--status-healthy);">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              <span style="color:#fff;">All products healthy. No low stock.</span>
+              <span style="color:var(--text-2);">All products healthy. No low stock.</span>
             </div>
           </td></tr>`;
         return;
@@ -4224,7 +5150,7 @@
           <tr><td colspan="4" class="empty-state-cell">
             <div class="empty-state-wrap">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h10M7 12h10M7 17h6"/></svg>
-              <span style="font-weight:500; color:#fff;">No transactions yet</span>
+              <span style="font-weight:500; color:var(--text-2);">No transactions yet</span>
               <span>Sales data will appear here once your first transaction is recorded.</span>
             </div>
           </td></tr>`;
@@ -4237,10 +5163,10 @@
         const total = item[4] ?? item.total_amount;
         return `
           <tr>
-            <td style="font-weight:600; color:#fff;">#${id}</td>
+            <td style="font-weight:600; color:var(--text-1);">#${id}</td>
             <td style="color:var(--text-3); font-size:0.8rem;">${formatDate(dt)}</td>
             <td><span style="font-size:0.75rem; color:var(--text-2); background:rgba(255,255,255,0.04); padding:2px 8px; border-radius:4px;">${escapeHtml(mode)}</span></td>
-            <td style="text-align:right; font-weight:600; color:#fff;">${formatINR(total)}</td>
+            <td style="text-align:right; font-weight:600; color:var(--text-1);">${formatINR(total)}</td>
           </tr>`;
       }).join('');
     }
@@ -4308,7 +5234,7 @@
           <tr><td colspan="7" class="empty-state-cell">
             <div class="empty-state-wrap">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-              <span style="font-weight:500; color:#fff;">No inventory items match</span>
+              <span style="font-weight:500; color:var(--text-2);">No inventory items match</span>
               <span>Try adjusting your search query or status filter.</span>
             </div>
           </td></tr>`;
@@ -4401,7 +5327,7 @@
           <tr><td colspan="6" class="empty-state-cell">
             <div class="empty-state-wrap">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg>
-              <span style="font-weight:500; color:#fff;">No shipments recorded</span>
+              <span style="font-weight:500; color:var(--text-2);">No shipments recorded</span>
               <span>Incoming vendor shipments will appear as stock is received.</span>
             </div>
           </td></tr>`;
@@ -4424,11 +5350,11 @@
 
         return `
           <tr>
-            <td style="font-weight:600; color:#fff;">#${pid}</td>
+            <td style="font-weight:600; color:var(--text-1);">#${pid}</td>
             <td>${escapeHtml(pName)}</td>
             <td style="color:var(--text-2);">${escapeHtml(sName)}</td>
             <td style="text-align:right; font-weight:600; color:var(--status-healthy);">+${qty}</td>
-            <td style="text-align:right; color:#fff;">${formatINR(cost)}</td>
+            <td style="text-align:right; color:var(--text-1);">${formatINR(cost)}</td>
             <td style="color:var(--text-3); font-size:0.8rem;">${formatDate(dt)}</td>
           </tr>`;
       }).join('');
@@ -4620,16 +5546,34 @@
     function showPOSMessage(message, type = 'error') {
       const el = document.getElementById('posStatusMessage');
       if (!el) { if (type === 'error') alert(message); else showEnterpriseToast(message); return; }
-      el.textContent = message;
-      el.style.display = 'block';
-      el.style.color = type === 'success' ? '#a7f3d0' : '#fecaca';
-      el.style.background = type === 'success' ? 'rgba(16,185,129,.12)' : 'rgba(239,68,68,.12)';
-      el.style.border = `1px solid ${type === 'success' ? 'rgba(16,185,129,.35)' : 'rgba(239,68,68,.35)'}`;
+
+      let iconSvg = '';
+      if (type === 'success') {
+        el.style.color = '#111111';
+        el.style.background = '#f2f2ee';
+        el.style.border = '1px solid rgba(0, 0, 0, 0.12)';
+        iconSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>';
+      } else if (type === 'warning') {
+        el.style.color = '#92400e';
+        el.style.background = '#fffbeb';
+        el.style.border = '1px solid #fde68a';
+        iconSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+      } else {
+        el.style.color = '#991b1b';
+        el.style.background = '#fef2f2';
+        el.style.border = '1px solid #fecaca';
+        iconSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
+      }
+
+      el.innerHTML = `${iconSvg}<span>${escapeHtml(message)}</span>`;
+      el.style.display = 'flex';
+      el.style.alignItems = 'center';
+      el.style.gap = '8px';
     }
 
     function clearPOSMessage() {
       const el = document.getElementById('posStatusMessage');
-      if (el) { el.textContent = ''; el.style.display = 'none'; }
+      if (el) { el.innerHTML = ''; el.style.display = 'none'; }
     }
 
     async function populatePOSSelect() {
@@ -4774,10 +5718,10 @@
           <tr>
             <td style="font-weight:500;">${escapeHtml(item.product_name)}</td>
             <td style="font-family:monospace; color:var(--text-3); font-size:0.8rem;">${escapeHtml(item.barcode)}</td>
-            <td style="text-align:right;"><input type="number" min="1" value="${item.quantity}" style="width:48px; background:var(--surface-2); border:1px solid var(--hairline); color:#fff; padding:2px; text-align:center; border-radius:4px;" onchange="updateCartItemQty(${idx}, this.value)" /></td>
+            <td style="text-align:right;"><input type="number" min="1" value="${item.quantity}" style="width:48px; background:var(--surface-2); border:1px solid var(--hairline); color:var(--text-1); padding:2px; text-align:center; border-radius:4px;" onchange="updateCartItemQty(${idx}, this.value)" /></td>
             <td style="text-align:right;">${formatINR(item.unit_price)}</td>
             <td style="text-align:right;">${formatINR(item.discount)}</td>
-            <td style="text-align:right; font-weight:600; color:#fff;">${formatINR(line)}</td>
+            <td style="text-align:right; font-weight:600; color:var(--text-1);">${formatINR(line)}</td>
             <td style="text-align:right;"><button type="button" class="btn-tactile btn-ghost-dark" style="padding:2px 8px; font-size:0.72rem; color:var(--status-critical);" onclick="removeCartItem(${idx})">✕</button></td>
           </tr>`;
       }).join('');
@@ -5031,7 +5975,7 @@
               <tr><td colspan="6" class="empty-state-cell">
                 <div class="empty-state-wrap">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                  <span style="font-weight:500; color:#fff;">Access Restricted</span>
+                  <span style="font-weight:500; color:var(--text-1);">Access Restricted</span>
                   <span>Your role does not have permission to view store bills.</span>
                 </div>
               </td></tr>`;
@@ -5102,7 +6046,7 @@
 
         const tbody = document.getElementById('salesTableBody');
         if (tbody) {
-          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:32px; color:var(--text-3);"><div class="empty-state-wrap"><span style="font-weight:500; color:#fff;">Searching historical bills...</span></div></td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:32px; color:var(--text-3);"><div class="empty-state-wrap"><span style="font-weight:500; color:var(--text-2);">Searching historical bills...</span></div></td></tr>`;
         }
 
         try {
@@ -5135,7 +6079,7 @@
           <tr><td colspan="6" class="empty-state-cell">
             <div class="empty-state-wrap">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <span style="font-weight:500; color:#fff;">${searchQuery ? 'No bill found' : 'No bills recorded'}</span>
+              <span style="font-weight:500; color:var(--text-2);">${searchQuery ? 'No bill found' : 'No bills recorded'}</span>
               <span>${searchQuery ? `No transaction records matched &ldquo;${escapeHtml(searchQuery)}&rdquo;.` : 'Sales data will appear here once transactions are completed.'}</span>
             </div>
           </td></tr>`;
@@ -5152,10 +6096,10 @@
 
         return `
           <tr>
-            <td style="font-weight:600; color:#fff; font-family:var(--font-mono);">#${id}</td>
+            <td style="font-weight:600; color:var(--text-1); font-family:var(--font-mono);">#${id}</td>
             <td style="color:var(--text-2); font-size:0.82rem;">${formatDateTime(dt)}</td>
             <td style="text-align:center;"><span style="display:inline-block; font-size:0.75rem; background:rgba(255,255,255,0.06); padding:2px 8px; border-radius:10px; color:var(--text-2);">${itemCount} item${itemCount === 1 ? '' : 's'}</span></td>
-            <td style="text-align:right; font-weight:600; color:#fff;">${formatINR(total)}</td>
+            <td style="text-align:right; font-weight:600; color:var(--text-1);">${formatINR(total)}</td>
             <td><span style="font-size:0.76rem; background:rgba(255,255,255,0.04); padding:3px 8px; border-radius:4px; color:var(--text-2); text-transform:uppercase;">${escapeHtml(mode)}</span></td>
             <td style="text-align:right;">
               <div style="display:inline-flex; gap:6px; justify-content:flex-end;">
@@ -5267,11 +6211,11 @@
 
           return `
             <tr>
-              <td style="font-weight:500; color:#fff;">${escapeHtml(name)}</td>
-              <td style="text-align:right;">${qty}</td>
-              <td style="text-align:right;">${formatINR(unit)}</td>
-              <td style="text-align:right; color:${disc > 0 ? 'var(--accent-red, #ff6b6b)' : 'var(--text-3)'};">${disc > 0 ? '-' + formatINR(disc) : '₹0.00'}</td>
-              <td style="text-align:right; font-weight:600; color:#fff;">${formatINR(line)}</td>
+              <td style="font-weight:500; color:var(--text-1); word-break:break-word;">${escapeHtml(name)}</td>
+              <td style="text-align:right; white-space:nowrap;">${qty}</td>
+              <td style="text-align:right; white-space:nowrap; font-family:var(--font-mono);">${formatINR(unit)}</td>
+              <td style="text-align:right; white-space:nowrap; font-family:var(--font-mono); color:${disc > 0 ? 'var(--accent-red, #ff6b6b)' : 'var(--text-3)'};">${disc > 0 ? '-' + formatINR(disc) : '₹0.00'}</td>
+              <td style="text-align:right; font-weight:600; white-space:nowrap; font-family:var(--font-mono); color:var(--text-1);">${formatINR(line)}</td>
             </tr>`;
         }).join('');
 
@@ -5350,11 +6294,11 @@
         const disc = Number(it[6] ?? it.discount ?? 0).toFixed(2);
         const line = Number(it[7] ?? it.line_total).toFixed(2);
         return `<tr>
-          <td style="padding:6px 0; border-bottom:1px dashed #ccc;">${escapeHtml(name)}</td>
-          <td style="padding:6px 0; text-align:right; border-bottom:1px dashed #ccc;">${qty}</td>
-          <td style="padding:6px 0; text-align:right; border-bottom:1px dashed #ccc;">₹${unit}</td>
-          <td style="padding:6px 0; text-align:right; border-bottom:1px dashed #ccc;">₹${disc}</td>
-          <td style="padding:6px 0; text-align:right; border-bottom:1px dashed #ccc;">₹${line}</td>
+          <td style="padding:6px 6px 6px 0; border-bottom:1px dashed #ccc; word-break:break-word;">${escapeHtml(name)}</td>
+          <td style="padding:6px 6px; text-align:right; white-space:nowrap; border-bottom:1px dashed #ccc;">${qty}</td>
+          <td style="padding:6px 6px; text-align:right; white-space:nowrap; border-bottom:1px dashed #ccc;">₹${unit}</td>
+          <td style="padding:6px 6px; text-align:right; white-space:nowrap; border-bottom:1px dashed #ccc; color:${Number(disc) > 0 ? '#c00' : '#666'};">${Number(disc) > 0 ? '-₹' + disc : '₹0.00'}</td>
+          <td style="padding:6px 0 6px 6px; text-align:right; white-space:nowrap; border-bottom:1px dashed #ccc;">₹${line}</td>
         </tr>`;
       }).join('');
 
@@ -5398,11 +6342,11 @@
   <table class="items-table">
     <thead>
       <tr>
-        <th>Item</th>
-        <th style="text-align:right;">Qty</th>
-        <th style="text-align:right;">Price</th>
-        <th style="text-align:right;">Disc</th>
-        <th style="text-align:right;">Total</th>
+        <th style="text-align:left;">Item</th>
+        <th style="text-align:right; white-space:nowrap; width:36px;">Qty</th>
+        <th style="text-align:right; white-space:nowrap; width:65px;">Price</th>
+        <th style="text-align:right; white-space:nowrap; width:65px;">Disc</th>
+        <th style="text-align:right; white-space:nowrap; width:70px;">Total</th>
       </tr>
     </thead>
     <tbody>
@@ -5412,7 +6356,7 @@
   <div class="total-box">
     <div class="total-row">
       <span>Grand Total:</span>
-      <span>₹${Number(total).toFixed(2)}</span>
+      <span style="white-space:nowrap;">₹${Number(total).toFixed(2)}</span>
     </div>
   </div>
   <div class="footer-note">
@@ -5473,7 +6417,7 @@
           <tr><td colspan="8" class="empty-state-cell">
             <div class="empty-state-wrap">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12.586 2.586-7 7a2 2 0 0 0 0 2.828l7 7a2 2 0 0 0 2.828 0l7-7a2 2 0 0 0 0-2.828l-7-7a2 2 0 0 0-2.828 0z"/><circle cx="12" cy="12" r="1.5"/></svg>
-              <span style="font-weight:500; color:#fff;">No catalog products found</span>
+              <span style="font-weight:500; color:var(--text-2);">No catalog products found</span>
               <span>No products match the selected search or category.</span>
             </div>
           </td></tr>`;
@@ -5497,7 +6441,7 @@
             <td style="font-family:monospace; color:var(--text-3); font-size:0.8rem;">${escapeHtml(barcode)}</td>
             <td style="color:var(--text-2);">${escapeHtml(category)}</td>
             <td style="text-align:right;">${formatINR(cost)}</td>
-            <td style="text-align:right; font-weight:600; color:#fff;">${formatINR(price)}</td>
+            <td style="text-align:right; font-weight:600; color:var(--text-1);">${formatINR(price)}</td>
             <td style="text-align:right; color:var(--status-healthy); font-weight:500;">${margin}</td>
             <td style="text-align:right; color:var(--text-3);">${reorder}</td>
           </tr>`;
@@ -5521,7 +6465,7 @@
         return `
           <div class="kpi-card" style="cursor:pointer;" onclick="inspectSupplierHistory(${id}, '${escapeHtml(name)}')">
             <span class="kpi-label">Vendor Reference #${id}</span>
-            <span style="font-size:1.15rem; font-weight:600; color:#fff;">${escapeHtml(name)}</span>
+            <span style="font-size:1.15rem; font-weight:600; color:var(--text-1);">${escapeHtml(name)}</span>
             <div style="font-size:0.8rem; color:var(--text-2); margin-top:4px;">
               <div>📞 ${escapeHtml(phone)}</div>
               <div>📜 Terms: ${escapeHtml(terms)}</div>
@@ -5544,7 +6488,7 @@
             <tr><td colspan="5" class="empty-state-cell">
               <div class="empty-state-wrap">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg>
-                <span style="font-weight:500; color:#fff;">No shipments recorded from this vendor</span>
+                <span style="font-weight:500; color:var(--text-2);">No shipments recorded from this vendor</span>
                 <span>Inflow records will appear here as stock from this vendor is received.</span>
               </div>
             </td></tr>`;
@@ -5563,11 +6507,11 @@
 
           return `
             <tr>
-              <td style="font-weight:600; color:#fff;">#${pid}</td>
+              <td style="font-weight:600; color:var(--text-1);">#${pid}</td>
               <td>${escapeHtml(pName)}</td>
               <td style="color:var(--text-3); font-size:0.8rem;">${formatDate(dt)}</td>
               <td style="text-align:right; font-weight:600; color:var(--status-healthy);">+${qty}</td>
-              <td style="text-align:right; color:#fff;">${formatINR(cost)}</td>
+              <td style="text-align:right; color:var(--text-1);">${formatINR(cost)}</td>
             </tr>`;
         }).join('');
       } catch (err) {
@@ -5665,7 +6609,7 @@
             <td colspan="6" class="empty-state-cell">
               <div class="empty-state-wrap" style="text-align:center; padding:32px 16px; color:var(--text-3);">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:8px; opacity:0.6;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                <div style="font-weight:500; color:#fff;">No employee records match your filter</div>
+                <div style="font-weight:500; color:var(--text-2);">No employee records match your filter</div>
                 <div style="font-size:0.8rem; margin-top:4px;">Try refining your search keyword or clearing the filters.</div>
               </div>
             </td>
@@ -5696,7 +6640,7 @@
 
         return `
           <tr data-emp-id="${empId}">
-            <td style="font-weight:600; color:#fff;">
+            <td style="font-weight:600; color:var(--text-1);">
               <div style="display:flex; align-items:center; gap:8px;">
                 <div style="width:28px; height:28px; border-radius:50%; background:var(--surface-2); border:1px solid var(--hairline); display:flex; align-items:center; justify-content:center; font-size:0.72rem; font-weight:700; color:var(--accent-primary);">
                   ${fullName.charAt(0).toUpperCase()}
@@ -6231,7 +7175,7 @@
                 <span style="display:inline-block; font-size:0.7rem; font-weight:700; padding:2px 6px; border-radius:4px; border:1px solid; ${badgeClass}">
                   ${label}
                 </span>
-                <span style="font-family:var(--font-mono, monospace); font-size:0.82rem; color:#fff;">${escapeHtml(m)}</span>
+                <span style="font-family:var(--font-mono, monospace); font-size:0.82rem; color:var(--text-1);">${escapeHtml(m)}</span>
               </div>
               <span style="font-size:0.75rem; color:var(--text-3);">Tier ${idx + 1}</span>
             </div>`;
@@ -6449,7 +7393,7 @@
             <td colspan="6" class="empty-state-cell">
               <div class="empty-state-wrap" style="text-align:center; padding:32px 16px; color:var(--text-3);">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:8px; opacity:0.6;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                <div style="font-weight:500; color:#fff;">No audit records match your filter</div>
+                <div style="font-weight:500; color:var(--text-2);">No audit records match your filter</div>
                 <div style="font-size:0.8rem; margin-top:4px;">Try refining your search keyword or clearing the action filter.</div>
               </div>
             </td>
@@ -6483,7 +7427,7 @@
 
         return `
           <tr>
-            <td style="font-weight:600; color:#fff;">${logId}</td>
+            <td style="font-weight:600; color:var(--text-1);">${logId}</td>
             <td>
               <span style="display:inline-block; font-size:0.72rem; font-weight:700; padding:2px 8px; border-radius:4px; ${actionStyle}">
                 ${escapeHtml(actionType)}
@@ -6723,6 +7667,8 @@
     document.addEventListener('DOMContentLoaded', () => {
       if (window.__appInitialized) return;
       window.__appInitialized = true;
+      document.body.classList.add('landing-mode');
+      initKindredHandsCanvas();
       initAuthSession();
 
       const logoutBtn = document.getElementById('logoutBtn');
@@ -6774,13 +7720,88 @@
         });
       });
 
-      const openDashboardCTA = document.getElementById('openDashboardCTA');
-      if (openDashboardCTA) {
-        openDashboardCTA.addEventListener('click', () => {
-          const target = openDashboardCTA.getAttribute('data-target-view') || 'dashboard';
+      const explorePlatformCTA = document.getElementById('explorePlatformCTA');
+      if (explorePlatformCTA) {
+        explorePlatformCTA.addEventListener('click', () => {
+          if (!CURRENT_USER) {
+            showAuthModal('Sign in with your employee credentials to explore the platform.');
+            return;
+          }
+          const target = getRolePlatformView(CURRENT_ROLE);
           switchView(target);
         });
       }
+
+      const landingSignInBtn = document.getElementById('landingSignInBtn');
+      if (landingSignInBtn) {
+        landingSignInBtn.addEventListener('click', () => {
+          showAuthModal();
+        });
+      }
+
+      const drawerSignInBtn = document.getElementById('drawerSignInBtn');
+      if (drawerSignInBtn) {
+        drawerSignInBtn.addEventListener('click', () => {
+          closeDrawer();
+          showAuthModal();
+        });
+      }
+
+      const closeAuthModalBtn = document.getElementById('closeAuthModalBtn');
+      if (closeAuthModalBtn) {
+        closeAuthModalBtn.addEventListener('click', () => {
+          hideAuthModal();
+        });
+      }
+
+      const authModalBackdrop = document.getElementById('authModal');
+      if (authModalBackdrop) {
+        authModalBackdrop.addEventListener('click', (e) => {
+          if (e.target === authModalBackdrop) {
+            hideAuthModal();
+          }
+        });
+      }
+
+      document.querySelectorAll('[data-landing-nav]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          closeDrawer();
+          const navTarget = btn.getAttribute('data-landing-nav');
+          if (navTarget === 'about') {
+            const currentPane = document.querySelector('.workspace-pane.active');
+            if (!currentPane || currentPane.id !== 'viewHome') {
+              switchView('home');
+              setTimeout(() => {
+                const strip = document.getElementById('landingCapabilities');
+                if (strip) strip.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              }, 120);
+            } else {
+              const strip = document.getElementById('landingCapabilities');
+              if (strip) strip.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+            return;
+          }
+          if (!CURRENT_USER) {
+            const labels = {
+              platform: 'Sign in to access the Retail Intelligence Platform.',
+              analytics: 'Sign in to access real-time Sales and AI Analytics.',
+              inventory: 'Sign in to view Store Inventory & Stock Tracking.'
+            };
+            showAuthModal(labels[navTarget] || 'Please sign in to continue.');
+            return;
+          }
+          if (navTarget === 'platform') {
+            switchView(getRolePlatformView(CURRENT_ROLE));
+          } else if (navTarget === 'analytics') {
+            switchView(getRoleAnalyticsView(CURRENT_ROLE));
+          } else if (navTarget === 'inventory') {
+            switchView('inventory');
+          } else {
+            switchView(navTarget);
+          }
+        });
+      });
+
       document.getElementById('navLogoLink').addEventListener('click', (e) => {
         e.preventDefault();
         switchView('home');
@@ -6799,6 +7820,7 @@
           closeDrawer();
           closeReceiptModal();
           closeAddEmployeeModal();
+          hideAuthModal();
         }
       });
 
