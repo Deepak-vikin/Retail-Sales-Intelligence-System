@@ -1,7 +1,5 @@
 # AI-Powered Retail Sales Intelligence Platform Using Fine-Tuned Small Language Models and Retrieval-Augmented Generation (RAG)
 
-> **Manuscript status:** Project paper draft. Replace bracketed TODOs and pending evaluation fields with verified project and experiment information before submission. This draft distinguishes the currently described implementation from planned work; it does not report model performance or experimental outcomes that have not been measured.
-
 **Author(s):** Deepak Vaidhyanathan,R. Kirthiga  
 **Affiliation(s):** Sri Shakthi Institute Of Engineering and Technology  
 **Corresponding author:** Deepak Vaidhyanathan, deepak5519u@gmail.com
@@ -41,8 +39,6 @@ The project objectives are:
 8. Investigate SLM fine-tuning for query generation and grounded answer generation as planned future work.
 
 ## 4. Related Work
-
-> **TODO: Complete this section with verified scholarly and technical sources.**
 
 Relevant work should cover natural-language interfaces to databases and Text-to-SQL; retrieval-augmented language generation; hybrid structured and unstructured question answering; small language model adaptation and fine-tuning; and retail decision-support systems. Compare prior systems by data assumptions, query execution safeguards, grounding strategy, evaluation methods, and deployment constraints. No specific prior-study findings are asserted in this placeholder section.
 
@@ -124,7 +120,6 @@ The reported PostgreSQL/Supabase schema includes the following core entities:
 | `bills` | Retail transaction headers |
 | `bill_items` | Product-level line items associated with bills |
 
-The exact columns, primary and foreign keys, constraints, indexes, money and quantity types, and deletion/update behavior are **TODO: extract from the current schema or migration files**. The table names above describe the known entities and do not imply a particular column design. For publication, include an ER diagram or schema listing and explain how transaction consistency and inventory updates are handled.
 
 ## 8. Implementation Status
 
@@ -167,15 +162,6 @@ Metrics must be chosen to fit the final implementation and reported with sample 
 
 **Evaluation results: pending.** No verified model accuracy, routing score, retrieval score, answer-quality score, latency, throughput, load-test result, or deployment measurement was provided for this draft. Populate this section only after running and recording the evaluation described above.
 
-| Metric | Result | Test set / conditions |
-|---|---|---|
-| Routing performance | [PENDING] | [TODO] |
-| Text-to-SQL execution accuracy | [PENDING] | [TODO] |
-| RAG retrieval quality | [PENDING] | [TODO] |
-| Grounded answer quality | [PENDING] | [TODO] |
-| Hybrid answer quality | [PENDING] | [TODO] |
-| End-to-end latency | [PENDING] | [TODO] |
-| Concurrency/load behavior | [PENDING] | [TODO] |
 
 ## 10. Limitations
 
@@ -197,18 +183,4 @@ Future work should:
 
 This paper presents the design and current status of a single-store retail sales intelligence platform that combines relational analytics with document retrieval through a FastAPI-based service and a PostgreSQL/Supabase schema. Its central design principle is to use Text-to-SQL for exact numerical analytics, RAG for explanatory or document-based questions, and a potential hybrid path when both evidence types are needed. Project-reported data counts characterize the development dataset but do not constitute performance results. SLM fine-tuning, robust live ingestion, and concurrency/load testing remain future work. A reproducible evaluation is required before claims about accuracy, speed, reliability, or practical effectiveness can be made.
 
-## References
 
-> **TODO: Add verified references in the citation style required by the target venue.** Confirm bibliographic details directly from the source publications or official documentation. Cite related-work claims, the selected Text-to-SQL/RAG methods, model and embedding systems, and any evaluation methodology used. No references are fabricated in this draft.
-
-## Information Needed to Finalize
-
-- Author names, affiliations, corresponding-author details, target venue, and required citation style.
-- Repository-backed confirmation of which endpoints, routing paths, barcode workflow, and hybrid-answer workflow are implemented.
-- Exact schema definition, constraints, and diagram; API and software version details.
-- Document corpus and RAG configuration, including embeddings, vector store, chunking, retrieval, and generation model.
-- Text-to-SQL approach and implemented validation, authorization, and execution safeguards.
-- Verified dataset snapshot, count queries, and meaning of the reported date range.
-- SLM fine-tuning status and, once completed, training setup and measured results.
-- Evaluation dataset, protocol, results, and test environment; no results should be inserted before measurement.
-- Verified scholarly/technical references and target publication requirements.
